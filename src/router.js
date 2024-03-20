@@ -11,6 +11,11 @@ const routes = [
     redirect: "/user/",
   },
   {
+    path: "/password-reset/:token",
+    component: () =>
+      import(/* webpackChunkName: "password-reset" */ "./views/user/ResetPassword"),
+  },
+  {
     path: "/user",
     component: () => import(/* webpackChunkName: "user" */ "./views/user"),
     redirect: "/user/login",

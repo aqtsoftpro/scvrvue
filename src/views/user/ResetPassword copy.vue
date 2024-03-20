@@ -1,6 +1,6 @@
 <template>
-  <b-row class="h-100 mx-1" style="padding: 15.5em !important; max-width: 100%;">
-    <b-colxx xxs="12" md="10" class="mx-auto my-auto px-4">
+  <b-row class="h-100">
+    <b-colxx xxs="12" md="10" class="mx-auto my-auto">
       <b-card class="auth-card" no-body>
         <div class="position-relative image-side">
           <p class="text-white h2">{{ $t('dashboards.magic-is-in-the-details') }}</p>
@@ -15,6 +15,7 @@
             <span class="logo-single" />
           </router-link>
           <h6 class="mb-4">{{ $t('user.login-title')}}</h6>
+
           <b-form @submit.prevent="formSubmit" class="av-tooltip tooltip-label-bottom">
             <b-form-group :label="$t('user.password')" class="has-float-label mb-4">
               <b-form-input
@@ -40,6 +41,7 @@
                 v-else-if="!$v.form.passwordAgain.sameAsPassword"
               >Your inputs does not match</b-form-invalid-feedback>
             </b-form-group>
+
             <div class="d-flex justify-content-between align-items-center">
               <router-link
                 tag="a"
@@ -122,16 +124,10 @@ export default {
     ...mapActions(["resetPassword"]),
     formSubmit() {
       this.$v.form.$touch();
-
       if (!this.$v.form.$anyError) {
         this.resetPassword({
-          token: this.$route.params.token,
-          email: this.$route.query.email,
-          password: this.form.password,
-          password_confirmation: this.form.passwordAgain
-          // newPassword: this.form.password,
-          // resetPasswordCode: this.$route.query.oobCode || ""
-
+          newPassword: this.form.password,
+          resetPasswordCode: this.$route.query.oobCode || ""
         });
       }
     }
