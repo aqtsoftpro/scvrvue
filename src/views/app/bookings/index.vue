@@ -329,17 +329,33 @@
                         <b-button @click.prevent="addNewLocation" class="mt-2 btn btn-xs">Add Location</b-button>
                       </div>
                     </b-colxx>
-                    <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                    <b-colxx xxs="12" xs="4" lg="3" class="mb-3">
                       <b-form class="av-tooltip tooltip-label-right">
                       <label class="form-group has-top-label">
                         <b-form-input
                         v-model="$v.vanin_form.mileage.$model"
                         :state="!$v.vanin_form.mileage.$error"
-                        :placeholder="$t('forms.vanin.mileage')"></b-form-input>
+                        :placeholder="$t('forms.vanin.mileage')"
+                        @change="calculateDriven"></b-form-input>
                         <span>{{ $t('forms.vanin.mileage') }}</span>
                         <b-form-invalid-feedback v-if="$v.vanin_form.mileage.$error"> Please enter vehicle mileage!</b-form-invalid-feedback>
                       </label>
                       </b-form>
+                    </b-colxx>
+                    <b-colxx xxs="12" xs="4" lg="1" class="mb-3">
+                      <span>{{ $t('forms.vanin.km_deriven') }}</span>
+                      <br>
+                      <p>{{ $v.vanin_form.km_deriven.$model }}</p>
+                      <!-- <b-form class="av-tooltip tooltip-label-right">
+                      <label class="form-group has-top-label">
+                        <b-form-input
+                        v-model="$v.vanin_form.km_deriven.$model"
+                        :state="!$v.vanin_form.km_deriven.$error"
+                        :placeholder="$t('forms.vanin.km_deriven')"></b-form-input>
+                        <span>{{ $t('forms.vanin.km_deriven') }}</span>
+                        <b-form-invalid-feedback v-if="$v.vanin_form.km_deriven.$error"> Please enter vehicle mileage!</b-form-invalid-feedback>
+                      </label>
+                      </b-form> -->
                     </b-colxx>
                   </b-row>
                   <b-row>
@@ -369,7 +385,7 @@
                       </label>
                       </b-form>
                       </b-colxx>
-                    <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                    <b-colxx xxs="12" xs="4" lg="3" class="mb-3">
                       <b-form class="av-tooltip tooltip-label-right">
                       <div>{{ $t('forms.vanin.return_date') }}</div>
                           <datepicker
@@ -378,11 +394,16 @@
                             v-model="$v.vanin_form.return_date.$model"
                             :state="!$v.vanin_form.return_date.$error"
                             value-type="format"
-                            format="DD-MM-YYYY h:mm"
+                            @change="calculateDays"
                           ></datepicker>
+                          <!-- format="DD-MM-YYYY h:mm" -->
                           <b-form-invalid-feedback v-if="$v.vanin_form.return_date.$error"> Please select return date!</b-form-invalid-feedback>
                         </b-form>
                       <!-- <b-form-input v-model="form.due_return" type="date" :placeholder="$t('forms.vanout.due_return')"></b-form-input> -->
+                    </b-colxx>
+                    <b-colxx xxs="12" xs="4" lg="1" class="mb-3">
+                      
+                      <p>{{ this.vanin_form.bond_return_amount }}</p>
                     </b-colxx>
                     <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                       <b-form class="av-tooltip tooltip-label-right">
@@ -522,6 +543,8 @@ export default ({
       accessory_options: [],
       swap_with_options: [],
       booking_options: [],
+      out_mileage: 0,
+      van_out: '',
       form: {
         booking_id: '',
         customer_id: '',
@@ -561,8 +584,9 @@ export default ({
         demage_picture: '',
         return_date: '',
         demage_text: '',
-        return_date: '',
-        bond_return_amount: ''
+        bond_return_amount: '',
+        km_deriven: '',
+        total_days: '',
       },
       vanout_fields: [
         {
@@ -737,6 +761,13 @@ export default ({
       demage_caused_by_customer: {
         required
       },
+
+      km_deriven: {
+        required
+      },
+      // total_days: {
+      //   required
+      // },
     }
   },
   computed: {
@@ -786,6 +817,8 @@ export default ({
       }).then(response => {
           this.vanin_form.location_id = response.data.location_id
           this.vanin_form.mileage = response.data.mileage
+          this.out_mileage = response.data.mileage
+          this.van_out = response.data.van_out_date
           this.vanin_form.rental_amount = response.data.rental_amount
           this.$notify('success filled', 'Sucess!', 'The booking data has been autofilled!',{ duration: 3000 });
           this.isProcessing = false
@@ -793,6 +826,31 @@ export default ({
         this.$notify('info filled', 'Info!', 'The booking data could not be autofilled!',{ duration: 3000});
         this.isProcessing = false
       })
+    },
+
+    calculateDriven(){
+      // var = toFixed
+      var total_driven = this.vanin_form.mileage - this.out_mileage
+      this.vanin_form.km_deriven = total_driven.toFixed(2)
+    },
+
+    calculateDays(){
+      // var = toFixed
+      // var timeDiff = this.vanin_form.return_date.getTime() - this.van_out.getTime();
+      // var day_count = timeDiff / (1000 * 3600 * 24);
+
+      var returnDateObj = new Date(this.vanin_form.return_date);
+      var vanOutDateObj = new Date(this.van_out);
+
+      // Calculate the difference in milliseconds
+      var timeDiff = returnDateObj.getTime() - vanOutDateObj.getTime();
+      console.log(typeof(timeDiff));
+      
+      // Convert milliseconds to days
+      var day_count = timeDiff / (1000 * 3600 * 24);
+      console.log(day_count);
+      this.vanin_form.total_days = Math.round(day_count)
+      console.log(this.vanin_form.total_days);
     },
 
     onVehicleSelect(key){

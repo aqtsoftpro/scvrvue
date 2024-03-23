@@ -5,7 +5,7 @@
         <div class="position-relative image-side">
           <p class="text-white h2">{{ $t('dashboards.magic-is-in-the-details') }}</p>
           <p class="white mb-0">
-            Please use your credentials to login.
+            Please reset your password to use new password.
             <br />If you are not a member, please
             <router-link tag="a" to="/user/register" class="white">register</router-link>.
           </p>
@@ -14,7 +14,7 @@
           <router-link tag="a" to="/">
             <span class="logo-single" />
           </router-link>
-          <h6 class="mb-4">{{ $t('user.login-title')}}</h6>
+          <h6 class="mb-4">{{ $t('menu.reset-password')}}</h6>
           <b-form @submit.prevent="formSubmit" class="av-tooltip tooltip-label-bottom">
             <b-form-group :label="$t('user.password')" class="has-float-label mb-4">
               <b-form-input

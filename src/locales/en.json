@@ -518,7 +518,8 @@
       "demage_picture" : "Damage Picture",
       "demage_text" : "Damage Text",
       "return_date" : "Return Date",
-      "bond_return_amount" : "Bond Return Amount"
+      "bond_return_amount" : "Bond Return Amount",
+      "km_deriven": "Total Driven (km)"
     },
     "van_management": {
       "picture_of_vehicle" : "Picture of Vehicle:",
