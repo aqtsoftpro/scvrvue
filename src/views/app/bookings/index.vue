@@ -372,6 +372,7 @@
                         </label>
                         </b-form>
                     </b-colxx>
+                    
                     <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                       <b-form class="av-tooltip tooltip-label-right">
                       <label class="form-group has-top-label">
@@ -401,9 +402,8 @@
                         </b-form>
                       <!-- <b-form-input v-model="form.due_return" type="date" :placeholder="$t('forms.vanout.due_return')"></b-form-input> -->
                     </b-colxx>
-                    <b-colxx xxs="12" xs="4" lg="1" class="mb-3">
-                      
-                      <p>{{ this.vanin_form.bond_return_amount }}</p>
+                    <b-colxx xxs="12" xs="4" lg="1" class="mb-3">                      
+                      <p>{{ vanin_form.total_days }}</p>
                     </b-colxx>
                     <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                       <b-form class="av-tooltip tooltip-label-right">

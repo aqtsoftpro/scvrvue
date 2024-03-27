@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- :startDate = "statDate"
+      :endData = "endDate" -->
     <datatable-heading
       :searchColumn="searchColumn"
       :changeSearchColumn="changeSearchColumn"
@@ -155,7 +157,6 @@ export default {
     },
 
     searchChange(val) {
-
       this.search = val;
       this.items = this.filteredList
       this.$refs.vuetable.refresh();
