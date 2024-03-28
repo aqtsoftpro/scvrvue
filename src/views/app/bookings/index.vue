@@ -268,7 +268,7 @@
                         <!-- <b-form-input v-model="form.due_return" type="date" :placeholder="$t('forms.vanout.due_return')"></b-form-input> -->
                       </b-colxx>
 
-                      <b-colxx xxs="12" xs="2" lg="2" class="mb-3">
+                      <b-colxx xxs="12" xs="2" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input v-model="$v.form.rental_amount.$model"
