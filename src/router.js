@@ -123,6 +123,12 @@ const routes = [
           import(/* webpackChunkName: "rental_history" */ "./views/app/report-temps/van_rental_history")
       },
 
+      {
+        path: "van-rental-detail/:id",
+        component: () =>
+          import(/* webpackChunkName: "vehicle-list" */ "./views/app/report-temps/van_rental_detail"),
+      },
+
     ]
   },
 

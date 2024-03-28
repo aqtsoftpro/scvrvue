@@ -8,11 +8,11 @@
               <b-form inline class="float-end">
                 <b-form-input style="display:none" type="text" v-model.trim="form.start_date" />
                 <datepicker :default-value="today" type="datetime" placeholder="start date" value-type="format"
-                  v-model="form.start_date" format="DD-MM-YYYY"></datepicker>
+                  v-model="form.start_date" format="DD-MM-YYYY h:mm"></datepicker>
 
                 <b-form-input style="display:none" type="text" v-model.trim="form.end_date" />
                 <datepicker :default-value="today" type="datetime" placeholder="start date" value-type="format"
-                  v-model="form.end_date" format="DD-MM-YYYY"></datepicker>
+                  v-model="form.end_date" format="DD-MM-YYYY h:mm"></datepicker>
 
                 <b-button variant="primary" class="ms-1" @click="filterByDate">Filter</b-button>
               </b-form>
