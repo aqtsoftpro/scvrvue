@@ -5,14 +5,18 @@
         <b-card class="mb-4" :title="$t('menu.reports.view-maintenance_cost')">
           <b-row>
             <b-colxx>
-              <b-form inline class="float-end">
-                <b-form-input style="display:none" type="text" v-model.trim="form.start_date" />
-                <datepicker :default-value="today" type="datetime" placeholder="start date" value-type="format"
-                  v-model="form.start_date" format="DD-MM-YYYY h:mm"></datepicker>
+              <b-form inline class="float-end" style="justify-content: flex-end !important;">
+                <div style="margin-right: 1em !important;">
+                  <b-form-input style="display:none" type="text" v-model.trim="form.start_date" />
+                  <datepicker :default-value="today" type="date" placeholder="start date" value-type="format"
+                    v-model="form.start_date" format="DD-MM-YYYY"></datepicker>
+                </div>
 
-                <b-form-input style="display:none" type="text" v-model.trim="form.end_date" />
-                <datepicker :default-value="today" type="datetime" placeholder="start date" value-type="format"
-                  v-model="form.end_date" format="DD-MM-YYYY h:mm"></datepicker>
+                <div style="margin-right: 1em !important;">
+                  <b-form-input style="display:none" type="text" v-model.trim="form.end_date" />
+                  <datepicker :default-value="today" type="date" placeholder="start date" value-type="format"
+                    v-model="form.end_date" format="DD-MM-YYYY"></datepicker>
+                </div>
 
                 <b-button variant="primary" class="ms-1" @click="filterByDate">Filter</b-button>
               </b-form>
@@ -43,6 +47,7 @@ export default ({
   data() {
     return {
       maintenance_cost: [],
+      today: new Date(),
       searchColumns: ['date', 'vehicle', 'service', 'cost', 'sum'],
       fields: [
         {
@@ -82,6 +87,7 @@ export default ({
         start_date: '',
         end_date: '',
       },
+      sum: 0,
     }
   },
 
@@ -96,7 +102,11 @@ export default ({
           end_date: this.form.end_date
         }
       }).then(response => {
-          this.maintenance_cost = response.data.maintenance
+          if (response.data.total > 0) {
+            this.maintenance_cost = response.data.maintenance  
+          } else {
+            this.maintenance_cost = []
+          }
           this.sum = response.data.total
       })
     },

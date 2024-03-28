@@ -4,17 +4,19 @@
       <b-colxx xxs="12">
         <b-card class="mb-4" :title="$t('menu.reports.view-earnings')">
           <b-row>
-            <b-colxx> 
-              <b-form inline class="float-end">
-                <b-form-input style="display:none" type="text" v-model.trim="form.start_date" />
-                <datepicker :default-value="today" type="datetime" placeholder="start date" value-type="format"
-                  v-model="form.start_date"
-                  format="DD-MM-YYYY"></datepicker>
+            <b-colxx>
+              <b-form inline class="float-end" style="justify-content: flex-end !important;">
+                <div style="margin-right: 1em !important;">
+                  <b-form-input style="display:none" type="text" v-model.trim="form.start_date" />
+                  <datepicker :default-value="today" type="date" placeholder="start date" value-type="format"
+                    v-model="form.start_date" format="DD-MM-YYYY"></datepicker>
+                </div>
 
-                <b-form-input style="display:none" type="text" v-model.trim="form.end_date" />
-                <datepicker :default-value="today" type="datetime" placeholder="start date" value-type="format"
-                  v-model="form.end_date"
-                  format="DD-MM-YYYY"></datepicker>
+                <div style="margin-right: 1em !important;">
+                  <b-form-input style="display:none" type="text" v-model.trim="form.end_date" />
+                  <datepicker :default-value="today" type="date" placeholder="start date" value-type="format"
+                    v-model="form.end_date" format="DD-MM-YYYY"></datepicker>
+                </div>
 
                 <b-button variant="primary" class="ms-1" @click="filterByDate">Filter</b-button>
               </b-form>

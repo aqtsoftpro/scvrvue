@@ -219,6 +219,7 @@
                       </b-colxx>
                     </b-row>
                     <b-row>
+
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <!-- <b-form-input v-model="form.swap_with" :placeholder="$t('forms.vanout.swap_with')"></b-form-input> -->
@@ -240,23 +241,33 @@
                           </label>
                         </b-form>
                       </b-colxx>
+
+
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-                        <label class="form-group has-top-label">
-                          <b-form-input v-model="form.rental_period"></b-form-input>
-                          <span>{{ $t('forms.vanout.rental_period') }}</span>
-                        </label>
+                        <label>Rental Periods</label>
+                        <div class="d-flex">
+                          <div style="margin-right: 1em;">
+                              <datepicker :default-value="today" type="datetime" v-model="$v.form.van_out_date.$model"
+                                :state="!$v.form.van_out_date.$error" :placeholder="$t('forms.vanout.van_out_date_time')"
+                                value-type="format" format="DD-MM-YYYY h:mm"></datepicker>
+                          </div>
+                          <div class="d-flex">      
+                                <datepicker type="datetime" v-model="form.due_return"
+                              placeholder="Vehical Due Back" value-type="format" format="DD-MM-YYYY hh:mm">
+                            </datepicker>
+                          </div>
+                        </div>
+       
+                          <!-- <b-form-input style="display:none" type="text" v-model.trim="$v.form.van_out_date.$model"
+                            :state="!$v.form.van_out_date.$error" /> -->
+
+                      <!-- </b-colxx>
+
+                      <b-colxx xxs="12" xs="4" lg="2" class="mb-3"> -->
+
+                        <!-- <b-form-input v-model="form.due_return" type="date" :placeholder="$t('forms.vanout.due_return')"></b-form-input> -->
                       </b-colxx>
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-                        <b-form class="av-tooltip tooltip-label-right">
-                          <div>{{ $t('forms.vanout.van_out_date_time') }}</div>
-                          <b-form-input style="display:none" type="text" v-model.trim="$v.form.van_out_date.$model"
-                            :state="!$v.form.van_out_date.$error" />
-                          <datepicker :default-value="today" type="datetime" v-model="$v.form.van_out_date.$model"
-                            :state="!$v.form.van_out_date.$error" :placeholder="$t('forms.vanout.van_out_date_time')"
-                            value-type="format" format="DD-MM-YYYY h:mm"></datepicker>
-                          <b-form-invalid-feedback v-if="$v.form.van_out_date.$error"> Rental </b-form-invalid-feedback>
-                        </b-form>
-                      </b-colxx>
+
                       <b-colxx xxs="12" xs="2" lg="2" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
@@ -268,6 +279,7 @@
                           </label>
                         </b-form>
                       </b-colxx>
+
                       <b-colxx xxs="12" xs="2" lg="2" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <b-form-radio-group id="amount-frequency" v-model="form.amount_frequency"
@@ -277,6 +289,20 @@
                           </b-form-radio-group>
                         </b-form>
                       </b-colxx>
+
+                    </b-row>
+
+                    <b-row>
+                      <!-- <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                        <label class="form-group has-top-label">
+                          <b-form-input v-model="form.rental_period"></b-form-input>
+                          <span>{{ $t('forms.vanout.rental_period') }}</span>
+                        </label>
+                      </b-colxx> -->
+
+
+
+
 
                     </b-row>
                     <b-row>
@@ -326,13 +352,7 @@
                         class="form-control">
                         </timepicker>
                     </b-colxx> -->
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-                        <div>{{ $t('forms.vanout.due_return') }}</div>
-                        <datepicker type="datetime" v-model="form.due_return"
-                          :placeholder="$t('forms.vanout.due_return')" value-type="format" format="DD-MM-YYYY hh:mm">
-                        </datepicker>
-                        <!-- <b-form-input v-model="form.due_return" type="date" :placeholder="$t('forms.vanout.due_return')"></b-form-input> -->
-                      </b-colxx>
+
                       <div v-if="isProcessing">
                         <b-spinner variant="primary"></b-spinner>
                         <span class="text-primary">{{ processing_text }}</span>

@@ -2,27 +2,31 @@
   <div>
     <b-row>
       <b-colxx xxs="12">
-          <b-card class="mb-4" :title="$t('menu.reports.van-rental-history')" >
-            <b-row>
-              <b-colxx>
-                <b-form inline class="float-end">
+        <b-card class="mb-4" :title="$t('menu.reports.van-rental-history')">
+          <b-row>
+            <b-colxx>
+              <b-form inline class="float-end" style="justify-content: flex-end !important;">
+                <div style="margin-right: 1em !important;">
                   <b-form-input style="display:none" type="text" v-model.trim="form.start_date" />
-                  <datepicker :default-value="today" type="datetime" placeholder="start date" value-type="format"
-                    v-model="form.start_date" format="DD-MM-YYYY h:mm"></datepicker>
+                  <datepicker :default-value="today" type="date" placeholder="start date" value-type="format"
+                    v-model="form.start_date" format="DD-MM-YYYY"></datepicker>
+                </div>
 
+                <div style="margin-right: 1em !important;">
                   <b-form-input style="display:none" type="text" v-model.trim="form.end_date" />
-                  <datepicker :default-value="today" type="datetime" placeholder="start date" value-type="format"
-                    v-model="form.end_date" format="DD-MM-YYYY h:mm"></datepicker>
+                  <datepicker :default-value="today" type="date" placeholder="start date" value-type="format"
+                    v-model="form.end_date" format="DD-MM-YYYY"></datepicker>
+                </div>
 
-                  <b-button variant="primary" class="ms-1" @click="filterByDate">Filter</b-button>
-                </b-form>
-              </b-colxx>
-            </b-row>
-            <!-- :title="$t('menu.reports.van-rental-history')" -->
-            <datatable :searchColumn="searchColumns" :data="rental_history" :fields="fields" />
-          </b-card>
-          <button @click="()=>{$router.push('/app/reports')}" class="btn btn-primary">Back to reports menu</button>
-          <button  class="btn btn-outline-success" @click.prevent="exportToExcel">Export to Excel</button>
+                <b-button variant="primary" class="ms-1" @click="filterByDate">Filter</b-button>
+              </b-form>
+            </b-colxx>
+          </b-row>
+          <!-- :title="$t('menu.reports.van-rental-history')" -->
+          <datatable :searchColumn="searchColumns" :data="rental_history" :fields="fields" />
+        </b-card>
+        <button @click="() => { $router.push('/app/reports') }" class="btn btn-primary">Back to reports menu</button>
+        <button class="btn btn-outline-success" @click.prevent="exportToExcel">Export to Excel</button>
       </b-colxx>
     </b-row>
   </div>
@@ -41,7 +45,7 @@ export default ({
   data() {
     return {
       rental_history: [],
-      searchColumns : ['rented_out', 'vehicle', 'customer', 'returned'],
+      searchColumns: ['rented_out', 'vehicle', 'customer', 'returned'],
       fields: [
         {
           name: "rented_out",
@@ -97,34 +101,32 @@ export default ({
       })
     },
 
-    exportToExcel(){
-        /* generate worksheet from state */
-        const ws = utils.json_to_sheet(this.rental_history);
-        /* create workbook and append worksheet */
-        const wb = utils.book_new();
-        utils.book_append_sheet(wb, ws, "Data");
-        /* export to XLSX */
-        writeFileXLSX(wb, "scvr_van_rental_history.xlsx");
+    exportToExcel() {
+      /* generate worksheet from state */
+      const ws = utils.json_to_sheet(this.rental_history);
+      /* create workbook and append worksheet */
+      const wb = utils.book_new();
+      utils.book_append_sheet(wb, ws, "Data");
+      /* export to XLSX */
+      writeFileXLSX(wb, "scvr_van_rental_history.xlsx");
     },
-    get_rental_history(){
-    axios.get(`${apiUrl}/reports/rental_history`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
-    .then(response => {
-      this.rental_history = response.data
-    })
+    get_rental_history() {
+      axios.get(`${apiUrl}/reports/rental_history`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+        .then(response => {
+          this.rental_history = response.data
+        })
     }
   },
 
-  mounted(){
+  mounted() {
 
     this.get_rental_history();
 
-    if(localStorage.getItem('token') !== null) {
+    if (localStorage.getItem('token') !== null) {
       this.$store.commit('setUser', JSON.parse(localStorage.getItem('user')));
-    } else{
+    } else {
       this.$router.push('/user/login');
     }
   }
 })
 </script>
-
-
