@@ -33,10 +33,10 @@
               :settings="{ suppressScrollX: true, wheelPropagation: false }"
             >
               <recent-order-item
-                v-for="(order,index) in vanouts.slice(0,6)"
+                v-for="order in vanouts.slice(0,6)"
                 :order="order"
-                detail-path="/app/pages/product/details"
-                :key="index"
+                :detail-path="'/app/van-rental-detail/'+ order.id"
+                :key="order.id"
               />
             </vue-perfect-scrollbar>
           </b-card>
