@@ -49,7 +49,7 @@
                   <b-button   @click="edit(props.rowData)" size="sm" variant="grey">
                     <i class="simple-icon-pencil"></i>
                   </b-button>
-                  <b-button  @click="notify(props.rowData)"  size="sm" variant="grey">
+                  <b-button v-if="role == 'admin'"  @click="notify(props.rowData)"  size="sm" variant="grey">
                     <i class="simple-icon-trash"></i>
                   </b-button>
             </template>
@@ -71,7 +71,7 @@ import DatatableHeading from "../../../containers/datatable/DatatableHeading";
 import axios from "axios";
 
 export default {
-  props: ["title", "fields", "data", "view", "edit", "del", "searchColumn"],
+  props: ["title", "fields", "data", "view", "edit", "del", "searchColumn", "role"],
   components: {
     vuetable: Vuetable,
     "vuetable-pagination-bootstrap": VuetablePaginationBootstrap,

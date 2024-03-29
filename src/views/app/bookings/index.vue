@@ -344,7 +344,7 @@
                           </b-colxx>
                         </b-row>
                       </b-colxx>
-                      <b-colxx v-if="user.role_name == 'admin'" xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx v-if="user && user.role_name == 'admin'" xxs="12" xs="4" lg="4" class="mb-3">
                         <button type="button" v-b-modal.addAcessoryModal class="btn btn-xs btn-secondary"> Add
                           Accessory</button>
                       </b-colxx>
@@ -381,7 +381,7 @@
                           class="simple-icon-close"></i></b-button>
                     </div>
                   </b-form>
-                  <datatable title="" :fields="vanout_fields" :data="vanouts" :edit="edit_vanout" :view="bring_fields"
+                  <datatable title="" :fields="vanout_fields" :data="vanouts" :edit="edit_vanout" :view="bring_fields" :role="user.role_name"
                     :del="delete_vanout" :searchColumn="VanoutSearchColumns" />
                 </b-tab>
                 <b-tab title="Vehicle In" title-item-class="w-50 text-center">
@@ -479,21 +479,6 @@
                           </label>
                         </b-form>
                       </b-colxx>
-                      <b-colxx xxs="12" xs="4" lg="3" class="mb-3">
-                        <b-form class="av-tooltip tooltip-label-right">
-                          <div>{{ $t('forms.vanin.return_date') }}</div>
-                          <datepicker :bootstrap-styling="true" :placeholder="$t('forms.vanin.return_date')"
-                            v-model="$v.vanin_form.return_date.$model" :state="!$v.vanin_form.return_date.$error"
-                            value-type="format" @change="calculateDays"></datepicker>
-                          <!-- format="DD-MM-YYYY h:mm" -->
-                          <b-form-invalid-feedback v-if="$v.vanin_form.return_date.$error"> Please select return
-                            date!</b-form-invalid-feedback>
-                        </b-form>
-                        <!-- <b-form-input v-model="form.due_return" type="date" :placeholder="$t('forms.vanout.due_return')"></b-form-input> -->
-                      </b-colxx>
-                      <b-colxx xxs="12" xs="4" lg="1" class="mb-3">
-                        <p>{{ vanin_form.total_days }}</p>
-                      </b-colxx>
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
@@ -503,8 +488,7 @@
                           </label>
                         </b-form>
                       </b-colxx>
-                    </b-row>
-                    <b-row>
+
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <b-form-input style="display:none" type="text"
@@ -530,8 +514,6 @@
                           <span>{{ $t('forms.vanin.require_maintenance_text') }}</span>
                         </label>
                       </b-colxx>
-                    </b-row>
-                    <b-row>
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <!-- <b-form-input v-model="vanin_form.demage_caused_by_customer" :placeholder="$t('forms.vanin.demage_caused_by_customer')"></b-form-input> -->
@@ -566,6 +548,22 @@
                         </label>
                       </b-colxx>
 
+                      <b-colxx xxs="12" xs="4" lg="3" class="mb-3">
+                        <b-form class="av-tooltip tooltip-label-right">
+                          <div>{{ $t('forms.vanin.return_date') }}</div>
+                          <datepicker :bootstrap-styling="true" :placeholder="$t('forms.vanin.return_date')"
+                            v-model="$v.vanin_form.return_date.$model" :state="!$v.vanin_form.return_date.$error"
+                            value-type="format" @change="calculateDays"></datepicker>
+                          <!-- format="DD-MM-YYYY h:mm" -->
+                          <b-form-invalid-feedback v-if="$v.vanin_form.return_date.$error"> Please select return
+                            date!</b-form-invalid-feedback>
+                        </b-form>
+                        <!-- <b-form-input v-model="form.due_return" type="date" :placeholder="$t('forms.vanout.due_return')"></b-form-input> -->
+                      </b-colxx>
+                      <b-colxx xxs="12" xs="4" lg="1" class="mb-3">
+                        <p>{{ vanin_form.total_days }}</p>
+                      </b-colxx>
+
                       <div v-if="isProcessing">
                         <b-spinner variant="primary"></b-spinner>
                         <span class="text-primary">{{ processing_text }}</span>
@@ -583,7 +581,7 @@
                           class="simple-icon-close"></i></b-button>
                     </div>
                   </b-form>
-                  <datatable title="" :fields="van_return_fields" :data="vanins" :edit="edit_vanin"
+                  <datatable title="" :fields="van_return_fields" :data="vanins" :edit="edit_vanin" :role="user.role_name"
                     :view="bring_vanin_fields" :del="delete_vanout" :searchColumn="VanReturnSearchColumns" />
                 </b-tab>
               </b-tabs>
@@ -771,6 +769,24 @@ export default ({
         width: "5%"
       },
       {
+        name: "total_driven",
+        title: 'Total Driven (KM)',
+        sortField: "total_driven",
+        titleClass: "center aligned",
+        dataClass: "center aligned",
+        width: "10%"
+      },
+
+      {
+        name: "days_count",
+        title: 'Total Days',
+        sortField: "days_count",
+        titleClass: "center aligned",
+        dataClass: "center aligned",
+        width: "5%"
+      },
+
+      {
         name: "bond_return_amount",
         title: 'Bond Return Amount',
         sortField: "bond_return_amount",
@@ -927,12 +943,11 @@ export default ({
       // var = toFixed
       var total_driven = this.vanin_form.mileage - this.out_mileage
       this.vanin_form.km_deriven = total_driven.toFixed(2)
+      this.vanin_form.total_driven = this.vanin_form.km_deriven
+
     },
 
     calculateDays() {
-      // var = toFixed
-      // var timeDiff = this.vanin_form.return_date.getTime() - this.van_out.getTime();
-      // var day_count = timeDiff / (1000 * 3600 * 24);
 
       var returnDateObj = new Date(this.vanin_form.return_date);
       var vanOutDateObj = new Date(this.van_out);
@@ -940,12 +955,15 @@ export default ({
       // Calculate the difference in milliseconds
       var timeDiff = returnDateObj.getTime() - vanOutDateObj.getTime();
       console.log(typeof (timeDiff));
-
-      // Convert milliseconds to days
+      // Convert milliseconds to dayskm_deriven
       var day_count = timeDiff / (1000 * 3600 * 24);
       console.log(day_count);
-      this.vanin_form.total_days = Math.round(day_count)
-      console.log(this.vanin_form.total_days);
+      if (!isNaN(day_count)) {
+        this.vanin_form.total_days = Math.round(day_count);
+      } else {
+        this.vanin_form.total_days = 0;
+      }
+      this.vanin_form.days_count = this.vanin_form.total_days
     },
 
     onVehicleSelect(key) {
@@ -1230,7 +1248,9 @@ export default ({
         require_maintenance_text: '',
         damage_caused_by_customer: '',
         demage_picture: '',
-        demage_text: ''
+        demage_text: '',
+        total_driven: '',
+        days_count: '',
       }
     },
 
