@@ -504,7 +504,7 @@
       "due_return" : "Due Return Date",
       "van_out_date" : "Vehicle Out Date",
       "van_out_time" : "Vehicle Out Time",
-      "van_out_date_time": "Van out date & time"
+      "van_out_date_time": "Vehicle out date & time"
     },
     "vanin": {
       "van_out" : "Rented Vehicle",

@@ -243,7 +243,7 @@
                       </b-colxx>
 
 
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx xxs="12" xs="12" md="6" xxl="4" class="mb-3">
                         <label>Rental Periods</label>
                         <div class="d-flex">
                           <div style="margin-right: 1em;">
@@ -268,7 +268,7 @@
                         <!-- <b-form-input v-model="form.due_return" type="date" :placeholder="$t('forms.vanout.due_return')"></b-form-input> -->
                       </b-colxx>
 
-                      <b-colxx xxs="12" xs="2" lg="4" class="mb-3">
+                      <b-colxx xxs="4" xs="4" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input v-model="$v.form.rental_amount.$model"
@@ -280,7 +280,7 @@
                         </b-form>
                       </b-colxx>
 
-                      <b-colxx xxs="12" xs="2" lg="2" class="mb-3">
+                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <b-form-radio-group id="amount-frequency" v-model="form.amount_frequency"
                             name="amount-frequency">
