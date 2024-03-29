@@ -241,31 +241,30 @@
                           </label>
                         </b-form>
                       </b-colxx>
-
-
-                      <b-colxx xxs="12" xs="12" md="6" xxl="4" class="mb-3">
-                        <label>Rental Periods</label>
-                        <div class="d-flex">
-                          <div style="margin-right: 1em;">
-                              <datepicker :default-value="today" type="datetime" v-model="$v.form.van_out_date.$model"
-                                :state="!$v.form.van_out_date.$error" :placeholder="$t('forms.vanout.van_out_date_time')"
-                                value-type="format" format="DD-MM-YYYY h:mm"></datepicker>
-                          </div>
-                          <div class="d-flex">      
-                                <datepicker type="datetime" v-model="form.due_return"
-                              placeholder="Vehical Due Back" value-type="format" format="DD-MM-YYYY hh:mm">
-                            </datepicker>
-                          </div>
-                        </div>
-       
-                          <!-- <b-form-input style="display:none" type="text" v-model.trim="$v.form.van_out_date.$model"
-                            :state="!$v.form.van_out_date.$error" /> -->
-
-                      <!-- </b-colxx>
-
-                      <b-colxx xxs="12" xs="4" lg="2" class="mb-3"> -->
-
-                        <!-- <b-form-input v-model="form.due_return" type="date" :placeholder="$t('forms.vanout.due_return')"></b-form-input> -->
+                      <b-colxx xxs="12" xs="6" lg="4" class="mb-3">
+                        <label class="form-group has-top-label">
+                          <b-form-input v-model="form.bond_deposit">
+                          </b-form-input>
+                          <span>{{ $t('forms.toll.bond_deposit') }}</span>
+                        </label>
+                      </b-colxx>
+                      <b-colxx xxs="12" xs="6" lg="4" class="mb-3">
+                        <label class="form-group has-top-label">
+                          <v-select v-model="form.payment_mode" label="name" :reduce="customer => customer.id"
+                            :options="payment_mode_options"></v-select>
+                          <span>{{ $t('forms.toll.payment_mode') }}</span>
+                        </label>
+                      </b-colxx>
+                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                        <b-form class="av-tooltip tooltip-label-right">
+                          <label class="form-group has-top-label">
+                            <b-form-input v-model="$v.form.mileage.$model"
+                              :state="!$v.form.mileage.$error"></b-form-input>
+                            <span> {{ $t('forms.vanout.mileage') }}</span>
+                            <b-form-invalid-feedback v-if="$v.form.mileage.$error"> Please add mileage!
+                            </b-form-invalid-feedback>
+                          </label>
+                        </b-form>
                       </b-colxx>
 
                       <b-colxx xxs="4" xs="4" xl="4" class="mb-3">
@@ -290,6 +289,31 @@
                         </b-form>
                       </b-colxx>
 
+                      <b-colxx xxs="12" xs="12" md="6" xxl="4" class="mb-3">
+                        <label>Rental Periods</label>
+                        <div class="d-flex">
+                          <div style="margin-right: 1em;">
+                            <datepicker :default-value="today" type="datetime" v-model="$v.form.van_out_date.$model"
+                              :state="!$v.form.van_out_date.$error" :placeholder="$t('forms.vanout.van_out_date_time')"
+                              value-type="format" format="DD-MM-YYYY h:mm"></datepicker>
+                          </div>
+                          <div class="d-flex">
+                            <datepicker type="datetime" v-model="form.due_return" placeholder="Vehical Due Back"
+                              value-type="format" format="DD-MM-YYYY hh:mm">
+                            </datepicker>
+                          </div>
+                        </div>
+
+                        <!-- <b-form-input style="display:none" type="text" v-model.trim="$v.form.van_out_date.$model"
+                            :state="!$v.form.van_out_date.$error" /> -->
+
+                        <!-- </b-colxx>
+
+                      <b-colxx xxs="12" xs="4" lg="2" class="mb-3"> -->
+
+                        <!-- <b-form-input v-model="form.due_return" type="date" :placeholder="$t('forms.vanout.due_return')"></b-form-input> -->
+                      </b-colxx>
+
                     </b-row>
 
                     <b-row>
@@ -300,23 +324,9 @@
                         </label>
                       </b-colxx> -->
 
-
-
-
-
                     </b-row>
                     <b-row>
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-                        <b-form class="av-tooltip tooltip-label-right">
-                          <label class="form-group has-top-label">
-                            <b-form-input v-model="$v.form.mileage.$model"
-                              :state="!$v.form.mileage.$error"></b-form-input>
-                            <span> {{ $t('forms.vanout.mileage') }}</span>
-                            <b-form-invalid-feedback v-if="$v.form.mileage.$error"> Please add mileage!
-                            </b-form-invalid-feedback>
-                          </label>
-                        </b-form>
-                      </b-colxx>
+
                       <b-colxx xxs="12" xs="12" lg="12" class="mb-3">
                         <!-- <label class="form-group has-top-label"> -->
                         <!-- <v-select multiple v-model="form.accessories"
@@ -334,7 +344,7 @@
                           </b-colxx>
                         </b-row>
                       </b-colxx>
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx v-if="user.role_name == 'admin'" xxs="12" xs="4" lg="4" class="mb-3">
                         <button type="button" v-b-modal.addAcessoryModal class="btn btn-xs btn-secondary"> Add
                           Accessory</button>
                       </b-colxx>
@@ -359,20 +369,7 @@
                       </div>
                     </b-row>
                     <b-row>
-                      <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-                        <label class="form-group has-top-label">
-                          <b-form-input v-model="form.bond_deposit">
-                          </b-form-input>
-                          <span>{{ $t('forms.toll.bond_deposit') }}</span>
-                        </label>
-                      </b-colxx>
-                      <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-                        <label class="form-group has-top-label">
-                          <v-select v-model="form.payment_mode" label="name" :reduce="customer => customer.id"
-                            :options="payment_mode_options"></v-select>
-                          <span>{{ $t('forms.toll.payment_mode') }}</span>
-                        </label>
-                      </b-colxx>
+
                     </b-row>
                     <b-button v-if="!editing_mode" @click.stop="save_vanout_form" variant="primary" class="mt-4 mb-4">{{
           'Save'
