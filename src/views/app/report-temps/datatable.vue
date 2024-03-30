@@ -36,6 +36,9 @@
           <template slot="cost" slot-scope="props">
             ${{props.rowData.cost}}
           </template>
+          <template slot="expense" slot-scope="props">
+            ${{props.rowData.expense}}
+          </template>
           <template slot="sub_total" slot-scope="props">
             ${{props.rowData.sub_total}}
           </template>
