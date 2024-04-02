@@ -14,11 +14,8 @@
                     <b-colxx xxs="3" xl="3">
                         <b-card class="mb-4" no-body>
                             <b-card-body>
-
                                 <b-img :src="van_out.vehicle.picture" alt="Image" fluid rounded></b-img>
-
                             </b-card-body>
-
                         </b-card>
                         <router-link :to="{ path: '/app/van-rental-history' }" class="btn btn-primary mt-2"
                             variant="primary">Back to Rental History</router-link>
@@ -126,32 +123,12 @@
                                                         <th>Rental Due Return</th>
                                                         <td>{{ van_out.due_return }}</td>
                                                     </tr>
-                                                    <!-- <tr v-if="vehicle.insurance.road_side_assistance == 'no'">
-                                                        <th>Roadside Assistance Company</th>
-                                                        <td>{{ vehicle.insurance.road_side_assistance_company }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Roadside Assistance Start Date</th>
-                                                        <td>{{ vehicle.insurance.road_side_assistance_start_date }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Roadside Assistance End Date</th>
-                                                        <td>{{ vehicle.insurance.road_side_assistance_end_date }}</td>
-                                                    </tr>
-                                                    <tr v-if="vehicle.insurance.demage_details">
-                                                        <th>Damage Details</th>
-                                                        <td>{{ vehicle.insurance.demage_details }}</td>
-                                                    </tr>
-                                                    <tr v-if="vehicle.insurance.damage_picture">
-                                                        <th>Damage Picture</th>
-                                                        <td><img style="width: 100%"
-                                                                :src="vehicle.insurance.damage_picture" /></td>
-                                                    </tr> -->
                                                 </tbody>
                                             </table>
                                         </b-colxx>
                                     </b-row>
                                 </b-tab>
+
                                 <!-- <b-tab title="Maintenance">
                                     <b-row>
                                         <b-colxx sm="12">
@@ -180,9 +157,42 @@
                         </b-card>
                     </b-colxx>
                 </b-row>
-
-
-
+                <b-row>
+                    <b-colxx xxs="12" xl="12" class="my-4">
+                        <b-card>
+                            <b-card-header>
+                                <h3 class="title">
+                                    Vehicle Out Gallery
+                                </h3>
+                            </b-card-header>
+                            <b-card-body>
+                                <b-row v-if="van_out.galleries && van_out.galleries.length > 0">
+                                    <b-colxx v-for="item in van_out.galleries" xxs="12" xs="6" xl="4" xxl="3">
+                                        <b-img :src="item.image" alt="Image" fluid rounded style="width: 100%; height: 100%"></b-img>
+                                    </b-colxx>
+                                </b-row>
+                            </b-card-body>
+                        </b-card>
+                    </b-colxx>
+                </b-row>
+                <b-row>
+                    <b-colxx xxs="12" xl="12" class="my-4">
+                        <b-card>
+                            <b-card-header>
+                                <h3 class="title">
+                                    Vanout Video
+                                </h3>
+                            </b-card-header>
+                            <b-card-body>
+                                <b-row>
+                                    <b-colxx xxs="12" xl="10" class="mx-auto">
+                                        <video :src="van_out.video" width="100%" controls class="rounded rounded-1 p-4"></video>
+                                    </b-colxx>
+                                </b-row>
+                            </b-card-body>
+                        </b-card>
+                    </b-colxx>
+                </b-row>
             </b-colxx>
         </b-row>
     </div>

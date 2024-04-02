@@ -240,6 +240,15 @@
                           <span>{{ $t('forms.toll.bond_deposit') }}</span>
                         </label>
                       </b-colxx>
+                      
+                      <b-colxx xxs="12" xs="6" lg="4" class="mb-3">
+                        <label class="form-group has-top-label">
+                          <v-select v-model="form.payment_mode" label="name" :reduce="customer => customer.id"
+                            :options="payment_mode_options"></v-select>
+                          <span>{{ $t('forms.toll.payment_mode') }}</span>
+                        </label>
+                      </b-colxx>
+
                       <b-colxx xxs="12" xs="6" lg="4" class="mb-3"
                         ref="demage_pics_column">
                         <span>{{ $t('forms.vanin.demage_picture') }}</span>
@@ -260,14 +269,6 @@
                         </label>
                       </b-colxx>
 
-
-                      <b-colxx xxs="12" xs="6" lg="4" class="mb-3">
-                        <label class="form-group has-top-label">
-                          <v-select v-model="form.payment_mode" label="name" :reduce="customer => customer.id"
-                            :options="payment_mode_options"></v-select>
-                          <span>{{ $t('forms.toll.payment_mode') }}</span>
-                        </label>
-                      </b-colxx>
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
