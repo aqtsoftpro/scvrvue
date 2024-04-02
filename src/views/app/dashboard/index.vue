@@ -32,7 +32,7 @@
               class="scroll dashboard-list-with-thumbs"
               :settings="{ suppressScrollX: true, wheelPropagation: false }"
             >
-              <recent-order-item
+              <recent-return-out
                 v-for="order in vanouts.slice(0,6)"
                 :order="order"
                 :detail-path="'/app/van-rental-detail/'+ order.id"
@@ -76,6 +76,7 @@
 <script>
 
 import RecentOrderItem from "../../../components/Listing/RecentOrderItem";
+import RecentReturnOut from "../../../components/Listing/RecentReturnOut";
 import IconCard from "../../../components/Cards/IconCard";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
@@ -85,6 +86,7 @@ import {apiUrl} from "../../../constants/config.js";
 export default {
   components: {
     "recent-order-item": RecentOrderItem,
+    "recent-return-out": RecentReturnOut,
     "icon-card": IconCard
   },
   data() {

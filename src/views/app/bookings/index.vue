@@ -161,7 +161,6 @@
                     <b-row>
                       <b-colxx xxs="12" xs="4" lg="4">
                         <b-form class="av-tooltip tooltip-label-right">
-                          <!-- <b-form-group :label="$t('forms.vanout.customer')"> -->
                           <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text" v-model.trim="$v.form.customer_id.$model"
                               :state="!$v.form.customer_id.$error" />
@@ -170,13 +169,11 @@
                               <template #list-header>
                                 <b-button v-b-modal.modallg variant="outline-primary btn-xs" class="mr-2 mb-2">Add
                                   Customer</b-button>
-                                <!-- <button  style="margin: 10px 0" class="btn btn-primary btn-xs">Add Customer</button> -->
                               </template>
                             </v-select>
                             <span>{{ $t('forms.vanout.customer') }}</span>
                             <b-form-invalid-feedback v-if="$v.form.customer_id.$error"> Please select the
                               customer!</b-form-invalid-feedback>
-                            <!-- </b-form-group> -->
                           </label>
                         </b-form>
                       </b-colxx>
@@ -184,7 +181,6 @@
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
-                            <!-- <b-form-group :label="$t('forms.vanout.vehicle')"> -->
                             <b-form-input style="display:none" type="text" v-model.trim="$v.form.vehicle_id.$model"
                               :state="!$v.form.vehicle_id.$error" />
                             <v-select v-model="form.vehicle_id" v-on:input="onVehicleSelect" label="name"
@@ -193,14 +189,12 @@
                             <span>{{ $t('forms.vanout.vehicle') }}</span>
                             <b-form-invalid-feedback v-if="$v.form.customer_id.$error"> Please select the
                               vehicle!</b-form-invalid-feedback>
-                            <!-- </b-form-group> -->
                           </label>
                         </b-form>
                       </b-colxx>
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
-                            <!-- <b-form-group :label="$t('forms.vanout.location')"> -->
                             <b-form-input style="display:none" type="text" v-model.trim="$v.form.location_id.$model"
                               :state="!$v.form.location_id.$error" />
                             <v-select v-model="form.location_id" label="name" :key="form.location_id"
@@ -209,7 +203,6 @@
                             <span>{{ $t('forms.vanout.location') }}</span>
                             <b-form-invalid-feedback v-if="$v.form.location_id.$error"> Please select the
                               location!</b-form-invalid-feedback>
-                            <!-- </b-form-group> -->
                           </label>
                         </b-form>
                         <div v-if="form.location_id == '4'">
@@ -222,7 +215,6 @@
 
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
-                          <!-- <b-form-input v-model="form.swap_with" :placeholder="$t('forms.vanout.swap_with')"></b-form-input> -->
                           <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text"
                               v-model.trim="$v.form.reason_of_renting.$model"
@@ -248,6 +240,27 @@
                           <span>{{ $t('forms.toll.bond_deposit') }}</span>
                         </label>
                       </b-colxx>
+                      <b-colxx xxs="12" xs="6" lg="4" class="mb-3"
+                        ref="demage_pics_column">
+                        <span>{{ $t('forms.vanin.demage_picture') }}</span>
+                        <b-form-file v-model="form.demage_pics" :placeholder="$t('forms.vanin.demage_picture')"
+                          drop-placeholder="Drop file here..." accept="image/*" multiple @change="handleFileChange"></b-form-file>
+                      </b-colxx>
+
+                      <b-colxx xxs="12" xs="6" lg="4" class="mb-3" ref="demage_video_column">
+                        <span>Damage Video </span>
+                        <b-form-file v-model="form.demage_video" placeholder="Upload video"
+                          drop-placeholder="Drop file here..." accept="video/*"></b-form-file>
+                      </b-colxx>
+
+                      <b-colxx xxs="12" xs="6" lg="4" class="mb-3" ref="demage_text_column">
+                        <label class="form-group has-top-label">
+                          <b-form-textarea v-model="form.demage_text"></b-form-textarea>
+                          <span>{{ $t('forms.vanin.demage_text') }}</span>
+                        </label>
+                      </b-colxx>
+
+
                       <b-colxx xxs="12" xs="6" lg="4" class="mb-3">
                         <label class="form-group has-top-label">
                           <v-select v-model="form.payment_mode" label="name" :reduce="customer => customer.id"
@@ -344,7 +357,7 @@
                           </b-colxx>
                         </b-row>
                       </b-colxx>
-                      <b-colxx v-if="user && user.role_name == 'admin'" xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx v-if="roleName && roleName == 'admin'" xxs="12" xs="4" lg="4" class="mb-3">
                         <button type="button" v-b-modal.addAcessoryModal class="btn btn-xs btn-secondary"> Add
                           Accessory</button>
                       </b-colxx>
@@ -381,15 +394,13 @@
                           class="simple-icon-close"></i></b-button>
                     </div>
                   </b-form>
-                  <datatable title="" :fields="vanout_fields" :data="vanouts" :edit="edit_vanout" :view="bring_fields" :role="user.role_name"
-                    :del="delete_vanout" :searchColumn="VanoutSearchColumns" />
+                  <datatable title="" :fields="vanout_fields" :data="vanouts" :edit="edit_vanout" :view="bring_fields"
+                    :role="roleName" :del="delete_vanout" :searchColumn="VanoutSearchColumns" />
                 </b-tab>
                 <b-tab title="Vehicle In" title-item-class="w-50 text-center">
-                  <!-- Content for van out -->
                   <b-form>
                     <b-row>
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text"
@@ -484,7 +495,6 @@
                           <label class="form-group has-top-label">
                             <b-form-input v-model="vanin_form.bond_return_amount"></b-form-input>
                             <span>{{ $t('forms.vanin.bond_return_amount') }}</span>
-                            <!-- <b-form-invalid-feedback v-if="$v.vanin_form.bond_return_amount.$error"> Please enter bond return amount!</b-form-invalid-feedback> -->
                           </label>
                         </b-form>
                       </b-colxx>
@@ -494,7 +504,6 @@
                           <b-form-input style="display:none" type="text"
                             v-model.trim="$v.vanin_form.require_maintenance.$model"
                             :state="!$v.vanin_form.require_maintenance.$error" />
-                          <!-- <b-form-input v-model="vanin_form.demage_caused_by_customer" :placeholder="$t('forms.vanin.demage_caused_by_customer')"></b-form-input> -->
                           <label class="form-group has-top-label">
                             <v-select v-model="vanin_form.require_maintenance" label="name"
                               :reduce="require_maintenance => require_maintenance.id"
@@ -516,7 +525,6 @@
                       </b-colxx>
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
-                          <!-- <b-form-input v-model="vanin_form.demage_caused_by_customer" :placeholder="$t('forms.vanin.demage_caused_by_customer')"></b-form-input> -->
                           <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text"
                               v-model.trim="$v.vanin_form.demage_caused_by_customer.$model"
@@ -538,8 +546,20 @@
                         <span>{{ $t('forms.vanin.demage_picture') }}</span>
                         <!-- </label> -->
                         <b-form-file v-model="vanin_form.demage_picture" :placeholder="$t('forms.vanin.demage_picture')"
-                          drop-placeholder="Drop file here..." accept="image/*"></b-form-file>
+                          drop-placeholder="Drop file here..." accept="image/*" multiple></b-form-file>
                       </b-colxx>
+
+                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="5" lg="5" class="mb-3"
+                        ref="demage_vid_column">
+                        <!-- <label class="form-group has-top-label"> -->
+                        <!-- <b-form-input v-model="vanin_form.demage_picture" ></b-form-input> -->
+                        <span>Upload Demaged Video</span>
+                        <!-- </label> -->
+                        <b-form-file v-model="vanin_form.demage_vid" placeholder="Upload Demaged Video"
+                          drop-placeholder="Drop file here..." accept="video/*"></b-form-file>
+                      </b-colxx>
+
+
                       <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="5" lg="5" class="mb-3"
                         ref="demage_text_column">
                         <label class="form-group has-top-label">
@@ -581,7 +601,7 @@
                           class="simple-icon-close"></i></b-button>
                     </div>
                   </b-form>
-                  <datatable title="" :fields="van_return_fields" :data="vanins" :edit="edit_vanin" :role="user.role_name"
+                  <datatable title="" :fields="van_return_fields" :data="vanins" :edit="edit_vanin" :role="roleName"
                     :view="bring_vanin_fields" :del="delete_vanout" :searchColumn="VanReturnSearchColumns" />
                 </b-tab>
               </b-tabs>
@@ -627,6 +647,7 @@ export default ({
       vanout: [],
       vanin: [],
       user: null,
+      roleName: null,
       perPage: 10,
       currentPage: 1,
       editing_mode: false,
@@ -653,7 +674,9 @@ export default ({
         van_out_date: '',
         due_return: '',
         bond_deposit: null,
-        payment_mode: null
+        payment_mode: null,
+        demage_pics: null,
+        demage_video: null,
       },
       VanoutSearchColumns: ["reg_number"],
       VanReturnSearchColumns: ["vehicle"],
@@ -680,6 +703,7 @@ export default ({
         bond_return_amount: '',
         km_deriven: '',
         total_days: '',
+        demage_vid: null
       },
       vanout_fields: [
         {
@@ -1025,7 +1049,8 @@ export default ({
 
       axios.post(apiUrl + '/vanout', this.form, {
         headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'content-type': 'multipart/form-data',
         }
       }).then(response => {
         //refresh the table data
@@ -1367,6 +1392,11 @@ export default ({
       })
     },
 
+    handleFileChange(event) {
+      this.form.demage_pics = event.target.files[0];
+      console.log(event); // Check the selected files in the console
+    },
+
 
     get_location_options() {
       axios.get(apiUrl + '/location_options', {
@@ -1489,7 +1519,7 @@ export default ({
     }
 
     this.get_customer_options()
-    //this.get_available_vehicle_options()
+    // this.get_available_vehicle_options()
     this.get_active_vehicle_options()
     this.get_location_options()
     this.get_accessory_options()
@@ -1501,6 +1531,7 @@ export default ({
   watch: {
     currentUser() {
       this.user = this.currentUser
+      this.roleName = this.currentUser.role_name ?? null
     }
   }
 
