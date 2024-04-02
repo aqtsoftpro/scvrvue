@@ -28,7 +28,6 @@ export const firebaseConfig = {
 // export const apiUrl = 'http://127.0.0.1:8000/api'
 //remote api
 export const apiUrl = 'https://scvr.aqtdemos.com/public/api'
-
 export const currentUser = {
   id: 1,
   title: 'Sarah Kortney',
