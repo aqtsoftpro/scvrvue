@@ -56,11 +56,11 @@
                                                     </tr>
                                                     <tr>
                                                         <th>Status</th>
-                                                        <td>{{ van_out.vehicle.status }}</td>
+                                                        <td>{{ van_out.vehicle.status.name }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Type</th>
-                                                        <td>{{ van_out.vehicle.type }}</td>
+                                                        <td>{{ van_out.vehicle.vehicle_type.name }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Make</th>
@@ -108,7 +108,8 @@
                                                     </tr>
                                                     <tr>
                                                         <th>Rental Periods</th>
-                                                        <td>{{ van_out.rental_period }}</td>
+                                                        <td v-if="van_out.rental_period">{{ van_out.rental_period }}</td>
+                                                        <td v-else>{{ differenceInDays }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Rental Amount</th>
@@ -180,7 +181,7 @@
                         <b-card>
                             <b-card-header>
                                 <h3 class="title">
-                                    Vanout Video
+                                    Vehicle Out Video
                                 </h3>
                             </b-card-header>
                             <b-card-body>
@@ -221,7 +222,11 @@ export default {
                 { key: 'mechanic_name', label: 'Mechanic Name' },
                 { key: 'comments', label: 'comments' },
             ],
+            differenceInDays: 0,
         }
+    },
+    created() {
+        this.calculateDifferenceInDays();
     },
     methods: {
         get_rental_detail() {
@@ -234,10 +239,21 @@ export default {
                 this.vehicle = response.data.vehicle;
                 this.van_out = response.data
             })
+        },
+
+        calculateDifferenceInDays() {
+            const dueReturnDate = new Date(this.van_out.due_return);
+            const vanOutDate = new Date(this.van_out.van_out_date);
+            const differenceInMs = dueReturnDate.getTime() - vanOutDate.getTime();
+            if (isNaN(differenceInMs)) {
+                this.differenceInDays = 0;
+            } else {
+                this.differenceInDays = differenceInMs / (1000 * 60 * 60 * 24);
+            }
         }
     },
-    mounted() {
-        this.get_rental_detail()
+    async mounted() {
+        await this.get_rental_detail()
     }
 }
 </script>
