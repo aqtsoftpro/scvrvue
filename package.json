@@ -17,6 +17,7 @@
     "core-js": "^3.6.4",
     "firebase": "^7.12.0",
     "lodash": "^4.17.21",
+    "moment": "^2.30.1",
     "sass": "^1.59.3",
     "v-contextmenu": "^2.9.0",
     "video.js": "^7.7.5",

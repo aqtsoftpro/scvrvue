@@ -158,7 +158,7 @@
                         </b-card>
                     </b-colxx>
                 </b-row>
-                <b-row>
+                <b-row v-if="van_out.galleries && van_out.galleries.length > 0">
                     <b-colxx xxs="12" xl="12" class="my-4">
                         <b-card>
                             <b-card-header>
@@ -167,7 +167,7 @@
                                 </h3>
                             </b-card-header>
                             <b-card-body>
-                                <b-row v-if="van_out.galleries && van_out.galleries.length > 0">
+                                <b-row>
                                     <b-colxx v-for="item in van_out.galleries" xxs="12" xs="6" xl="4" xxl="3">
                                         <b-img :src="item.image" alt="Image" fluid rounded style="width: 100%; height: 100%"></b-img>
                                     </b-colxx>
@@ -176,10 +176,11 @@
                         </b-card>
                     </b-colxx>
                 </b-row>
-                <b-row>
+                <b-row v-if="van_out.video">
                     <b-colxx xxs="12" xl="12" class="my-4">
                         <b-card>
                             <b-card-header>
+                                
                                 <h3 class="title">
                                     Vehicle Out Video
                                 </h3>

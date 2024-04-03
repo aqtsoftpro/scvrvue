@@ -504,7 +504,8 @@
       "due_return" : "Due Return Date",
       "van_out_date" : "Vehicle Out Date",
       "van_out_time" : "Vehicle Out Time",
-      "van_out_date_time": "Vehicle out date & time"
+      "van_out_date_time": "Vehicle out date & time",
+      "vehicles": "Vehicles"
     },
     "vanin": {
       "van_out" : "Rented Vehicle",
@@ -516,8 +517,8 @@
       "require_maintenance" : "Require Maintenance ?",
       "require_maintenance_text" : "Details about maintenance required",
       "demage_caused_by_customer" : "Damage caused by customer",
-      "demage_picture" : "Damage Picture",
-      "demage_text" : "Damage Text",
+      "demage_picture" : "Vehicle Condition Picture",
+      "demage_text" : "Vehicle Condition Text",
       "return_date" : "Return Date",
       "bond_return_amount" : "Bond Return Amount",
       "km_deriven": "Total Driven (km)"

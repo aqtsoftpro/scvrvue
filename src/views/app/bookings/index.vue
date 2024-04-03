@@ -127,11 +127,11 @@
             <td> {{ vanin.damage_caused_by_customer }}</td>
           </tr>
           <tr v-if="vanin.damage_caused_by_customer == 'Yes'">
-            <th>Damage Picture:</th>
+            <th>Vehicle Condition Picture:</th>
             <td> <img width="200" :src="vanin.demage_picture" /></td>
           </tr>
           <tr v-if="vanin.damage_caused_by_customer == 'Yes'">
-            <th>Damage Text:</th>
+            <th>Vehicle Condition Text:</th>
             <td> {{ vanin.demage_text }}</td>
           </tr>
           <tr>
@@ -186,7 +186,7 @@
                             <v-select v-model="form.vehicle_id" v-on:input="onVehicleSelect" label="name"
                               :key="form.vehicle_id" :reduce="vehicle => vehicle.id"
                               :options="vehicle_options"></v-select>
-                            <span>{{ $t('forms.vanout.vehicle') }}</span>
+                            <span>{{ $t('forms.vanout.vehicles') }}</span>
                             <b-form-invalid-feedback v-if="$v.form.customer_id.$error"> Please select the
                               vehicle!</b-form-invalid-feedback>
                           </label>
@@ -257,7 +257,7 @@
                       </b-colxx>
 
                       <b-colxx xxs="12" xs="6" lg="4" class="mb-3" ref="demage_video_column">
-                        <span>Damage Video </span>
+                        <span>Vehicle Conditions Video </span>
                         <b-form-file v-model="form.demage_video" placeholder="Upload video"
                           drop-placeholder="Drop file here..." accept="video/*"></b-form-file>
                       </b-colxx>
@@ -517,7 +517,7 @@
                             required!</b-form-invalid-feedback>
                         </b-form>
                       </b-colxx>
-                      <b-colxx v-if="vanin_form.require_maintenance == 1" xxs="12" xs="5" lg="5" class="mb-3"
+                      <b-colxx v-if="vanin_form.require_maintenance == 1" xxs="12" xs="4" lg="4" class="mb-3"
                         ref="require_maintenance_text_column">
                         <label class="form-group has-top-label">
                           <b-form-textarea v-model="vanin_form.require_maintenance_text"></b-form-textarea>
@@ -540,7 +540,7 @@
                           </label>
                         </b-form>
                       </b-colxx>
-                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="5" lg="5" class="mb-3"
+                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="4" lg="4" class="mb-3"
                         ref="demage_picture_column">
                         <!-- <label class="form-group has-top-label"> -->
                         <!-- <b-form-input v-model="vanin_form.demage_picture" ></b-form-input> -->
@@ -550,7 +550,7 @@
                           drop-placeholder="Drop file here..." accept="image/*" multiple></b-form-file>
                       </b-colxx>
 
-                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="5" lg="5" class="mb-3"
+                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="4" lg="4" class="mb-3"
                         ref="demage_vid_column">
                         <!-- <label class="form-group has-top-label"> -->
                         <!-- <b-form-input v-model="vanin_form.demage_picture" ></b-form-input> -->
@@ -561,7 +561,7 @@
                       </b-colxx>
 
 
-                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="5" lg="5" class="mb-3"
+                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="4" lg="4" class="mb-3"
                         ref="demage_text_column">
                         <label class="form-group has-top-label">
                           <b-form-textarea v-model="vanin_form.demage_text"></b-form-textarea>
@@ -574,8 +574,8 @@
                           <div>{{ $t('forms.vanin.return_date') }}</div>
                           <datepicker :bootstrap-styling="true" :placeholder="$t('forms.vanin.return_date')"
                             v-model="$v.vanin_form.return_date.$model" :state="!$v.vanin_form.return_date.$error"
-                            value-type="format" @change="calculateDays"></datepicker>
-                          <!-- format="DD-MM-YYYY h:mm" -->
+                            value-type="format" @change="calculateDays" format="DD-MM-YYYY h:mm"></datepicker>
+                          
                           <b-form-invalid-feedback v-if="$v.vanin_form.return_date.$error"> Please select return
                             date!</b-form-invalid-feedback>
                         </b-form>
@@ -634,6 +634,8 @@ import { mapGetters } from 'vuex';
 import datatable from './datatable'
 import Customer from '../records/customer_form'
 import AcessoriesManagement from './accessories_management.vue'
+import moment from 'moment';
+
 
 export default ({
   components: { 'v-select': vSelect, datepicker: DatePicker, datatable: datatable, Customer, 'accessories-management': AcessoriesManagement },
@@ -972,23 +974,42 @@ export default ({
 
     },
 
+    // calculateDays() {
+
+    //   var returnDateObj = new Date(this.vanin_form.return_date);
+    //   var vanOutDateObj = new Date(this.van_out);
+
+    //   console.log(vanOutDateObj);
+    //   console.log(returnDateObj);
+
+    //   // Calculate the difference in milliseconds
+    //   var timeDiff = returnDateObj.getTime() - vanOutDateObj.getTime();
+    //   console.log(typeof (timeDiff));
+    //   // Convert milliseconds to dayskm_deriven
+    //   var day_count = timeDiff / (1000 * 3600 * 24);
+    //   console.log(day_count);
+    //   if (!isNaN(day_count)) {
+    //     this.vanin_form.total_days = Math.round(day_count);
+    //   } else {
+    //     this.vanin_form.total_days = 0;
+    //   }
+    //   this.vanin_form.days_count = this.vanin_form.total_days
+    // },
+
     calculateDays() {
+      // Assuming this.vanin_form.return_date and this.van_out are date strings in "DD-MM-YYYY h:mm" format
+      var returnDateObj = moment(this.vanin_form.return_date, "DD-MM-YYYY h:mm");
+      var vanOutDateObj = moment(this.van_out, "DD-MM-YYYY h:mm");
 
-      var returnDateObj = new Date(this.vanin_form.return_date);
-      var vanOutDateObj = new Date(this.van_out);
+      // Calculate the difference in days
+      var day_count = returnDateObj.diff(vanOutDateObj, 'days');
 
-      // Calculate the difference in milliseconds
-      var timeDiff = returnDateObj.getTime() - vanOutDateObj.getTime();
-      console.log(typeof (timeDiff));
-      // Convert milliseconds to dayskm_deriven
-      var day_count = timeDiff / (1000 * 3600 * 24);
-      console.log(day_count);
       if (!isNaN(day_count)) {
-        this.vanin_form.total_days = Math.round(day_count);
+        this.vanin_form.total_days = day_count;
       } else {
         this.vanin_form.total_days = 0;
       }
-      this.vanin_form.days_count = this.vanin_form.total_days
+      this.vanin_form.days_count = this.vanin_form.total_days;
     },
 
     onVehicleSelect(key) {
@@ -1083,6 +1104,8 @@ export default ({
           payment_mode: ''
         }
         this.isProcessing = false
+        this.get_customer_options()
+        this.get_active_vehicle_options()
       }).catch(error => {
         this.$notify('error filled', 'Error!', error.response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
@@ -1124,6 +1147,8 @@ export default ({
           'Van In record has been saved.',
         )
         this.isProcessing = false
+        this.get_customer_options()
+        this.get_active_vehicle_options()
       }).catch(error => {
         this.$notify('error filled', 'Error!', error.response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
