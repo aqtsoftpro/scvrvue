@@ -582,9 +582,10 @@
                         <!-- <b-form-input v-model="form.due_return" type="date" :placeholder="$t('forms.vanout.due_return')"></b-form-input> -->
                       </b-colxx>
                       <b-colxx xxs="12" xs="4" lg="1" class="mb-3">
+                        <span>Total Days</span>
+                        <br>
                         <p>{{ vanin_form.total_days }}</p>
                       </b-colxx>
-
                       <div v-if="isProcessing">
                         <b-spinner variant="primary"></b-spinner>
                         <span class="text-primary">{{ processing_text }}</span>
