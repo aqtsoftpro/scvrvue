@@ -3,7 +3,7 @@
         <b-row>
             <b-colxx xxs="12">
                 <div class="d-flex">
-                    <h1 class="w-bold" title="Customer name"> {{ van_out.customer.first_name }} - {{ van_out.customer.last_name }}</h1>
+                    <h1 class="w-bold" title="Customer name"> {{ safeAccess(van_out, 'customer.first_name') }}  {{ safeAccess(van_out, 'customer.last_name') }}</h1>
                 </div>
                 <div class="separator mb-5"></div>
             </b-colxx>
@@ -14,7 +14,7 @@
                     <b-colxx xxs="3" xl="3">
                         <b-card class="mb-4" no-body>
                             <b-card-body>
-                                <b-img :src="van_out.vehicle.picture" alt="Image" fluid rounded></b-img>
+                                <b-img :src="safeAccess(van_out, 'vehicle.picture')" alt="Image" fluid rounded></b-img>
                             </b-card-body>
                         </b-card>
                         <router-link :to="{ path: '/app/van-rental-history' }" class="btn btn-primary mt-2"
@@ -30,15 +30,15 @@
                                                 <tbody>
                                                     <tr>
                                                         <th>Customer's Name</th>
-                                                        <td>{{ van_out.customer.first_name }} - {{ van_out.customer.last_name }}</td>
+                                                        <td v-if="van_out.customer">{{ safeAccess(van_out, 'customer.first_name') }}  {{ safeAccess(van_out, 'customer.last_name') }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Customer's Address</th>
-                                                        <td>{{ van_out.customer.address }}</td>
+                                                        <td>{{ safeAccess(van_out, 'customer.address') }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Customer's Contact Number</th>
-                                                        <td>{{ van_out.customer.phone_number }}</td>
+                                                        <td>{{ safeAccess(van_out, 'customer.phone_number') }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -52,39 +52,42 @@
                                                 <tbody>
                                                     <tr>
                                                         <th>Registration / Plate Number</th>
-                                                        <td>{{ van_out.vehicle.reg_plate_number }}</td>
+                                                        <td>{{ safeAccess(van_out, 'vehicle.reg_plate_number') }}</td>
+
                                                     </tr>
                                                     <tr>
                                                         <th>Status</th>
-                                                        <td>{{ van_out.vehicle.status.name }}</td>
+                                                        <td>{{ safeAccess(van_out, 'vehicle.status.name') }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Type</th>
-                                                        <td>{{ van_out.vehicle.vehicle_type.name }}</td>
+                                                        <td>{{ safeAccess(van_out, 'vehicle.vehicle_type.name') }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Make</th>
-                                                        <td>{{ van_out.vehicle.make }}</td>
+                                                        <td>{{ safeAccess(van_out, 'vehicle.make') }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Model</th>
-                                                        <td>{{ van_out.vehicle.model }}</td>
+                                                        <td>{{ safeAccess(van_out, 'vehicle.model') }}</td>
+
                                                     </tr>
                                                     <tr>
                                                         <th>Mileage</th>
-                                                        <td>{{ van_out.vehicle.mileage }}</td>
+                                                        <td>{{ safeAccess(van_out, 'vehicle.mileage') }}</td>
+
                                                     </tr>
                                                     <tr>
                                                         <th>Purchase Date</th>
-                                                        <td>{{ van_out.vehicle.purchase_date }}</td>
+                                                        <td>{{ safeAccess(van_out, 'vehicle.purchase_date') }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Purchase Price</th>
-                                                        <td>{{ van_out.vehicle.purchase_price }}</td>
+                                                        <td>{{ safeAccess(van_out, 'vehicle.purchase_price') }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Vehicle Condition</th>
-                                                        <td>{{ van_out.vehicle.vehicle_condition }}</td>
+                                                        <td>{{ safeAccess(van_out, 'vehicle.vehicle_condition') }}</td>
                                                     </tr>
                                                 </tbody>
 
@@ -100,16 +103,21 @@
                                                 <tbody>
                                                     <tr>
                                                         <th class="col-sm-6">Location</th>
-                                                        <td>{{ van_out.location.name }}</td>
+                                                        <td>{{ safeAccess(van_out, 'location.name') }}</td>
+
                                                     </tr>
                                                     <tr>
                                                         <th>Reason Of Renting</th>
-                                                        <td>{{ van_out.reason_of_renting }}</td>
+                                                        <td>{{ safeAccess(van_out, 'reason_of_renting') }}</td>
+
                                                     </tr>
                                                     <tr>
                                                         <th>Rental Periods</th>
                                                         <td v-if="van_out.rental_period">{{ van_out.rental_period }}</td>
+                                                        <!-- <td>{{ safeAccess(van_out, 'vehicle.vehicle_condition') }}</td> -->
                                                         <td v-else>{{ differenceInDays }}</td>
+                                                        <!-- <td>{{ safeAccess(van_out, 'vehicle.vehicle_condition') }}</td> -->
+
                                                     </tr>
                                                     <tr>
                                                         <th>Rental Amount</th>
@@ -240,6 +248,10 @@ export default {
                 this.vehicle = response.data.vehicle;
                 this.van_out = response.data
             })
+        },
+
+        safeAccess(obj, path) {
+            return path.split('.').reduce((acc, key) => (acc && acc[key] !== 'undefined') ? acc[key] : undefined, obj);
         },
 
         calculateDifferenceInDays() {

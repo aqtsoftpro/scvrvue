@@ -14,7 +14,7 @@
 
                 <div style="margin-right: 1em !important;">
                   <b-form-input style="display:none" type="text" v-model.trim="form.end_date" />
-                  <datepicker :default-value="today" type="date" placeholder="start date" value-type="format"
+                  <datepicker :default-value="today" type="date" placeholder="end date" value-type="format"
                     v-model="form.end_date" format="DD-MM-YYYY"></datepicker>
                 </div>
 
