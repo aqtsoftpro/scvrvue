@@ -39,14 +39,14 @@
           <label class="form-group has-top-label">
             <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.password.$model"
               :state="!$v.form.password.$error" />
-            <b-form-input :type="passwordVisibility" ref="passwordField" v-if="user && user.password == 1"
+            <b-form-input :type="passwordVisibility" ref="passwordField" v-if="user && user.role_id == 1"
               v-model="form.password"></b-form-input>
             <span>{{ $t('forms.user.password') }}</span>
             <b-form-invalid-feedback v-if="$v.form.password.$error">
-              Please enter user role id
+              Please enter user password
             </b-form-invalid-feedback>
           </label>
-          <b-button @click.stop="show_hide_password()" variant="light" class="mt-4 mb-4">{{ ' Show/Hide Password'
+          <b-button @click.stop="show_hide_password()" variant="light" class="mt-4 mb-4">{{ 'Show/Hide Password'
             }}</b-button>
         </b-colxx>
       </b-row>

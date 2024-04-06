@@ -89,6 +89,12 @@
                                                         <th>Vehicle Condition</th>
                                                         <td>{{ safeAccess(van_out, 'vehicle.vehicle_condition') }}</td>
                                                     </tr>
+                                                    <tr>
+                                                        <th>Vehicle Image</th>
+                                                        <td>
+                                                            <img :src="safeAccess(van_out, 'swap_with.picture')" alt="" width="200">
+                                                        </td>
+                                                    </tr>
                                                 </tbody>
 
                                             </table>
@@ -109,14 +115,12 @@
                                                     <tr>
                                                         <th>Reason Of Renting</th>
                                                         <td>{{ safeAccess(van_out, 'reason_of_renting') }}</td>
-
                                                     </tr>
 
-                                                    <tr v-if="van_out.reason_of_renting !== 'new'">
-                                                        <th>Reason Of Renting</th>
-                                                        <td>{{ safeAccess(van_out, 'reason_of_renting') }}</td>
-
-                                                    </tr>
+                                                    <!-- <tr v-if="van_out.reason_of_renting !== 'New'">
+                                                        <th>Swapped Vehicle</th>
+                                                        <td>{{ van_out }}</td>
+                                                    </tr> -->
                                                     <tr>
                                                         <th>Rental Periods</th>
                                                         <td v-if="van_out.rental_period">{{ van_out.rental_period }}</td>
@@ -144,30 +148,61 @@
                                     </b-row>
                                 </b-tab>
 
-                                <!-- <b-tab title="Maintenance">
+                                <b-tab v-if="van_out.swap_with" title="Swapped Detail">
                                     <b-row>
                                         <b-colxx sm="12">
-                                            <b-table hover :fields="fields" :items="vehicle.maintenance"></b-table>
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Registration / Plate Number</th>
+                                                        <td>{{ safeAccess(van_out, 'swap_with.reg_plate_number') }}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Status</th>
+                                                        <td>{{ safeAccess(van_out, 'swap_with.status.name') }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Type</th>
+                                                        <td>{{ safeAccess(van_out, 'swap_with.vehicle_type.name') }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Make</th>
+                                                        <td>{{ safeAccess(van_out, 'swap_with.make') }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Model</th>
+                                                        <td>{{ safeAccess(van_out, 'swap_with.model') }}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Mileage</th>
+                                                        <td>{{ safeAccess(van_out, 'swap_with.mileage') }}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Purchase Date</th>
+                                                        <td>{{ safeAccess(van_out, 'swap_with.purchase_date') }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Purchase Price</th>
+                                                        <td>{{ safeAccess(van_out, 'swap_with.purchase_price') }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Vehicle Condition</th>
+                                                        <td>{{ safeAccess(van_out, 'swap_with.vehicle_condition') }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Vehicle Image</th>
+                                                        <td>
+                                                            <img :src="safeAccess(van_out, 'swap_with.picture')" alt="" width="200">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </b-colxx>
                                     </b-row>
-                                    <b-row>
-                                        <b-colxx sm="12">
-                                            <div>Next Maintenance Mileage<span class="badge badge-primary"> {{
-                    (vehicle.next_maintenance_mileage) ?
-                        vehicle.next_maintenance_mileage : ' Not Set' }}</span> </div>
-                                            <div>Next Maintenance Due: <span class="badge badge-primary"> {{
-                    (vehicle.next_maintenance_due_date) ?
-                        vehicle.next_maintenance_due_date : ' Not Set' }}</span></div>
-                                            <div>Next Maintenance Service: <span class="badge badge-primary"> {{
-                                                    (vehicle.next_maintenance_service) ?
-                                                    vehicle.next_maintenance_service : ' Not Set' }}</span></div>
-                                            <div>Next Maintenance Comments: <span class="badge badge-primary"
-                                                    v-if="vehicle.next_maintenance_comments"> {{
-                                                    (vehicle.next_maintenance_comments) ?
-                                                    vehicle.next_maintenance_comments : '' }}</span></div>
-                                        </b-colxx>
-                                    </b-row>
-                                </b-tab> -->
+                                </b-tab>
                             </b-tabs>
                         </b-card>
                     </b-colxx>

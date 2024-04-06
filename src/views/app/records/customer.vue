@@ -158,7 +158,7 @@
             <b-form-input v-model="form.occupation"></b-form-input>
             <span>{{ $t('forms.customer.occupation') }}</span>
             <b-form-invalid-feedback v-if="$v.form.occupation.$error">
-              Please enter occupation number
+              Please enter occupation
             </b-form-invalid-feedback>
           </label>
         </b-colxx>

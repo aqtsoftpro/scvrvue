@@ -80,7 +80,7 @@
             <datepicker :bootstrap-styling="true" v-model="form.date" format="dd-MM-yyyy"></datepicker>
             <span>{{ $t('forms.toll.date') }}</span>
             <b-form-invalid-feedback v-if="$v.form.date.$error">
-              Please enter date
+              Please select date
             </b-form-invalid-feedback>
           </label>
         </b-colxx>
