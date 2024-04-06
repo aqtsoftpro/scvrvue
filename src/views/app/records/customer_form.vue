@@ -270,6 +270,7 @@ export default {
       customer_fields: ['first_name', 'last_name', 'email', 'phone_number', 'address', 'added', 'updated', 'actions']
     }
   },
+
   computed: {
     ...mapGetters(['currentUser']),
     rows() {

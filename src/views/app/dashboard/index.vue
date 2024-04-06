@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row>
+    <!-- <b-row>
       <b-colxx offset-md="4"  xs="12" md="4">
         <b-card class="van-stats mb-4" >
           <i  class=" iconsminds-arrow-up-2"></i>
@@ -11,7 +11,7 @@
           <b-badge class="ml-2 mr-2">{{ vanreturn_count }}</b-badge>
         </b-card>
       </b-colxx>
-    </b-row>
+    </b-row> -->
     <b-row>
       <b-colxx xs="12" md="4">
         <icon-card

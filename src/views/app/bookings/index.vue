@@ -47,8 +47,8 @@
             </td>
           </tr>
           <tr v-if="vanout.reason_of_renting != 'New'">
-            <td>Swap with:</td>
-            <td> {{ vanout }}</td>
+            <td>Swapped from:</td>
+            <td> {{ vanout.reg_number }}</td>
           </tr>
           <tr>
             <td>Rental Period:</td>
@@ -183,7 +183,7 @@
                           <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text" v-model.trim="$v.form.vehicle_id.$model"
                               :state="!$v.form.vehicle_id.$error" />
-                            <v-select v-model="form.vehicle_id" v-on:input="onVehicleSelect" label="name"
+                            <v-select v-model="form.vehicle_id" v-on:input="onVehicleSelect" label="name" :disabled="editing_mode"
                               :key="form.vehicle_id" :reduce="vehicle => vehicle.id"
                               :options="vehicle_options"></v-select>
                             <span>{{ $t('forms.vanout.vehicles') }}</span>
@@ -192,6 +192,7 @@
                           </label>
                         </b-form>
                       </b-colxx>
+
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
@@ -227,7 +228,7 @@
                           </label>
                           <label v-if="form.reason_of_renting == 'Swap'" class="form-group has-top-label">
                             <v-select v-model="form.swap_with" label="name" :reduce="swap_with => swap_with.id"
-                              aria-placeholder="Select Vehicle to swap with"
+                              v-on:input="onVehicleSelect" aria-placeholder="Select Vehicle to swap with"
                               :options="available_vehicle_options"></v-select>
                             <span>{{ $t('forms.vanout.swap_with') }}</span>
                           </label>
@@ -916,9 +917,6 @@ export default ({
     }
   },
   methods: {
-
-
-
     customer_created() {
       this.get_customer_options()
       this.$refs['create_customer_modal'].hide()
@@ -1056,6 +1054,7 @@ export default ({
       this.vanin = data
       this.$refs.vanInModal.show()
     },
+
     save_vanout_form() {
 
       this.$v.form.$touch();
@@ -1171,14 +1170,10 @@ export default ({
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
-      })
-        .then(response => {
+      }).then(response => {
           this.form = response.data
           this.booking_create_option = ({ id: item.id, name: item.reg_number })
           this.isProcessing = false
-
-
-
           var accessories_to_set = [];
           response.data.accessories.map((value, key) => {
             accessories_to_set.push(value.id)
@@ -1186,6 +1181,7 @@ export default ({
           console.log(accessories_to_set)
           this.form.accessories = accessories_to_set
 
+          this.onVehicleSelect(item.id)
         })
     },
 

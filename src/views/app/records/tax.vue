@@ -1,107 +1,139 @@
 <template>
   <div>
-  <b-form>
-  <b-row>
-    <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-      <label class="form-group has-top-label">
-        <v-select v-model="form.tax_type_id"
-          label="name"
-          :reduce="tax => tax.id"
-          :options="tax_type_options"
-        ></v-select>
-        <span>{{ $t('forms.tax.tax_type') }}</span>
-      </label>
-    </b-colxx>
-    <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-      <label class="form-group has-top-label">
-      <b-form-input v-model="form.amount" ></b-form-input>
-      <span>{{ $t('forms.tax.amount') }}</span>
-      </label>
-    </b-colxx>
-    <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-      <label class="form-group has-top-label">
-        <b-form-input style="display:none" type="text" v-model.trim="form.date" />
-          <datepicker
-            :bootstrap-styling="true"
-            v-model="form.date"
-            format="dd-MM-yyyy"
-          ></datepicker>
-        <span>{{ $t('forms.tax.date') }}</span>
-        <b-form-invalid-feedback>Purchase date is required!</b-form-invalid-feedback>
-      </label>
-    </b-colxx>
-  </b-row>
-  <b-row>
-    <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-        <label class="form-group has-top-label">
-        <!-- <b-form-input v-model="form.swap_with" :placeholder="$t('forms.vanout.swap_with')"></b-form-input> -->
-        <b-form-input v-model="form.filer_name" ></b-form-input>
-        <span>{{ $t('forms.tax.filer_name') }}</span>
-        </label>
-    </b-colxx>
-    <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-      <label class="form-group has-top-label">
-        <b-form-input v-model="form.filer_contact" ></b-form-input>
-        <span>{{ $t('forms.tax.filer_contact') }}</span>
-      </label>
-    </b-colxx>
-    <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-      <label class="form-group has-top-label">
-        <b-form-input v-model="form.accountant_fee" ></b-form-input>
-        <span>{{ $t('forms.tax.accountant_fee') }}</span>
-      </label>
-    </b-colxx>
-  </b-row>
-  <b-row>
-    <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-        <label class="form-group has-top-label">
-          <b-form-textarea v-model="form.comments" ></b-form-textarea>
-          <span>{{ $t('forms.tax.comments') }}</span>
-        </label>
-    </b-colxx>
-  </b-row>
-  <b-button v-if="!editing_mode"  @click.stop="save_tax_record"  variant="primary" class="mt-4 mb-4">{{ 'Save' }}</b-button>
-  <div v-else>
-    <b-button  @click.stop="update_tax_record(form.id)"  variant="secondary" class="mt-4 mb-4">{{ ' Update' }}</b-button>
-    <b-button  @click.stop="cancel_update_tax_record()"  variant="info" class="mt-4 mb-4"><i class="simple-icon-close"></i></b-button>
-  </div>
-  <div v-if="isProcessing">
-    <b-spinner variant="primary" label="Spinning" class="mb-1"></b-spinner>
-    <p class="text-primary">{{ processing_text }}</p>
-  </div>
-</b-form>
+    <b-form>
+      <b-row>
+        <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+          <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.tax_type_id.$model"
+              :state="!$v.form.tax_type_id.$error" />
+            <v-select v-model="form.tax_type_id" label="name" :reduce="tax => tax.id"
+              :options="tax_type_options"></v-select>
+            <span>{{ $t('forms.tax.tax_type') }}</span>
+            <b-form-invalid-feedback v-if="$v.form.tax_type_id.$error">
+              Please select tax type
+            </b-form-invalid-feedback>
+          </label>
+        </b-colxx>
+        <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+          <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.amount.$model"
+              :state="!$v.form.amount.$error" />
+            <b-form-input v-model="form.amount"></b-form-input>
+            <span>{{ $t('forms.tax.amount') }}</span>
+            <b-form-invalid-feedback v-if="$v.form.amount.$error">
+              Please enter amount 
+            </b-form-invalid-feedback>
+          </label>
+        </b-colxx>
+        <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+          <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.date.$model"
+              :state="!$v.form.date.$error" />
+            <!-- <b-form-input style="display:none" type="text" v-model.trim="form.date" /> -->
+            <datepicker :bootstrap-styling="true" v-model="form.date" format="dd-MM-yyyy"></datepicker>
+            <span>{{ $t('forms.tax.date') }}</span>
+            <b-form-invalid-feedback v-if="$v.form.date.$error">
+              Purchase date is required!
+            </b-form-invalid-feedback>
+          </label>
+        </b-colxx>
+      </b-row>
+      <b-row>
+        <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+          <label class="form-group has-top-label">
+            <!-- <b-form-input v-model="form.swap_with" :placeholder="$t('forms.vanout.swap_with')"></b-form-input> -->
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.filer_name.$model"
+              :state="!$v.form.filer_name.$error" />
+            <b-form-input v-model="form.filer_name"></b-form-input>
+            <span>{{ $t('forms.tax.filer_name') }}</span>
+            <b-form-invalid-feedback v-if="$v.form.filer_name.$error">
+              Please enter filer name
+            </b-form-invalid-feedback>
+          </label>
+        </b-colxx>
+        <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+          <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.filer_contact.$model"
+              :state="!$v.form.filer_contact.$error" />
+            <b-form-input v-model="form.filer_contact"></b-form-input>
+            <span>{{ $t('forms.tax.filer_contact') }}</span>
+            <b-form-invalid-feedback v-if="$v.form.filer_contact.$error">
+              Please enter filer phone number
+            </b-form-invalid-feedback>
+          </label>
+        </b-colxx>
+        <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+          <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.accountant_fee.$model"
+              :state="!$v.form.accountant_fee.$error" />
+            <b-form-input v-model="form.accountant_fee"></b-form-input>
+            <span>{{ $t('forms.tax.accountant_fee') }}</span>
+            <b-form-invalid-feedback v-if="$v.form.accountant_fee.$error">
+              Please enter accountant fee
+            </b-form-invalid-feedback>
+          </label>
+        </b-colxx>
+      </b-row>
+      <b-row>
+        <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+          <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.comments.$model"
+              :state="!$v.form.comments.$error" />
+            <b-form-textarea v-model="form.comments"></b-form-textarea>
+            <span>{{ $t('forms.tax.comments') }}</span>
+            <b-form-invalid-feedback v-if="$v.form.comments.$error">
+              Please enter comments
+            </b-form-invalid-feedback>
+          </label>
+        </b-colxx>
+      </b-row>
+      <b-button v-if="!editing_mode" @click.stop="save_tax_record" variant="primary" class="mt-4 mb-4">{{ 'Save'
+        }}</b-button>
+      <div v-else>
+        <b-button @click.stop="update_tax_record(form.id)" variant="secondary" class="mt-4 mb-4">{{ ' Update'
+          }}</b-button>
+        <b-button @click.stop="cancel_update_tax_record()" variant="info" class="mt-4 mb-4"><i
+            class="simple-icon-close"></i></b-button>
+      </div>
+      <div v-if="isProcessing">
+        <b-spinner variant="primary" label="Spinning" class="mb-1"></b-spinner>
+        <p class="text-primary">{{ processing_text }}</p>
+      </div>
+    </b-form>
 
-<b-table id="tax_table" :items="tax_records" :fields="tax_fields" current-page="currentPage" :per-page="perPage">
-  <template #cell(added)="data">
-    <ul class="menu">
-      <li class="menu-item">Added: {{ data.item.added }}</li>
-      <li class="menu-item">Updated: {{ data.item.updated }}</li>
-    </ul>
-  </template>
-  <template  #cell(actions)="data">
-    <!-- <b-button  @click.stop="view_vanout(data.item)"  variant="info"  size="xs" ><i class="simple-icon-eye"></i></b-button> -->
-    <b-button  @click.stop="edit_tax_record(data.item)"  variant="grey" size="xs" ><i class="simple-icon-pencil"  ></i></b-button>
-    <b-button v-if="user.role_id == 1"  @click.stop="delete_tax_record(data.item)"  variant="grey" size="xs" ><i class="simple-icon-trash"></i></b-button>
-  </template>
-</b-table>
-<p class="mt-3">Current Page: {{ currentPage }}</p>
-<b-pagination
-      align="center"
-      size="md"
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      aria-controls="tax-table"
-    ></b-pagination>
-</div>
+    <b-table id="tax_table" :items="tax_records" :fields="tax_fields" current-page="currentPage" :per-page="perPage">
+      <template #cell(added)="data">
+        <ul class="menu">
+          <li class="menu-item">Added: {{ data.item.added }}</li>
+          <li class="menu-item">Updated: {{ data.item.updated }}</li>
+        </ul>
+      </template>
+      <template #cell(actions)="data">
+        <!-- <b-button  @click.stop="view_vanout(data.item)"  variant="info"  size="xs" ><i class="simple-icon-eye"></i></b-button> -->
+        <b-button @click.stop="edit_tax_record(data.item)" variant="grey" size="xs"><i
+            class="simple-icon-pencil"></i></b-button>
+        <b-button v-if="user.role_id == 1" @click.stop="delete_tax_record(data.item)" variant="grey" size="xs"><i
+            class="simple-icon-trash"></i></b-button>
+      </template>
+    </b-table>
+    <p class="mt-3">Current Page: {{ currentPage }}</p>
+    <b-pagination align="center" size="md" v-model="currentPage" :total-rows="rows" :per-page="perPage"
+      aria-controls="tax-table"></b-pagination>
+  </div>
 </template>
 <script>
+import {
+  validationMixin
+} from "vuelidate";
+const {
+  required
+} = require("vuelidate/lib/validators");
 
 import axios from 'axios'
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import Datepicker from "vuejs-datepicker";
-import {apiUrl} from "../../../constants/config.js";
+import { apiUrl } from "../../../constants/config.js";
 import { mapGetters } from 'vuex';
 
 export default {
@@ -111,7 +143,7 @@ export default {
   },
   data() {
     return {
-      isProcessing : true,
+      isProcessing: true,
       processing_text: 'Lading ..',
       currentPage: 1,
       perPage: 10,
@@ -126,10 +158,37 @@ export default {
         filer_name: '',
         filer_contact: '',
         accountant_fee: '',
-        comments:  '',
+        comments: '',
       },
       tax_fields: ['type', 'amount', 'date', 'filer_name', 'filer_contact', 'accountant_fee', 'comments', 'added', 'actions'],
     }
+  },
+
+  mixins: [validationMixin],
+  validations: {
+    form: {
+      tax_type_id: {
+        required
+      },
+      amount: {
+        required
+      },
+      date: {
+        required
+      },
+      filer_name: {
+        required
+      },
+      filer_contact: {
+        required
+      },
+      accountant_fee: {
+        required
+      },
+      comments: {
+        required
+      },
+    },
   },
 
   computed: {
@@ -145,11 +204,11 @@ export default {
       this.processing_text = 'Loading ..';
       this.isProcessing = true
       axios.get(
-        apiUrl + '/tax_record',{
-        headers:{
+        apiUrl + '/tax_record', {
+        headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
-        }
+      }
       ).then(response => {
         {
           //parse json data
@@ -158,20 +217,25 @@ export default {
         }
       })
     },
-    get_tax_type_options(){
+    get_tax_type_options() {
 
       axios.get(
-        apiUrl + '/tax_type_options',{
-          headers:{
+        apiUrl + '/tax_type_options', {
+        headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
         }
+      }
       ).then(response => {
-          //parse json data
-          this.tax_type_options = response.data
-        })
+        //parse json data
+        this.tax_type_options = response.data
+      })
     },
-    save_tax_record(){
+    save_tax_record() {
+
+      this.$v.form.$touch();
+      if (this.$v.form.$anyError == true) {
+        return false;
+      }
 
       this.processing_text = 'Saving Record ...';
       this.isProcessing = true
@@ -191,32 +255,32 @@ export default {
       // } else if (this.form.comments == ''){
       //   this.$notify('error filled', 'Please fill the form!', 'Add some comments!',{ duration: 3000, permanent: false });
       // } else {
-          axios.post(
-          apiUrl + '/tax_record',this.form,{
-            headers:{
-              'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-          }
-        ).then(response => {
-          //parse json data
-          this.get_tax_records()
-          this.reset_form()
-          this.$notify(`${response.data.status} filled`, response.data.status, response.data.message,{ duration: 3000, permanent: false });
-          this.isProcessing = false
-        }).catch(error => {
-          this.$notify('error filled', 'Error', error.response.data.message,{ duration: 3000, permanent: false });
-          this.isProcessing = false
-        })
+      axios.post(
+        apiUrl + '/tax_record', this.form, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      }
+      ).then(response => {
+        //parse json data
+        this.get_tax_records()
+        this.reset_form()
+        this.$notify(`${response.data.status} filled`, response.data.status, response.data.message, { duration: 3000, permanent: false });
+        this.isProcessing = false
+      }).catch(error => {
+        this.$notify('error filled', 'Error', error.response.data.message, { duration: 3000, permanent: false });
+        this.isProcessing = false
+      })
       //}
     },
-    edit_tax_record(item){
+    edit_tax_record(item) {
       this.editing_mode = true
       axios.get(
-        apiUrl + '/tax_record/'+item.id,{
-          headers:{
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
+        apiUrl + '/tax_record/' + item.id, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
+      }
       ).then(response => {
         //parse json data
         this.form = response.data
@@ -224,57 +288,57 @@ export default {
         //this.reset_form()
       })
     },
-    update_tax_record(id){
+    update_tax_record(id) {
 
       this.processing_text = 'Updating Data ...'
       this.isProcessing = true
 
       axios.put(
-        apiUrl + '/tax_record/'+id,this.form,{
-          headers:{
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
+        apiUrl + '/tax_record/' + id, this.form, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
+      }
       ).then(response => {
         //parse json data
         this.get_tax_records()
         this.editing_mode = false
         this.reset_form()
-        this.$notify(`success filled`, 'Success', response.data.message,{ duration: 3000, permanent: false });
+        this.$notify(`success filled`, 'Success', response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
       }).catch(error => {
-        this.$notify('error filled', 'Error', error.response.data.message,{ duration: 3000, permanent: false });
+        this.$notify('error filled', 'Error', error.response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
       })
     },
 
-    delete_tax_record(item){
+    delete_tax_record(item) {
 
       this.processing_text = 'Deleting Data ...'
       this.isProcissing = true
 
       axios.delete(
-        apiUrl + '/tax_record/'+item.id,{
-          headers:{
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
+        apiUrl + '/tax_record/' + item.id, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
+      }
       ).then(response => {
         //parse json data
         this.get_tax_records()
-        this.$notify('success filled', 'Success', response.data.message,{ duration: 3000, permanent: false });
+        this.$notify('success filled', 'Success', response.data.message, { duration: 3000, permanent: false });
         this.isProcissing = false
       }).catch(error => {
-        this.$notify('error filled', 'Error', erorr.response.data.message,{ duration: 3000, permanent: false });
+        this.$notify('error filled', 'Error', erorr.response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
       })
     },
 
-    cancel_update_tax_record(){
+    cancel_update_tax_record() {
       this.editing_mode = false
       this.reset_form()
     },
-    reset_form(){
+    reset_form() {
       this.form = {
         tax_type_id: '',
         amount: '',
@@ -282,16 +346,16 @@ export default {
         filer_name: '',
         filer_contact: '',
         accountant_fee: '',
-        comments:  '',
+        comments: '',
       }
     }
   },
 
   mounted() {
 
-    if(localStorage.getItem('token') !== null) {
+    if (localStorage.getItem('token') !== null) {
       this.$store.commit('setUser', JSON.parse(localStorage.getItem('user')));
-    } else{
+    } else {
       this.$router.push('/user/login');
     }
     this.get_tax_records()
@@ -299,10 +363,9 @@ export default {
   },
 
   watch: {
-    currentUser(newValue){
+    currentUser(newValue) {
       this.user = this.currentUser
     }
   }
 }
 </script>
-
