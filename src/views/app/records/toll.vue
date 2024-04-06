@@ -92,7 +92,7 @@
               :reduce="vehicle => vehicle.reg_plate_number" :options="vehicle_options"></v-select>
             <span>{{ $t('forms.toll.vehicle_reg_number') }}</span>
             <b-form-invalid-feedback v-if="$v.form.reg_plate_number.$error">
-              Please enter registration
+              Please select registration
             </b-form-invalid-feedback>
           </label>
         </b-colxx>

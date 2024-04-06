@@ -223,7 +223,7 @@
                             <v-select v-model="form.reason_of_renting" aria-placeholder="New / Swap"
                               :options="swap_options"></v-select>
                             <span>{{ $t('forms.vanout.reason_of_renting') }}</span>
-                            <b-form-invalid-feedback v-if="$v.form.reason_of_renting.$error"> Please reason of
+                            <b-form-invalid-feedback v-if="$v.form.reason_of_renting.$error"> Please select reason of
                               renting!</b-form-invalid-feedback>
                           </label>
                           <label v-if="form.reason_of_renting == 'Swap'" class="form-group has-top-label">
@@ -305,12 +305,17 @@
                       </b-colxx>
 
                       <b-colxx xxs="12" xs="12" md="6" xxl="4" class="mb-3">
-                        <label>Rental Periods</label>
+                        <label>Rental Periods
+                          <b-form-input v-model="$v.form.van_out_date.$model"
+                              :state="!$v.form.van_out_date.$error"></b-form-input>
+                        </label>
                         <div class="d-flex">
                           <div style="margin-right: 1em;">
                             <datepicker :default-value="today" type="datetime" v-model="$v.form.van_out_date.$model"
                               :state="!$v.form.van_out_date.$error" :placeholder="$t('forms.vanout.van_out_date_time')"
                               value-type="format" format="DD-MM-YYYY h:mm"></datepicker>
+                            <b-form-invalid-feedback v-if="$v.form.van_out_date.$error"> Please select van out date
+                            </b-form-invalid-feedback>
                           </div>
                           <div class="d-flex">
                             <datepicker type="datetime" v-model="form.due_return" placeholder="Vehical Due Back"
