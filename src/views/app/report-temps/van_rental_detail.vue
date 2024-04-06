@@ -112,7 +112,7 @@
 
                                                     </tr>
 
-                                                    <tr v-if="van_out.rental_period">
+                                                    <tr v-if="van_out.reason_of_renting !== 'new'">
                                                         <th>Reason Of Renting</th>
                                                         <td>{{ safeAccess(van_out, 'reason_of_renting') }}</td>
 
