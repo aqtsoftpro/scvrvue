@@ -1,71 +1,91 @@
 <template>
   <div>
-  <b-form>
-  <b-row>
-    <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-      <label class="form-group has-top-label">
-      <b-form-input v-model="form.name" ></b-form-input>
-      <span>{{ $t('forms.user.name') }}</span>
-    </label>
-    </b-colxx>
-    <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-      <label class="form-group has-top-label">
-      <b-form-input v-model="form.email" ></b-form-input>
-      <span>{{ $t('forms.user.email') }}</span>
-      </label>
-    </b-colxx>
-    <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-      <label class="form-group has-top-label">
-        <v-select v-model="form.role_id"
-          :reduce="role => role.id"
-          label="name"
-          :options="role_options"
-        ></v-select>
-        <span>{{ $t('forms.user.role') }}</span>
-      </label>
-    </b-colxx>
-    <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-      <label class="form-group has-top-label">
-        <b-form-input :type="passwordVisibility" ref="passwordField" v-if="user && user.role_id == 1" v-model="form.password" ></b-form-input>
-        <span>{{ $t('forms.user.password') }}</span>
-      </label>
-      <b-button  @click.stop="show_hide_password()"  variant="light" class="mt-4 mb-4">{{ ' Show/Hide Password' }}</b-button>
-    </b-colxx>
-  </b-row>
-  <b-button v-if="!editing_mode"  @click.stop="save_user_record"  variant="primary" class="mt-4 mb-4">{{ 'Save' }}</b-button>
-  <div v-else>
-    <b-button  @click.stop="update_user_record(user_id)"  variant="info" class="mt-4 mb-4">{{ ' Update' }}</b-button>
-    <b-button  @click.stop="cancel_update_user_record()"  variant="danger" class="mt-4 mb-4"><i class="simple-icon-close"></i></b-button>
-  </div>
-</b-form>
-<datatable title="User Records" :fields="fields" :data="user_records" :edit="edit_user_record" :del="delete_user_record" />
-<!-- <b-table id="user-table" :items="user_records" :fields="tax_fields" :per-page="perPage" :current-page="currentPage">
+    <b-form>
+      <b-row>
+        <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
+          <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.name.$model"
+              :state="!$v.form.name.$error" />
+            <b-form-input v-model="form.name"></b-form-input>
+            <span>{{ $t('forms.user.name') }}</span>
+            <b-form-invalid-feedback v-if="$v.form.name.$error">
+              Please enter user name
+            </b-form-invalid-feedback>
+          </label>
+        </b-colxx>
+        <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
+          <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.email.$model"
+              :state="!$v.form.email.$error" />
+            <b-form-input v-model="form.email"></b-form-input>
+            <span>{{ $t('forms.user.email') }}</span>
+            <b-form-invalid-feedback v-if="$v.form.email.$error">
+              Please enter user email
+            </b-form-invalid-feedback>
+          </label>
+        </b-colxx>
+        <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
+          <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.role_id.$model"
+              :state="!$v.form.role_id.$error" />
+            <v-select v-model="form.role_id" :reduce="role => role.id" label="name" :options="role_options"></v-select>
+            <span>{{ $t('forms.user.role') }}</span>
+            <b-form-invalid-feedback v-if="$v.form.role_id.$error">
+              Please enter user role id
+            </b-form-invalid-feedback>
+          </label>
+        </b-colxx>
+        <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
+          <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.password.$model"
+              :state="!$v.form.password.$error" />
+            <b-form-input :type="passwordVisibility" ref="passwordField" v-if="user && user.password == 1"
+              v-model="form.password"></b-form-input>
+            <span>{{ $t('forms.user.password') }}</span>
+            <b-form-invalid-feedback v-if="$v.form.password.$error">
+              Please enter user role id
+            </b-form-invalid-feedback>
+          </label>
+          <b-button @click.stop="show_hide_password()" variant="light" class="mt-4 mb-4">{{ ' Show/Hide Password'
+            }}</b-button>
+        </b-colxx>
+      </b-row>
+      <b-button v-if="!editing_mode" @click.stop="save_user_record" variant="primary" class="mt-4 mb-4">{{ 'Save'
+        }}</b-button>
+      <div v-else>
+        <b-button @click.stop="update_user_record(user_id)" variant="info" class="mt-4 mb-4">{{ ' Update' }}</b-button>
+        <b-button @click.stop="cancel_update_user_record()" variant="danger" class="mt-4 mb-4"><i
+            class="simple-icon-close"></i></b-button>
+      </div>
+    </b-form>
+    <datatable title="User Records" :fields="fields" :data="user_records" :edit="edit_user_record"
+      :del="delete_user_record" />
+    <!-- <b-table id="user-table" :items="user_records" :fields="tax_fields" :per-page="perPage" :current-page="currentPage">
   <template  #cell(role_name)="data">
     <div class="badge badge-light">{{data.value}}</div>
   </template>
-  <template  #cell(actions)="data">
+<template #cell(actions)="data">
     <b-button  @click.stop="edit_user_record(data.item)"  variant="grey" size="xs" ><i class="simple-icon-pencil"></i></b-button>
     <b-button v-if="user.role_id == 1"  @click.stop="delete_user_record(data.item)"  variant="grey" size="xs" ><i class="simple-icon-trash"></i></b-button>
   </template>
 </b-table>
 <p class="mt-3">Current Page: {{ currentPage }}</p>
-<b-pagination
-      align="center"
-      size="md"
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      aria-controls="user-table"
-></b-pagination> -->
-</div>
+<b-pagination align="center" size="md" v-model="currentPage" :total-rows="rows" :per-page="perPage"
+  aria-controls="user-table"></b-pagination> -->
+  </div>
 </template>
 <script>
-
+import {
+  validationMixin
+} from "vuelidate";
+const {
+  required
+} = require("vuelidate/lib/validators");
 import axios from 'axios'
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import Datepicker from "vuejs-datepicker";
-import {apiUrl} from "../../../constants/config.js";
+import { apiUrl } from "../../../constants/config.js";
 import { mapGetters } from 'vuex';
 import datatable from './datatable.vue';
 
@@ -93,7 +113,7 @@ export default {
         password: null,
       },
       fields: [
-      {
+        {
           name: "name",
           title: 'Name',
           sortField: "name",
@@ -118,7 +138,7 @@ export default {
           width: "5%"
         },
         {
-        name: "__slot:actions",
+          name: "__slot:actions",
           title: "Actions",
           titleClass: "center aligned text-right",
           dataClass: "center aligned text-right",
@@ -127,15 +147,33 @@ export default {
     }
   },
 
+  mixins: [validationMixin],
+  validations: {
+    form: {
+      name: {
+        required
+      },
+      email: {
+        required
+      },
+      role_id: {
+        required
+      },
+      password: {
+        required
+      },
+    },
+  },
+
   computed: {
     ...mapGetters(['currentUser', 'roleOptions']),
-    rows(){
-      return  this.user_records.length
+    rows() {
+      return this.user_records.length
     }
   },
   methods: {
-    show_hide_password(){
-      if(this.passwordVisibility == 'password'){
+    show_hide_password() {
+      if (this.passwordVisibility == 'password') {
         this.passwordVisibility = 'text';
       } else {
         this.passwordVisibility = 'password';
@@ -144,11 +182,11 @@ export default {
     get_user_records() {
       //Tax Records
       axios.get(
-        apiUrl + '/users',{
-        headers:{
+        apiUrl + '/users', {
+        headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
-        }
+      }
       ).then(response => {
         {
           //parse json data
@@ -157,40 +195,45 @@ export default {
       })
     },
 
-    save_user_record(){
+    save_user_record() {
 
-      if(this.form.name == null){
-        this.$notify('error filled', 'Please fill the form!', 'Name is required!',{ duration: 3000, permanent: false });
-      }else if(this.form.email == null){
-        this.$notify('error filled', 'Please fill the form!', 'Email is required!',{ duration: 3000, permanent: false });
-      }else if(this.form.role_id == 'Select Role'){
-        this.$notify('error filled', 'Please fill the form!', 'Role is required!',{ duration: 3000, permanent: false });
-      }else if (this.form.password == null){
-        this.$notify('error filled', 'Please fill the form!', 'Password is required!',{ duration: 3000, permanent: false });
+      this.$v.form.$touch();
+      if (this.$v.form.$anyError == true) {
+        return false;
+      }
+
+      if (this.form.name == null) {
+        this.$notify('error filled', 'Please fill the form!', 'Name is required!', { duration: 3000, permanent: false });
+      } else if (this.form.email == null) {
+        this.$notify('error filled', 'Please fill the form!', 'Email is required!', { duration: 3000, permanent: false });
+      } else if (this.form.role_id == 'Select Role') {
+        this.$notify('error filled', 'Please fill the form!', 'Role is required!', { duration: 3000, permanent: false });
+      } else if (this.form.password == null) {
+        this.$notify('error filled', 'Please fill the form!', 'Password is required!', { duration: 3000, permanent: false });
       } else {
-          axios.post(
-          apiUrl + '/users',this.form,{
-            headers:{
-              'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
+        axios.post(
+          apiUrl + '/users', this.form, {
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
+        }
         ).then(response => {
           //parse json data
           this.get_user_records()
           this.reset_form()
-          this.$notify('success filled', 'Suceess!', 'User has been created!',{ duration: 3000, permanent: false });
+          this.$notify('success filled', 'Suceess!', 'User has been created!', { duration: 3000, permanent: false });
         })
       }
 
     },
-    edit_user_record(item){
+    edit_user_record(item) {
       this.editing_mode = true
       axios.get(
-        apiUrl + '/users/'+item.id,{
-          headers:{
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
+        apiUrl + '/users/' + item.id, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
+      }
       ).then(response => {
         //parse json data
         this.form.name = response.data.name
@@ -201,42 +244,42 @@ export default {
         // this.reset_form()
       })
     },
-    update_user_record(id){
+    update_user_record(id) {
       axios.put(
-        apiUrl + '/users/'+id,this.form,{
-          headers:{
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
+        apiUrl + '/users/' + id, this.form, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
+      }
       ).then(response => {
         //parse json data
         this.get_user_records()
         this.editing_mode = false
         this.reset_form()
-        this.$notify('success filled', 'Suceess!', 'User has been updated!',{ duration: 3000, permanent: false });
+        this.$notify('success filled', 'Suceess!', 'User has been updated!', { duration: 3000, permanent: false });
       })
     },
 
-    delete_user_record(item){
+    delete_user_record(item) {
       axios.delete(
-        apiUrl + '/users/'+item.id,{
-          headers:{
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
+        apiUrl + '/users/' + item.id, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
+      }
       ).then(response => {
         //parse json data
 
         this.get_user_records()
-        this.$notify('success filled', 'Suceess!', 'User has been deleted!',{ duration: 3000, permanent: false });
+        this.$notify('success filled', 'Suceess!', 'User has been deleted!', { duration: 3000, permanent: false });
       })
     },
 
-    cancel_update_user_record(){
+    cancel_update_user_record() {
       this.editing_mode = false
       this.reset_form()
     },
-    reset_form(){
+    reset_form() {
       this.form = {
         name: null,
         email: null,
@@ -264,9 +307,9 @@ export default {
     //this.get_role_options()
     this.$store.dispatch("get_role_options");
 
-    if(localStorage.getItem('token') !== null) {
+    if (localStorage.getItem('token') !== null) {
       this.$store.commit('setUser', JSON.parse(localStorage.getItem('user')));
-    } else{
+    } else {
       this.$router.push('/user/login');
     }
     this.get_user_records()
@@ -275,11 +318,10 @@ export default {
     currentUser() {
       this.user = this.currentUser
     },
-    roleOptions(val){
+    roleOptions(val) {
       this.role_options = val
       console.log('val', this.roleOptions)
     }
   }
 }
 </script>
-

@@ -5,8 +5,13 @@
     <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
         <!-- <b-form-input v-model="form.swap_with" :placeholder="$t('forms.vanout.swap_with')"></b-form-input> -->
         <label class="form-group has-top-label">
+          <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.name.$model"
+              :state="!$v.form.name.$error" />
           <b-form-input v-model="form.name" ></b-form-input>
           <span>{{ $t('forms.role.name') }}</span>
+          <b-form-invalid-feedback v-if="$v.form.name.$error">
+              Please enter role name
+            </b-form-invalid-feedback>
         </label>
     </b-colxx>
   </b-row>
@@ -40,6 +45,12 @@
 </div>
 </template>
 <script>
+import {
+  validationMixin
+} from "vuelidate";
+const {
+  required
+} = require("vuelidate/lib/validators");
 
 import axios from 'axios'
 import vSelect from "vue-select";
@@ -86,6 +97,16 @@ export default {
     }
   },
 
+  
+  mixins: [validationMixin],
+  validations: {
+    form: {
+      name: {
+        required
+      },
+    },
+  },
+
   computed: {
     ...mapGetters(['currentUser']),
     rows() {
@@ -110,6 +131,10 @@ export default {
       })
     },
     save_role(){
+      this.$v.form.$touch();
+      if (this.$v.form.$anyError == true) {
+        return false;
+      }
       if(this.form.name == null){
         this.$notify('error filled', 'Please fill the form!', 'Role name is required!',{ duration: 3000, permanent: false });
       } else{

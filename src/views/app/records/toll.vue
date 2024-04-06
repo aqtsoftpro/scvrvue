@@ -92,7 +92,7 @@
               :reduce="vehicle => vehicle.reg_plate_number" :options="vehicle_options"></v-select>
             <span>{{ $t('forms.toll.vehicle_reg_number') }}</span>
             <b-form-invalid-feedback v-if="$v.form.reg_plate_number.$error">
-              Please enter registration plate number
+              Please enter registration
             </b-form-invalid-feedback>
           </label>
         </b-colxx>
@@ -125,7 +125,7 @@
               :options="payment_status_options"></v-select>
             <span>{{ $t('forms.toll.payment_status') }}</span>
             <b-form-invalid-feedback v-if="$v.form.payment_status.$error">
-              Please enter payment status
+              Please select payment status
             </b-form-invalid-feedback>
           </label>
         </b-colxx>

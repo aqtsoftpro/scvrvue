@@ -33,7 +33,7 @@
             <datepicker :bootstrap-styling="true" v-model="form.date" format="dd-MM-yyyy"></datepicker>
             <span>{{ $t('forms.tax.date') }}</span>
             <b-form-invalid-feedback v-if="$v.form.date.$error">
-              Purchase date is required!
+              Purchase select date
             </b-form-invalid-feedback>
           </label>
         </b-colxx>

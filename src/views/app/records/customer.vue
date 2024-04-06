@@ -126,7 +126,7 @@
             <b-form-input v-model="form.address"></b-form-input>
             <span>{{ $t('forms.customer.address') }}</span>
             <b-form-invalid-feedback v-if="$v.form.address.$error">
-              Please enter address number
+              Please enter address
             </b-form-invalid-feedback>
           </label>
         </b-colxx>
@@ -147,7 +147,7 @@
               aria-placeholder="Select Gender" :options="gender_options"></v-select>
             <span>{{ $t('forms.customer.gender') }}</span>
             <b-form-invalid-feedback v-if="$v.form.gender.$error">
-              Please enter gender number
+              Please select gender
             </b-form-invalid-feedback>
           </label>
         </b-colxx>
@@ -169,7 +169,7 @@
             <b-form-input v-model="form.driver_licence_number"></b-form-input>
             <span>{{ $t('forms.customer.driver_licence_number') }}</span>
             <b-form-invalid-feedback v-if="$v.form.driver_licence_number.$error">
-              Please enter driver license number
+              Please enter driving license
             </b-form-invalid-feedback>
           </label>
         </b-colxx>

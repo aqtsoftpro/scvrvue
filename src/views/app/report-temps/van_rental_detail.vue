@@ -111,6 +111,12 @@
                                                         <td>{{ safeAccess(van_out, 'reason_of_renting') }}</td>
 
                                                     </tr>
+
+                                                    <tr v-if="van_out.rental_period">
+                                                        <th>Reason Of Renting</th>
+                                                        <td>{{ safeAccess(van_out, 'reason_of_renting') }}</td>
+
+                                                    </tr>
                                                     <tr>
                                                         <th>Rental Periods</th>
                                                         <td v-if="van_out.rental_period">{{ van_out.rental_period }}</td>

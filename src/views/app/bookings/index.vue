@@ -47,7 +47,7 @@
             </td>
           </tr>
           <tr v-if="vanout.reason_of_renting != 'New'">
-            <td>Swapped from:</td>
+            <td>Swapped with:</td>
             <td> {{ vanout.reg_number }}</td>
           </tr>
           <tr>
