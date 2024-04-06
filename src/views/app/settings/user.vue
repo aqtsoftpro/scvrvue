@@ -31,7 +31,7 @@
             <v-select v-model="form.role_id" :reduce="role => role.id" label="name" :options="role_options"></v-select>
             <span>{{ $t('forms.user.role') }}</span>
             <b-form-invalid-feedback v-if="$v.form.role_id.$error">
-              Please enter user role id
+              Please enter user role
             </b-form-invalid-feedback>
           </label>
         </b-colxx>
