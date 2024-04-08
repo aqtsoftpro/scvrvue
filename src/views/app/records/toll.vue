@@ -272,7 +272,7 @@ export default {
         'due_date': null,
         'trip_cost': null,
       },
-      toll_fields: ['id', 'toll_number', 'date', 'reg_plate_number', 'customer', 'payment_status', 'added', 'actions'],
+      toll_fields: ['id', 'date', 'due_date', 'reg_plate_number', 'toll_cost', 'customer', 'payment_status', 'added', 'actions'],
     }
   },
 
