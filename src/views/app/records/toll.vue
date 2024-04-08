@@ -75,13 +75,24 @@
         </b-colxx>
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
           <label class="form-group has-top-label">
-            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.date.$model"
-              :state="!$v.form.date.$error" />
+            <!-- <b-form-input  type="date" style="display: none;" v-model.trim="$v.form.date.$model"
+              :state="!$v.form.date.$error" /> -->
             <datepicker :bootstrap-styling="true" v-model="form.date" format="dd-MM-yyyy"></datepicker>
             <span>{{ $t('forms.toll.date') }}</span>
-            <b-form-invalid-feedback v-if="$v.form.date.$error">
+            <!-- <b-form-invalid-feedback v-if="$v.form.date.$error">
               Please select date
-            </b-form-invalid-feedback>
+            </b-form-invalid-feedback> -->
+          </label>
+        </b-colxx>
+        <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
+          <label class="form-group has-top-label">
+            <!-- <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.due_date.$model"
+              :state="!$v.form.due_date.$error" /> -->
+            <datepicker :bootstrap-styling="true" v-model="form.due_date" format="dd-MM-yyyy"></datepicker>
+            <span>Due date</span>
+            <!-- <b-form-invalid-feedback v-if="$v.form.due_date.$error">
+              Please select due date
+            </b-form-invalid-feedback> -->
           </label>
         </b-colxx>
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
@@ -96,6 +107,8 @@
             </b-form-invalid-feedback>
           </label>
         </b-colxx>
+      </b-row>
+      <b-row v-if="customer_drop_visible == true">
         <b-colxx xxs="12" xs="3" lg="3">
           <b-form> <!-- IMage uplaod -->
             <div>
@@ -105,8 +118,6 @@
             </div>
           </b-form>
         </b-colxx>
-      </b-row>
-      <b-row v-if="customer_drop_visible == true">
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
           <label class="form-group has-top-label">
             <v-select v-model="form.customer_id" label="name" :reduce="customer => customer.id"
@@ -115,8 +126,7 @@
             <span>{{ $t('forms.toll.customer') }}</span>
           </label>
         </b-colxx>
-      </b-row>
-      <b-row>
+
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
           <label class="form-group has-top-label">
             <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.payment_status.$model"
@@ -126,6 +136,28 @@
             <span>{{ $t('forms.toll.payment_status') }}</span>
             <b-form-invalid-feedback v-if="$v.form.payment_status.$error">
               Please select payment status
+            </b-form-invalid-feedback>
+          </label>
+        </b-colxx>
+        <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
+          <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.trip_cost.$model"
+              :state="!$v.form.trip_cost.$error" />
+            <b-form-input v-model="form.trip_cost"></b-form-input>
+            <span> Toll Cost</span>
+            <b-form-invalid-feedback v-if="$v.form.trip_cost.$error">
+              Please enter toll cost
+            </b-form-invalid-feedback>
+          </label>
+        </b-colxx>
+        <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
+          <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.details.$model"
+              :state="!$v.form.details.$error" />
+            <b-form-textarea v-model="form.details"></b-form-textarea>
+            <span> Detail </span>
+            <b-form-invalid-feedback v-if="$v.form.details.$error">
+              Please enter detail
             </b-form-invalid-feedback>
           </label>
         </b-colxx>
@@ -206,7 +238,7 @@ import { mapGetters } from 'vuex';
 export default {
   components: {
     'v-select': vSelect,
-    Datepicker
+    'datepicker': Datepicker
   },
   data() {
     return {
@@ -214,7 +246,7 @@ export default {
       current_toll_record: [],
       booking_data: [],
       is_searching: false,
-      customer_drop_visible: false,
+      customer_drop_visible: true,
       isProcessing: false,
       processing_text: 'Saving Data ..',
       preview: null,
@@ -231,11 +263,14 @@ export default {
       ],
       form: {
         'toll_number': null,
-        'date': null,
+        'date': '',
         'reg_plate_number': null,
         'toll_image': null,
         'customer_id': null,
         'payment_status': null,
+        'details': null,
+        'due_date': null,
+        'trip_cost': null,
       },
       toll_fields: ['id', 'toll_number', 'date', 'reg_plate_number', 'customer', 'payment_status', 'added', 'actions'],
     }
@@ -260,6 +295,15 @@ export default {
         required
       },
       'payment_status': {
+        required
+      },
+      'details': {
+        required
+      },
+      'due_date': {
+        required
+      },
+      'trip_cost': {
         required
       },
     },
@@ -383,6 +427,7 @@ export default {
       })
     },
     save_toll_record() {
+      // console.log('this is just test');
       this.$v.form.$touch();
       if (this.$v.form.$anyError == true) {
         return false;
@@ -401,7 +446,6 @@ export default {
         this.current_toll_record = response.data.data
         //parse json data
         this.get_toll_records()
-        this.reset_form()
         this.$notify('success filled', 'Success!', response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
         this.form.toll_image = ''
@@ -410,7 +454,7 @@ export default {
         this.$refs['booking_search_modal'].show();
         //console.log(response.data.data.date, response.data.data.reg_plate_number);
         //this.search_booking_records(response.data.data.date, response.data.data.reg_plate_number)
-
+        this.reset_form()
       })
         .catch(error => {
           console.log(error);
