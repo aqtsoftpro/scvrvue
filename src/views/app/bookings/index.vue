@@ -265,7 +265,7 @@
 
                       <b-colxx xxs="12" xs="6" lg="4" class="mb-3" ref="demage_text_column">
                         <label class="form-group has-top-label">
-                          <b-form-textarea v-model="form.demage_text"></b-form-textarea>
+                          <b-form-textarea v-model="form.condition"></b-form-textarea>
                           <span>{{ $t('forms.vanin.demage_text') }}</span>
                         </label>
                       </b-colxx>
@@ -306,8 +306,8 @@
 
                       <b-colxx xxs="12" xs="12" md="6" xxl="4" class="mb-3">
                         <label>Rental Periods
-                          <b-form-input v-model="$v.form.van_out_date.$model"
-                              :state="!$v.form.van_out_date.$error"></b-form-input>
+                          <!-- <b-form-input v-model="$v.form.van_out_date.$model"
+                              :state="!$v.form.van_out_date.$error"></b-form-input> -->
                         </label>
                         <div class="d-flex">
                           <div style="margin-right: 1em;">
@@ -687,6 +687,7 @@ export default ({
         payment_mode: null,
         demage_pics: null,
         demage_video: null,
+        condition: '',
       },
       VanoutSearchColumns: ["reg_number"],
       VanReturnSearchColumns: ["vehicle"],
@@ -1176,6 +1177,7 @@ export default ({
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
+          console.log(response.data);
           this.form = response.data
           this.booking_create_option = ({ id: item.id, name: item.reg_number })
           this.isProcessing = false

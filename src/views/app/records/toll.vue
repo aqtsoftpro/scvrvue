@@ -62,7 +62,7 @@
   </b-row> -->
 
       <b-row class="mt-3">
-        <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
+        <!-- <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
           <label class="form-group has-top-label">
             <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.toll_number.$model"
               :state="!$v.form.toll_number.$error" />
@@ -72,13 +72,13 @@
               Please enter toll number
             </b-form-invalid-feedback>
           </label>
-        </b-colxx>
+        </b-colxx> -->
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
           <label class="form-group has-top-label">
             <!-- <b-form-input  type="date" style="display: none;" v-model.trim="$v.form.date.$model"
               :state="!$v.form.date.$error" /> -->
             <datepicker :bootstrap-styling="true" v-model="form.date" format="dd-MM-yyyy"></datepicker>
-            <span>{{ $t('forms.toll.date') }}</span>
+            <span>Start Date</span>
             <!-- <b-form-invalid-feedback v-if="$v.form.date.$error">
               Please select date
             </b-form-invalid-feedback> -->
@@ -89,7 +89,7 @@
             <!-- <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.due_date.$model"
               :state="!$v.form.due_date.$error" /> -->
             <datepicker :bootstrap-styling="true" v-model="form.due_date" format="dd-MM-yyyy"></datepicker>
-            <span>Due date</span>
+            <span>End date</span>
             <!-- <b-form-invalid-feedback v-if="$v.form.due_date.$error">
               Please select due date
             </b-form-invalid-feedback> -->
@@ -101,15 +101,13 @@
               :state="!$v.form.reg_plate_number.$error" />
             <v-select v-model="form.reg_plate_number" aria-placeholder="Select Gender" label="reg_plate_number"
               :reduce="vehicle => vehicle.reg_plate_number" :options="vehicle_options"></v-select>
-            <span>{{ $t('forms.toll.vehicle_reg_number') }}</span>
+            <span>Vehicle Registration Number (LPN)</span>
             <b-form-invalid-feedback v-if="$v.form.reg_plate_number.$error">
               Please select registration
             </b-form-invalid-feedback>
           </label>
         </b-colxx>
-      </b-row>
-      <b-row v-if="customer_drop_visible == true">
-        <b-colxx xxs="12" xs="3" lg="3">
+        <b-colxx v-if="customer_drop_visible == true" xxs="12" xs="3" lg="3">
           <b-form> <!-- IMage uplaod -->
             <div>
               <b-form-file v-model="form.toll_image" v-on:change="handImageUpload"
@@ -118,6 +116,8 @@
             </div>
           </b-form>
         </b-colxx>
+      </b-row>
+      <b-row v-if="customer_drop_visible == true">
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
           <label class="form-group has-top-label">
             <v-select v-model="form.customer_id" label="name" :reduce="customer => customer.id"
@@ -501,6 +501,13 @@ export default {
         this.form.id = response.data.id
         this.form.toll_number = response.data.toll_number
         this.form.date = response.data.date
+        this.form.due_date = response.data.due_date
+        this.form.details = response.data.details
+
+        var tollCostWithDollarSign = response.data.toll_cost
+        var tollCostWithoutDollarSign = tollCostWithDollarSign.replace('$', '')
+
+        this.form.trip_cost = parseFloat(tollCostWithoutDollarSign);
         this.form.reg_plate_number = response.data.reg_plate_number
         this.form.customer_id = parseInt(response.data.customer_id)
         this.form.payment_status = response.data.payment_status
