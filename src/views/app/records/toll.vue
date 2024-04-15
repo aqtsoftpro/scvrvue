@@ -74,26 +74,18 @@
           </label>
         </b-colxx> -->
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-          <label class="form-group has-top-label">
-            <!-- <b-form-input  type="date" style="display: none;" v-model.trim="$v.form.date.$model"
-              :state="!$v.form.date.$error" /> -->
-            <datepicker :bootstrap-styling="true" v-model="form.date" format="dd-MM-yyyy"></datepicker>
+          <!-- <label class="form-group has-top-label">
             <span>Start Date</span>
-            <!-- <b-form-invalid-feedback v-if="$v.form.date.$error">
-              Please select date
-            </b-form-invalid-feedback> -->
-          </label>
+          </label> -->
+          <div>Start Date</div>
+          <datepicker :bootstrap-styling="true" placeholder="select start date" v-model="form.date" format="dd-MM-yyyy"></datepicker>
         </b-colxx>
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-          <label class="form-group has-top-label">
-            <!-- <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.due_date.$model"
-              :state="!$v.form.due_date.$error" /> -->
-            <datepicker :bootstrap-styling="true" v-model="form.due_date" format="dd-MM-yyyy"></datepicker>
+          <!-- <label class="form-group has-top-label">
             <span>End date</span>
-            <!-- <b-form-invalid-feedback v-if="$v.form.due_date.$error">
-              Please select due date
-            </b-form-invalid-feedback> -->
-          </label>
+          </label> -->
+          <div>End Date</div>
+          <datepicker :bootstrap-styling="true" placeholder="select end date" v-model="form.due_date" format="dd-MM-yyyy"></datepicker>
         </b-colxx>
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
           <label class="form-group has-top-label">
@@ -126,7 +118,6 @@
             <span>{{ $t('forms.toll.customer') }}</span>
           </label>
         </b-colxx>
-
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
           <label class="form-group has-top-label">
             <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.payment_status.$model"
@@ -162,11 +153,9 @@
           </label>
         </b-colxx>
       </b-row>
-      <b-button v-if="!editing_mode" @click.stop="save_toll_record" variant="primary" class="mt-4 mb-4">{{ 'Save'
-        }}</b-button>
+      <b-button v-if="!editing_mode" @click="save_toll_record" variant="primary" class="mt-4 mb-4">Save</b-button>
       <div v-else>
-        <b-button @click.stop="update_toll_record(form.id)" variant="secondary" class="mt-4 mb-4">{{ ' Update'
-          }}</b-button>
+        <b-button @click.stop="update_toll_record(form.id)" variant="secondary" class="mt-4 mb-4">Update</b-button>
         <b-button @click.stop="cancel_update_toll_record()" variant="info" class="mt-4 mb-4"><i
             class="simple-icon-close"></i></b-button>
       </div>
@@ -279,9 +268,9 @@ export default {
   mixins: [validationMixin],
   validations: {
     form: {
-      'toll_number': {
-        required
-      },
+      // 'toll_number': {
+      //   required
+      // },
       'date': {
         required
       },
@@ -432,17 +421,16 @@ export default {
       if (this.$v.form.$anyError == true) {
         return false;
       }
-      this.processing_text = 'Saving Data and checking toll information against rental records..'
-      this.isProcessing = true
 
+      // this.processing_text = 'Saving Data and checking toll information against rental records..'
+      // this.isProcessing = true
       axios.post(
         apiUrl + '/toll', this.form, {
         headers: {
           'content-type': 'multipart/form-data',
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
-      }
-      ).then(response => {
+      }).then(response => {
         this.current_toll_record = response.data.data
         //parse json data
         this.get_toll_records()
@@ -450,7 +438,6 @@ export default {
         this.isProcessing = false
         this.form.toll_image = ''
         this.customer_drop_visible = true
-
         this.$refs['booking_search_modal'].show();
         //console.log(response.data.data.date, response.data.data.reg_plate_number);
         //this.search_booking_records(response.data.data.date, response.data.data.reg_plate_number)

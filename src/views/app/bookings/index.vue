@@ -177,7 +177,6 @@
                           </label>
                         </b-form>
                       </b-colxx>
-
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
@@ -227,11 +226,14 @@
                               renting!</b-form-invalid-feedback>
                           </label>
                           <label v-if="form.reason_of_renting == 'Swap'" class="form-group has-top-label">
-                            <v-select v-model="form.swap_with" label="name" :reduce="swap_with => swap_with.id"
+                            <v-select v-model="form.swap_with" label="name" 
+                            :reduce="swap_with => swap_with"
+                            :key="form.swap_with.id"
                               v-on:input="onVehicleSelect" aria-placeholder="Select Vehicle to swap with"
                               :options="available_vehicle_options"></v-select>
                             <span>{{ $t('forms.vanout.swap_with') }}</span>
                           </label>
+                          <!-- v-on:input="onVehicleSelect" -->
                         </b-form>
                       </b-colxx>
                       <b-colxx xxs="12" xs="6" lg="4" class="mb-3">
@@ -258,7 +260,7 @@
                       </b-colxx>
 
                       <b-colxx xxs="12" xs="6" lg="4" class="mb-3" ref="demage_video_column">
-                        <span>Vehicle Conditions Video </span>
+                        <span>Vehicle Condition Video </span>
                         <b-form-file v-model="form.demage_video" placeholder="Upload video"
                           drop-placeholder="Drop file here..." accept="video/*"></b-form-file>
                       </b-colxx>
@@ -1160,7 +1162,7 @@ export default ({
     },
 
     edit_vanout(item) {
-
+      console.log(item);
       this.processing_text = 'Loading Data ...'
       this.isProcessing = true
 
@@ -1186,7 +1188,7 @@ export default ({
           console.log(accessories_to_set)
           this.form.accessories = accessories_to_set
 
-          this.onVehicleSelect(item.id)
+          this.onVehicleSelect(item.vehicle_id)
         })
     },
 
