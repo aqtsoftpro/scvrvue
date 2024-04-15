@@ -227,9 +227,9 @@
                           </label>
                           <label v-if="form.reason_of_renting == 'Swap'" class="form-group has-top-label">
                             <v-select v-model="form.swap_with" label="name" 
-                            :reduce="swap_with => swap_with"
-                            :key="form.swap_with.id"
-                              v-on:input="onVehicleSelect" aria-placeholder="Select Vehicle to swap with"
+                              :reduce="vehicle => vehicle.id"
+                              :key="form.swap_with"
+                              v-on:input="onSwapSelect" aria-placeholder="Select Vehicle to swap with"
                               :options="available_vehicle_options"></v-select>
                             <span>{{ $t('forms.vanout.swap_with') }}</span>
                           </label>
@@ -668,6 +668,7 @@ export default ({
       swap_with_options: [],
       booking_options: [],
       out_mileage: 0,
+      newData: null,
       van_out: '',
       form: {
         booking_id: '',
@@ -1048,6 +1049,32 @@ export default ({
       })
     },
 
+    onSwapSelect(key) {
+      this.processing_text = 'Loading Data ... ';
+      this.isProcessing = true
+
+      const vehicle_id = key
+
+      axios.get(apiUrl + '/vehicle/' + vehicle_id, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
+
+        let maintenanceData = response.data.maintenance
+
+        if (maintenanceData.length > 0) {
+          this.form.mileage = response.data.maintenance[maintenanceData.length - 1].mileage
+          this.$notify('success filled ', 'Success!', 'The mileage data has been added to field', { duration: 3000, permanent: false });
+          this.isProcessing = false
+        } else {
+          this.form.mileage = ''
+          this.$notify('info filled', 'Info!', 'No milage date for this vehicle, please manually fill it', { duration: 3000, permanent: false });
+          this.isProcessing = false
+        }
+      })
+    },
+
 
     bring_fields(data) {
       console.log(data)
@@ -1176,9 +1203,34 @@ export default ({
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
-      }).then(response => {
-          console.log(response.data);
-          this.form = response.data
+        }).then(response => {
+            console.log(response.data);
+            this.form = response.data
+
+            axios.get(apiUrl + '/vehicle/' + this.form.swap_with, {
+              headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+              }
+            }).then(response => {
+              let newData = {
+                'id' : response.data.id,
+                'name' : response.data.name,
+              }
+              console.log(newData);
+              this.newData = newData
+
+              let maintenanceData = response.data.maintenance
+              if (maintenanceData.length > 0) {
+                this.form.mileage = response.data.maintenance[maintenanceData.length - 1].mileage
+                this.$notify('success filled ', 'Success!', 'The mileage data has been added to field', { duration: 3000, permanent: false });
+                this.isProcessing = false
+              } else {
+                this.form.mileage = ''
+                this.$notify('info filled', 'Info!', 'No milage date for this vehicle, please manually fill it', { duration: 3000, permanent: false });
+                this.isProcessing = false
+              }
+            })
+
           this.booking_create_option = ({ id: item.id, name: item.reg_number })
           this.isProcessing = false
           var accessories_to_set = [];
@@ -1395,7 +1447,9 @@ export default ({
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
+        console.log(this.newData);
         this.available_vehicle_options = response.data
+        this.available_vehicle_options.push(this.newData);
         this.isProcessing = false
       })
     },
