@@ -649,7 +649,6 @@ export default ({
       today: new Date(),
       new_location: '',
       available_vehicle_options: [],
-
       isProcessing: true,
       processing_text: 'Loading data please wait ...',
       vanout: [],
@@ -1186,14 +1185,13 @@ export default ({
       })
     },
 
-    edit_vanout(item) {
+    async edit_vanout(item) {
       console.log(item);
       this.processing_text = 'Loading Data ...'
       this.isProcessing = true
-
       this.van_out_date = ''
-      this.get_active_vehicle_options(item.vehicle_id)
-      this.get_all_customer_options(item.customer_id)
+      await this.get_active_vehicle_options(item.vehicle_id)
+      await this.get_all_customer_options(item.customer_id)
 
       this.editing_mode = true;
       //get vanout data
@@ -1216,7 +1214,7 @@ export default ({
               }
               console.log(newData);
               this.newData = newData
-
+              this.available_vehicle_options.push(this.newData);
               let maintenanceData = response.data.maintenance
               if (maintenanceData.length > 0) {
                 this.form.mileage = response.data.maintenance[maintenanceData.length - 1].mileage
@@ -1445,7 +1443,11 @@ export default ({
         }
       }).then(response => {
         console.log(this.newData);
-        this.available_vehicle_options = response.data
+        // if (this.available_vehicle_options.length == 1) {
+        //   this.available_vehicle_options.push(response.data);
+        // } else {
+        this.available_vehicle_options = response.data;
+        // }
         this.available_vehicle_options.push(this.newData);
         this.isProcessing = false
       })
