@@ -1215,7 +1215,6 @@ export default ({
               console.log(newData);
               this.newData = newData
               this.available_vehicle_options.push(this.newData);
-              this.onVehicleSelect(item.vehicle_id)
               let maintenanceData = response.data.maintenance
               if (maintenanceData.length > 0) {
                 this.form.mileage = response.data.maintenance[maintenanceData.length - 1].mileage
@@ -1236,6 +1235,8 @@ export default ({
           })
           console.log(accessories_to_set)
           this.form.accessories = accessories_to_set
+
+          this.onVehicleSelect(item.vehicle_id)
         })
     },
 
