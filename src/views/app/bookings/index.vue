@@ -1193,7 +1193,7 @@ export default ({
       this.get_available_vehicle_options(item.vehicle_id)
       this.get_active_vehicle_options(item.vehicle_id)
       this.get_all_customer_options(item.customer_id)
-      this.onSwapSelect(item.vehicle_id)
+      // this.onSwapSelect(item.vehicle_id)
       this.editing_mode = true;
       await axios.get(apiUrl + '/vehicle/' + item.swap_with, {
           headers: {
