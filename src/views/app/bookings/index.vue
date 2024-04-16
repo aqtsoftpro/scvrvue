@@ -1207,9 +1207,9 @@ export default ({
             id: response.data.id,
             name: response.data.name
           }
-          window.setTimeout(() => {
+          // window.setTimeout(() => {
             this.available_vehicle_options.push(this.newData);
-          }, 3000);
+          // }, 3000);
           if (maintenanceData.length > 0) {
             this.form.mileage = response.data.maintenance[maintenanceData.length - 1].mileage
             this.$notify('success filled ', 'Success!', 'The mileage data has been added to field', { duration: 3000, permanent: false });
@@ -1606,20 +1606,7 @@ export default ({
     currentUser() {
       this.user = this.currentUser
       this.roleName = this.currentUser.role_name ?? null
-    },
-
-    // newData() {
-    //   if (this.newData !== null) {
-    //     this.available_vehicle_options.push(this.newData);
-    //   }
-    // }
-
-    // available_vehicle_options() {
-    //   if (this.newData !== null) {
-    //     this.available_vehicle_options.push(this.newData);
-    //   }
-    // }
+    }
   }
-
 })
 </script>
