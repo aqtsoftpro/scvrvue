@@ -1195,40 +1195,36 @@ export default ({
       this.get_all_customer_options(item.customer_id)
       this.onSwapSelect(item.vehicle_id)
       this.editing_mode = true;
+      await axios.get(apiUrl + '/vehicle/' + item.swap_with, {
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+        }).then(response => {
+
+          let maintenanceData = response.data.maintenance
+          this.newData = {
+            id: response.data.id,
+            name: response.data.name
+          }
+          this.available_vehicle_options.push(this.newData);
+          if (maintenanceData.length > 0) {
+            this.form.mileage = response.data.maintenance[maintenanceData.length - 1].mileage
+            this.$notify('success filled ', 'Success!', 'The mileage data has been added to field', { duration: 3000, permanent: false });
+            this.isProcessing = false
+          } else {
+            this.form.mileage = ''
+            this.$notify('info filled', 'Info!', 'No milage date for this vehicle, please manually fill it', { duration: 3000, permanent: false });
+            this.isProcessing = false
+          }
+        })
       //get vanout data
       await axios.get(apiUrl + '/vanout/' + item.id, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
         }).then(response => {
-            console.log(response.data);
-            this.form = response.data
-            if (response.data.swap_with !== null) {
-              axios.get(apiUrl + '/vehicle/' + this.form.swap_with, {
-              headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-              }
-            }).then(response => {
-              let newData = {
-                'id' : response.data.id,
-                'name' : response.data.name,
-              }
-              console.log(newData);
-              this.newData = newData
-              this.available_vehicle_options.push(this.newData);
-              let maintenanceData = response.data.maintenance
-              if (maintenanceData.length > 0) {
-                this.form.mileage = response.data.maintenance[maintenanceData.length - 1].mileage
-                this.$notify('success filled ', 'Success!', 'The mileage data has been added to field', { duration: 3000, permanent: false });
-                this.isProcessing = false
-              } else {
-                this.form.mileage = ''
-                this.$notify('info filled', 'Info!', 'No milage date for this vehicle, please manually fill it', { duration: 3000, permanent: false });
-                this.isProcessing = false
-              }
-            })
-            }
-
+          console.log(response.data);
+          this.form = response.data
           this.booking_create_option = ({ id: item.id, name: item.reg_number })
           this.isProcessing = false
           var accessories_to_set = [];
