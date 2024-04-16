@@ -74,28 +74,27 @@
           </label>
         </b-colxx> -->
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-          <!-- <label class="form-group has-top-label">
-            <span>Start Date</span>
-          </label> -->
-          <div>Start Date</div>
-          <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.date.$model"
+
+          <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.date.$model"
               :state="!$v.form.date.$error" />
-          <datepicker :bootstrap-styling="true" placeholder="select start date" v-model="form.date" format="dd-MM-yyyy"></datepicker>
-          <b-form-invalid-feedback v-if="$v.form.date.$error">
+            <datepicker :bootstrap-styling="true" v-model="form.date" format="dd-MM-yyyy"></datepicker>
+            <span>Start Date</span>
+            <b-form-invalid-feedback v-if="$v.form.date.$error">
               Please select start date
             </b-form-invalid-feedback>
+          </label>
         </b-colxx>
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-          <!-- <label class="form-group has-top-label">
-            <span>End date</span>
-          </label> -->
-          <div>End Date</div>
-          <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.due_date.$model"
+          <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.due_date.$model"
               :state="!$v.form.due_date.$error" />
-          <datepicker :bootstrap-styling="true" placeholder="select end date" v-model="form.due_date" format="dd-MM-yyyy"></datepicker>
-          <b-form-invalid-feedback v-if="$v.form.due_date.$error">
+            <datepicker :bootstrap-styling="true" v-model="form.due_date" format="dd-MM-yyyy"></datepicker>
+            <span>End Date</span>
+            <b-form-invalid-feedback v-if="$v.form.due_date.$error">
               Please select end date
             </b-form-invalid-feedback>
+          </label>
         </b-colxx>
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
           <label class="form-group has-top-label">
