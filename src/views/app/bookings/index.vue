@@ -1185,7 +1185,7 @@ export default ({
       })
     },
 
-    async edit_vanout(item) {
+    edit_vanout(item) {
       console.log(item);
       this.processing_text = 'Loading Data ...'
       this.isProcessing = true
@@ -1193,9 +1193,10 @@ export default ({
       this.get_available_vehicle_options(item.vehicle_id)
       this.get_active_vehicle_options(item.vehicle_id)
       this.get_all_customer_options(item.customer_id)
-      // this.onSwapSelect(item.vehicle_id)
+      // this.onSwapSelect(item.swap_with)
       this.editing_mode = true;
-      await axios.get(apiUrl + '/vehicle/' + item.swap_with, {
+      if (item.swap_with !== null) {
+        axios.get(apiUrl + '/vehicle/' + item.swap_with, {
           headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
@@ -1206,7 +1207,9 @@ export default ({
             id: response.data.id,
             name: response.data.name
           }
-          this.available_vehicle_options.push(this.newData);
+          window.setTimeout(() => {
+            this.available_vehicle_options.push(this.newData);
+          }, 3000);
           if (maintenanceData.length > 0) {
             this.form.mileage = response.data.maintenance[maintenanceData.length - 1].mileage
             this.$notify('success filled ', 'Success!', 'The mileage data has been added to field', { duration: 3000, permanent: false });
@@ -1217,8 +1220,10 @@ export default ({
             this.isProcessing = false
           }
         })
+      }
+
       //get vanout data
-      await axios.get(apiUrl + '/vanout/' + item.id, {
+      axios.get(apiUrl + '/vanout/' + item.id, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
@@ -1439,7 +1444,7 @@ export default ({
         }
       }).then(response => {
         console.log(this.newData);
-        this.available_vehicle_options = response.data;
+        this.available_vehicle_options = response.data;       
         this.isProcessing = false
       })
     },
@@ -1601,7 +1606,19 @@ export default ({
     currentUser() {
       this.user = this.currentUser
       this.roleName = this.currentUser.role_name ?? null
-    }
+    },
+
+    // newData() {
+    //   if (this.newData !== null) {
+    //     this.available_vehicle_options.push(this.newData);
+    //   }
+    // }
+
+    // available_vehicle_options() {
+    //   if (this.newData !== null) {
+    //     this.available_vehicle_options.push(this.newData);
+    //   }
+    // }
   }
 
 })
