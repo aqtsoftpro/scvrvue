@@ -558,8 +558,6 @@
 
                       <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="4" lg="4" class="mb-3"
                         ref="demage_vid_column">
-                        <!-- <label class="form-group has-top-label"> -->
-                        <!-- <b-form-input v-model="vanin_form.demage_picture" ></b-form-input> -->
                         <span>Upload Demaged Video</span>
                         <!-- </label> -->
                         <b-form-file v-model="vanin_form.demage_vid" placeholder="Upload Demaged Video"
