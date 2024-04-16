@@ -1436,7 +1436,6 @@ export default ({
         this.isProcessing = false
       })
     },
-
     get_available_vehicle_options(id) {
 
       this.processing_text = 'Loading Data..'
@@ -1573,11 +1572,6 @@ export default ({
           //parse json data
           this.vanins = response.data
           console.log(response.data);
-          // this.$notify(
-          //   'info filled',
-          //   'Data Loaded!',
-          //   'Van Return data loaded.',
-          //   { duration: 3000, permanent: false });
         }
       })
     },
