@@ -1190,9 +1190,10 @@ export default ({
       this.processing_text = 'Loading Data ...'
       this.isProcessing = true
       this.van_out_date = ''
-      await this.get_active_vehicle_options(item.vehicle_id)
-      await this.get_all_customer_options(item.customer_id)
-
+      this.get_available_vehicle_options(item.vehicle_id)
+      this.get_active_vehicle_options(item.vehicle_id)
+      this.get_all_customer_options(item.customer_id)
+      this.onSwapSelect(item.vehicle_id)
       this.editing_mode = true;
       //get vanout data
       await axios.get(apiUrl + '/vanout/' + item.id, {
@@ -1202,8 +1203,8 @@ export default ({
         }).then(response => {
             console.log(response.data);
             this.form = response.data
-
-            axios.get(apiUrl + '/vehicle/' + this.form.swap_with, {
+            if (response.data.swap_with !== null) {
+              axios.get(apiUrl + '/vehicle/' + this.form.swap_with, {
               headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
               }
@@ -1226,6 +1227,7 @@ export default ({
                 this.isProcessing = false
               }
             })
+            }
 
           this.booking_create_option = ({ id: item.id, name: item.reg_number })
           this.isProcessing = false
@@ -1235,8 +1237,6 @@ export default ({
           })
           console.log(accessories_to_set)
           this.form.accessories = accessories_to_set
-
-          this.onVehicleSelect(item.vehicle_id)
         })
     },
 
@@ -1443,12 +1443,7 @@ export default ({
         }
       }).then(response => {
         console.log(this.newData);
-        // if (this.available_vehicle_options.length == 1) {
-        //   this.available_vehicle_options.push(response.data);
-        // } else {
         this.available_vehicle_options = response.data;
-        // }
-        this.available_vehicle_options.push(this.newData);
         this.isProcessing = false
       })
     },
