@@ -1191,8 +1191,6 @@ export default ({
       this.isProcessing = true
       this.van_out_date = ''
       this.get_available_vehicle_options(item.vehicle_id)
-      this.get_active_vehicle_options(item.vehicle_id)
-      this.get_all_customer_options(item.customer_id)
       // this.onSwapSelect(item.swap_with)
       this.editing_mode = true;
       if (item.swap_with !== null) {
@@ -1239,6 +1237,9 @@ export default ({
           console.log(accessories_to_set)
           this.form.accessories = accessories_to_set
         })
+
+      this.get_active_vehicle_options(item.vehicle_id)
+      this.get_all_customer_options(item.customer_id)
     },
 
     edit_vanin(item) {
