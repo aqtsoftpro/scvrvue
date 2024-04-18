@@ -101,7 +101,7 @@
             <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.reg_plate_number.$model"
               :state="!$v.form.reg_plate_number.$error" />
             <v-select v-model="form.reg_plate_number" aria-placeholder="Select Gender" label="reg_plate_number"
-              :reduce="vehicle => vehicle.reg_plate_number" :options="vehicle_options"></v-select>
+              :reduce="vehicle => vehicle.reg_plate_number" :options="vehicle_options" v-on:input="check_customer"></v-select>
             <span>Vehicle Registration Number (LPN)</span>
             <b-form-invalid-feedback v-if="$v.form.reg_plate_number.$error">
               Please select registration
@@ -286,12 +286,12 @@ export default {
       'reg_plate_number': {
         required
       },
-      'toll_image': {
-        required
-      },
-      'customer_id': {
-        required
-      },
+      // 'toll_image': {
+      //   required
+      // },
+      // 'customer_id': {
+      //   required
+      // },
       'payment_status': {
         required
       },
@@ -450,13 +450,31 @@ export default {
         this.$refs['booking_search_modal'].show();
         //console.log(response.data.data.date, response.data.data.reg_plate_number);
         //this.search_booking_records(response.data.data.date, response.data.data.reg_plate_number)
-        this.reset_form()
+        // this.reset_form()
+      })
+      .catch(error => {
+        console.log(error);
+        //this.$notify('error filled', 'Error!', error.response.data.message,{ duration: 3000, permanent: false });
+        this.isProcessing = false
+      })
+    },
+
+    check_customer() {
+      axios.post( apiUrl + '/customer-check', this.form, {
+        headers: {
+          'content-type': 'multipart/form-data',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
+        console.log(response.data);
+        this.form.customer_id = response.data
+        // this.reset_form()
       })
         .catch(error => {
           console.log(error);
           //this.$notify('error filled', 'Error!', error.response.data.message,{ duration: 3000, permanent: false });
           this.isProcessing = false
-        })
+      })
     },
 
     search_booking_records($date, $reg) {
