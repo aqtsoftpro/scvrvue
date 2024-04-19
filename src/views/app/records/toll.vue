@@ -230,6 +230,8 @@ import axios from 'axios'
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import Datepicker from "vuejs-datepicker";
+// import DatePicker from 'vue2-datepicker';
+// import 'vue2-datepicker/index.css';
 import { apiUrl } from "../../../constants/config.js";
 import { mapGetters } from 'vuex';
 
@@ -467,7 +469,9 @@ export default {
         }
       }).then(response => {
         console.log(response.data);
-        this.form.customer_id = response.data
+        this.customer_options.push(response.data);
+        this.form.customer_id = response.data.id;
+
         // this.reset_form()
       })
         .catch(error => {

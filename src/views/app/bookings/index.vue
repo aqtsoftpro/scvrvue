@@ -576,7 +576,7 @@
                       <b-colxx xxs="12" xs="4" lg="3" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <div>{{ $t('forms.vanin.return_date') }}</div>
-                          <datepicker :bootstrap-styling="true" :placeholder="$t('forms.vanin.return_date')"
+                          <datepicker :bootstrap-styling="true" type="datetime" :placeholder="$t('forms.vanin.return_date')"
                             v-model="$v.vanin_form.return_date.$model" :state="!$v.vanin_form.return_date.$error"
                             value-type="format" @change="calculateDays" format="DD-MM-YYYY h:mm"></datepicker>
                           
