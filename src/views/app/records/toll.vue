@@ -161,16 +161,16 @@
             </b-form-invalid-feedback>
           </label>
         </b-colxx>
+        <div v-if="isProcessing">
+          <b-spinner variant="primary" label="Spinning" class="mb-1"></b-spinner>
+          <p class="text-primary">{{ processing_text }}</p>
+        </div>
       </b-row>
       <b-button v-if="!editing_mode" @click="save_toll_record" variant="primary" class="mt-4 mb-4">Save</b-button>
       <div v-else>
         <b-button @click.stop="update_toll_record(form.id)" variant="secondary" class="mt-4 mb-4">Update</b-button>
         <b-button @click.stop="cancel_update_toll_record()" variant="info" class="mt-4 mb-4"><i
             class="simple-icon-close"></i></b-button>
-      </div>
-      <div v-if="isProcessing">
-        <b-spinner variant="primary" label="Spinning" class="mb-1"></b-spinner>
-        <p class="text-primary">{{ processing_text }}</p>
       </div>
     </b-form>
 
@@ -233,6 +233,7 @@ import Datepicker from "vuejs-datepicker";
 // import DatePicker from 'vue2-datepicker';
 // import 'vue2-datepicker/index.css';
 import { apiUrl } from "../../../constants/config.js";
+import moment from 'moment';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -433,8 +434,8 @@ export default {
         return false;
       }
 
-      // this.processing_text = 'Saving Data and checking toll information against rental records..'
-      // this.isProcessing = true
+      this.processing_text = 'Saving Data and checking toll information against rental records..'
+      this.isProcessing = true
       axios.post(
         apiUrl + '/toll', this.form, {
         headers: {
@@ -449,7 +450,7 @@ export default {
         this.isProcessing = false
         this.form.toll_image = ''
         this.customer_drop_visible = true
-        this.$refs['booking_search_modal'].show();
+        // this.$refs['booking_search_modal'].show();
         //console.log(response.data.data.date, response.data.data.reg_plate_number);
         //this.search_booking_records(response.data.data.date, response.data.data.reg_plate_number)
         // this.reset_form()
@@ -501,7 +502,6 @@ export default {
     },
 
     edit_toll_record(item) {
-
       this.customer_drop_visible = true
       this.processing_text = 'Loading Data ...'
       this.isProcessing = true
@@ -518,8 +518,11 @@ export default {
         this.form.toll_image = response.data.toll_image
         this.form.id = response.data.id
         this.form.toll_number = response.data.toll_number
-        this.form.date = response.data.date
-        this.form.due_date = response.data.due_date
+
+        // let parsedDate = moment(response.data.date).toDate();
+
+        this.form.date = moment(response.data.date, 'DD-MM-YYYY').toDate();
+        this.form.due_date = moment(response.data.due_date, 'DD-MM-YYYY').toDate();
         this.form.details = response.data.details
 
         var tollCostWithDollarSign = response.data.toll_cost
@@ -555,6 +558,10 @@ export default {
     },
 
     async update_toll_record(id) {
+
+      this.processing_text = 'Updating toll record...'
+      this.isProcessing = true
+
       await axios.post(
         apiUrl + '/toll/' + id, { ...this.form, '_method': 'put' }, {
         headers: {
