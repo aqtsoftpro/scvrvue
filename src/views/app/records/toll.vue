@@ -600,7 +600,7 @@ export default {
 
     cancel_update_toll_record() {
       this.editing_mode = false
-      this.customer_drop_visible = false
+      // this.customer_drop_visible = false
       this.reset_form()
     },
     reset_form() {
