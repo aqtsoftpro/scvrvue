@@ -1032,15 +1032,15 @@ export default ({
         }
       }).then(response => {
 
-        let maintenanceData = response.data.maintenance
+        let maintenanceData = response.data
 
-        if (maintenanceData.length > 0) {
-          this.form.mileage = response.data.maintenance[maintenanceData.length - 1].mileage
+        if (maintenanceData) {
+          this.form.mileage = response.data.mileage
           this.$notify('success filled ', 'Success!', 'The mileage data has been added to field', { duration: 3000, permanent: false });
           this.isProcessing = false
         } else {
           this.form.mileage = ''
-          this.$notify('info filled', 'Info!', 'No milage date for this vehicle, please manually fill it', { duration: 3000, permanent: false });
+          this.$notify('info filled', 'Info!', 'No milage data for this vehicle, please manually fill it', { duration: 3000, permanent: false });
           this.isProcessing = false
         }
       })
@@ -1092,7 +1092,7 @@ export default ({
         return false;
       }
 
-      this.processing_text = 'Saving Vanout Data ...'
+      this.processing_text = 'Saving Vehicle Data ...'
       this.isProcessing = true
 
       if (this.form.swap_with == "Select Vehicle to swap with") {
@@ -1156,7 +1156,7 @@ export default ({
 
       (this.vanin_form.fuel_tank == 'Fuel Tank Level') ? '' : this.vanin_form.fuel_tank
 
-      this.processing_text = 'Saving Van-in Data ....'
+      this.processing_text = 'Saving Vehicle Return Data ....'
       this.isProcessing = true
 
       axios.post(apiUrl + '/van_return', this.vanin_form, {
