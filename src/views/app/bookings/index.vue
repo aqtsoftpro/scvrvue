@@ -227,7 +227,7 @@
                           </label>
                           <label v-if="form.reason_of_renting == 'Swap'" class="form-group has-top-label">
                             <v-select v-model="form.swap_with" label="name" 
-                              :reduce="vehicle => vehicle.id"
+                              :reduce="swap_with => swap_with.id"
                               :key="form.swap_with"
                               v-on:input="onSwapSelect" aria-placeholder="Select Vehicle to swap with"
                               :options="available_vehicle_options"></v-select>
@@ -1444,7 +1444,6 @@ export default ({
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
-        console.log(this.newData);
         this.available_vehicle_options = response.data;       
         this.isProcessing = false
       })
