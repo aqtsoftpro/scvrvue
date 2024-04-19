@@ -1191,7 +1191,6 @@ export default ({
       this.isProcessing = true
       this.van_out_date = ''
       this.get_available_vehicle_options(item.vehicle_id)
-      // this.onSwapSelect(item.swap_with)
       this.editing_mode = true;
       //get vanout data
       axios.get(apiUrl + '/vanout/' + item.id, {
@@ -1210,20 +1209,22 @@ export default ({
           console.log(accessories_to_set)
           this.form.accessories = accessories_to_set
 
-          if (item.swap_with !== null) {
+          if (item.swap_with != null) {
             axios.get(apiUrl + '/vehicle/' + item.swap_with, {
               headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
               }
             }).then(response => {
 
-              this.newData = {
-                id: response.data.id,
-                name: response.data.name
-              }
+              // this.newData = {
+              //   id: response.data.id,
+              //   name: response.data.name
+              // }
               // window.setTimeout(() => {
-                this.available_vehicle_options.push(this.newData);
+                // this.available_vehicle_options.push(this.newData);
               // }, 3000);
+
+              console.log(this.available_vehicle_options);
               if (response.data) {
                 this.form.mileage = response.data.mileage
                 this.$notify('success filled ', 'Success!', 'The mileage data has been added to field', { duration: 3000, permanent: false });
