@@ -1193,33 +1193,6 @@ export default ({
       this.get_available_vehicle_options(item.vehicle_id)
       // this.onSwapSelect(item.swap_with)
       this.editing_mode = true;
-      if (item.swap_with !== null) {
-        axios.get(apiUrl + '/vehicle/' + item.swap_with, {
-          headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
-        }).then(response => {
-
-          let maintenanceData = response.data.maintenance
-          this.newData = {
-            id: response.data.id,
-            name: response.data.name
-          }
-          // window.setTimeout(() => {
-            this.available_vehicle_options.push(this.newData);
-          // }, 3000);
-          if (maintenanceData.length > 0) {
-            this.form.mileage = response.data.maintenance[maintenanceData.length - 1].mileage
-            this.$notify('success filled ', 'Success!', 'The mileage data has been added to field', { duration: 3000, permanent: false });
-            this.isProcessing = false
-          } else {
-            this.form.mileage = ''
-            this.$notify('info filled', 'Info!', 'No milage date for this vehicle, please manually fill it', { duration: 3000, permanent: false });
-            this.isProcessing = false
-          }
-        })
-      }
-
       //get vanout data
       axios.get(apiUrl + '/vanout/' + item.id, {
         headers: {
@@ -1236,6 +1209,32 @@ export default ({
           })
           console.log(accessories_to_set)
           this.form.accessories = accessories_to_set
+
+          if (item.swap_with !== null) {
+            axios.get(apiUrl + '/vehicle/' + item.swap_with, {
+              headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+              }
+            }).then(response => {
+
+              this.newData = {
+                id: response.data.id,
+                name: response.data.name
+              }
+              // window.setTimeout(() => {
+                this.available_vehicle_options.push(this.newData);
+              // }, 3000);
+              if (response.data) {
+                this.form.mileage = response.data.mileage
+                this.$notify('success filled ', 'Success!', 'The mileage data has been added to field', { duration: 3000, permanent: false });
+                this.isProcessing = false
+              } else {
+                this.form.mileage = ''
+                this.$notify('info filled', 'Info!', 'No milage date for this vehicle, please manually fill it', { duration: 3000, permanent: false });
+                this.isProcessing = false
+              }
+            })
+          }
         })
 
       this.get_active_vehicle_options(item.vehicle_id)
