@@ -1190,7 +1190,7 @@ export default ({
       this.processing_text = 'Loading Data ...'
       this.isProcessing = true
       this.van_out_date = ''
-      this.get_available_vehicle_options(item.vehicle_id)
+      this.get_available_vehicle_options(item.vehicle_id, item.swap_with)
       this.editing_mode = true;
       //get vanout data
       axios.get(apiUrl + '/vanout/' + item.id, {
@@ -1434,12 +1434,12 @@ export default ({
         this.isProcessing = false
       })
     },
-    get_available_vehicle_options(id) {
+    get_available_vehicle_options(id, swap) {
 
       this.processing_text = 'Loading Data..'
       this.isProcessing = true
 
-      axios.get(apiUrl + '/available_vehicles_options/' + id, {
+      axios.get(apiUrl + '/available_vehicles_options/' + id + '/' + swap, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
