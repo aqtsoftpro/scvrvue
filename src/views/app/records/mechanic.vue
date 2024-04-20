@@ -210,7 +210,7 @@ export default {
     edit_mechanic_record(item) {
       this.processing_text = 'Loading Data .. '
       this.isProcessing = true
-
+      console.log(item);
       this.editing_mode = true
       axios.get(
         apiUrl + '/mechanic/' + item.id, {

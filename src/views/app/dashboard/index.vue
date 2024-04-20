@@ -54,7 +54,8 @@
             >
             <div v-for="vehicle in available_vehicles" :key="vehicle.id" class="d-flex flex-row mb-3">
                 <router-link tag="a" :to="{ path: 'van_management/vehicle_detail/' + vehicle.vehicle_id }" class="d-block position-relative">
-                    <img :src="vehicle.img" style="width: 100px!important" :alt="vehicle.img" class="list-thumbnail border-0" />
+                    <img v-if="isValidImage(vehicle.img)" :src="vehicle.img" style="width: 100px!important" :alt="vehicle.img" class="list-thumbnail border-0" />
+                    <img v-else src="/assets/img/van-white.jpg" style="width: 100px!important" alt="image" class="list-thumbnail border-0" />
                     <b-badge variant="info" pill class="position-absolute badge-top-right">{{ vehicle.vehicle_type }}</b-badge>
                 </router-link>
                 <div class="pl-3 pt-2 pr-2 pb-2">
@@ -129,6 +130,13 @@ export default {
 
         this.$store.commit('setProcessing', false)
       })
+    },
+
+    isValidImage(url) {
+      // Check if the image URL returns a valid image
+      const img = new Image();
+      img.src = url;
+      return img.complete && img.naturalWidth !== 0;
     },
   },
   mounted() {

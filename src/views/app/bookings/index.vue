@@ -733,7 +733,7 @@ export default ({
         return_date: '',
         demage_text: '',
         bond_return_amount: '',
-        km_deriven: '',
+        km_deriven: 0,
         total_days: '',
         demage_vid: null
       },
@@ -995,7 +995,11 @@ export default ({
     calculateDriven() {
       // var = toFixed
       var total_driven = this.vanin_form.mileage - this.out_mileage
-      this.vanin_form.km_deriven = total_driven.toFixed(2)
+      console.log(this.out_mileage);
+      Number(total_driven);
+      Number(this.vanin_form.km_deriven);
+
+      this.vanin_form.km_deriven = Number(this.vanin_form.km_deriven) + Number(total_driven.toFixed(2))
       this.vanin_form.total_driven = this.vanin_form.km_deriven
 
     },
@@ -1268,7 +1272,7 @@ export default ({
     },
 
     edit_vanin(item) {
-
+      this.out_mileage = 0
       this.processing_text = 'Loading Data...'
       this.isProcessing = true
 
@@ -1285,6 +1289,9 @@ export default ({
       })
         .then(response => {
           this.vanin_form = response.data
+          this.vanin_form.km_deriven = response.data.total_driven
+          this.vanin_form.total_days = response.data.days_count
+          this.out_mileage = response.data.mileage
           this.vanin_form.require_maintenance = parseInt(response.data.require_maintenance)
           this.vanin_form.demage_caused_by_customer = parseInt(response.data.demage_caused_by_customer)
           this.vanin_form.location_id = parseInt(response.data.location_id)
