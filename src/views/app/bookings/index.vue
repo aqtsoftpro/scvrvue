@@ -227,7 +227,7 @@
                           </label>
                           <label v-if="form.reason_of_renting == 'Swap'" class="form-group has-top-label">
                             <v-select v-model="form.swap_with" label="name" 
-                              :reduce="swap_with => swap_with.id"
+                              :reduce="vehicle => vehicle.id"
                               :key="form.swap_with"
                               v-on:input="onSwapSelect" aria-placeholder="Select Vehicle to swap with"
                               :options="available_vehicle_options"></v-select>
