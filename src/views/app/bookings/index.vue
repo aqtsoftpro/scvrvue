@@ -226,11 +226,17 @@
                               renting!</b-form-invalid-feedback>
                           </label>
                           <label v-if="form.reason_of_renting == 'Swap'" class="form-group has-top-label">
-                            <v-select v-model="form.swap_with" label="name" 
+                            <!-- <v-select v-model="form.swap_with" label="name" 
                               :reduce="vehicle => vehicle.id"
                               :key="form.swap_with"
                               v-on:input="onSwapSelect" aria-placeholder="Select Vehicle to swap with"
-                              :options="available_vehicle_options"></v-select>
+                              :options="available_vehicle_options"></v-select> -->
+
+                              <select class="form-select custom-select" aria-label="Default select example" @change="onSwapSelect(form.swap_with)" v-model="form.swap_with">
+                                <option >Select Vehicle to swap with</option>
+                                <option v-for="vehicle in available_vehicle_options" :value="vehicle.id">{{ vehicle.name }}</option>
+                              </select>
+
                             <span>{{ $t('forms.vanout.swap_with') }}</span>
                           </label>
                           <!-- v-on:input="onVehicleSelect" -->
@@ -618,6 +624,19 @@
     </b-row>
   </div>
 </template>
+<style scoped>
+  .custom-select {
+    word-wrap: normal;
+    width: 100%;
+    height: 4.5em;
+    padding-top: 25px;
+    padding-bottom: 0;
+    color: #524e4e;
+    padding-inline: 10px !important;
+    font-size:unset;
+  }
+
+</style>
 <script>
 import {
   validationMixin
