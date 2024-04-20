@@ -19,24 +19,24 @@
             <td> {{ vanout.customer }}</td>
           </tr>
           <tr>
-            <td>Vehicle:</td>
-            <td> {{ vanout.vehicle }}</td>
-          </tr>
-          <tr>
-            <td>Mileage:</td>
-            <td> {{ vanout.mileage }}</td>
-          </tr>
-          <tr>
             <td>Location:</td>
             <td> {{ vanout.location }}</td>
+          </tr>
+          <tr>
+            <td>Vehicle:</td>
+            <td> {{ vanout.vehicle }}</td>
           </tr>
           <tr>
             <td>New / Swap:</td>
             <td> {{ vanout.reason_of_renting }}</td>
           </tr>
           <tr>
+            <td>Mileage:</td>
+            <td> {{ vanout.mileage }}</td>
+          </tr>
+          <tr>
             <td>Model:</td>
-            <td> {{ vanout.model }}</td>
+            <td> {{ vanout.vehicle_model }}</td>
           </tr>
           <tr>
             <td>Accessories:</td>
@@ -48,7 +48,11 @@
           </tr>
           <tr v-if="vanout.reason_of_renting != 'New'">
             <td>Swapped with:</td>
-            <td> {{ vanout.reg_number }}</td>
+            <td> {{ vanout.swapped_name }}</td>
+          </tr>
+          <tr v-if="vanout.reason_of_renting != 'New'">
+            <td>Swapped Model:</td>
+            <td> {{ vanout.swapped_model }}</td>
           </tr>
           <tr>
             <td>Rental Period:</td>
@@ -1095,6 +1099,8 @@ export default ({
     bring_fields(data) {
       console.log(data)
       this.vanout = data
+      this.vanout.swapped_name = data.swaped_detail?.reg_plate_number ?? null;
+      this.vanout.swapped_model = data.swaped_detail?.model ?? null;
       this.$refs.vanoutModal.show()
     },
 
