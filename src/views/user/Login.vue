@@ -55,6 +55,15 @@
 </b-row>
 </template>
 
+<style scoped>
+  .logo-single {
+    background: url(/assets/img/Pngs/Transparent.png) no-repeat !important;
+    background-size: cover !important; /* Scale the background image to be as large as possible */
+  /* background-position: center;
+  background-repeat: no-repeat;  */
+  }
+</style>
+
 <script>
 import {
     mapGetters,

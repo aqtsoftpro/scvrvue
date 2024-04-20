@@ -68,7 +68,7 @@
         >{{$t('user.buy')}}</a>
       </div> -->
     </div>
-    <router-link class="navbar-logo" tag="a" to="/app">
+    <router-link class="navbar-logo" tag="a" to="/app" >
       <span class="logo d-none d-xs-block"></span>
       <span class="logo-mobile d-block d-xs-none"></span>
     </router-link>
@@ -199,6 +199,15 @@
   </nav>
 </template>
 
+<style>
+  .navbar .navbar-logo .logo {
+    background: url(/assets/img/Pngs/Transparent.png) no-repeat !important;
+    background-size: cover !important; /* Scale the background image to be as large as possible */
+  /* background-position: center;
+  background-repeat: no-repeat;  */
+  }
+</style>
+
 <script>
 import Switches from "vue-switches";
 import notifications from "../../data/notifications";
@@ -277,7 +286,10 @@ export default {
       this.setLang(locale);
     },
     profile(){
-      this.$router.push("/app/profile");
+      if (this.$route.path !== "/app/profile") {
+          this.$router.push("/app/profile");
+      }
+      // this.$router.push("/app/profile");
     },
     logout() {
       this.signOut().then(() => {

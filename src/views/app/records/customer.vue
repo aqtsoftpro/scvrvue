@@ -427,10 +427,10 @@ export default {
   },
   methods: {
     send_invitation() {
-      this.$v.form.$touch();
-      if (this.$v.form.$anyError == true) {
-        return false;
-      }
+      // this.$v.form.$touch();
+      // if (this.$v.form.$anyError == true) {
+      //   return false;
+      // }
       this.processing_text = "Sending Invitation"
       this.processing = true
       if (this.invitation_mode == 'email') {

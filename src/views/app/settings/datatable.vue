@@ -37,10 +37,10 @@
             @vuetable:pagination-data="onPaginationData"
           >
             <template slot="actions" slot-scope="props">
-                  <b-button   @click="edit(props.rowData)" size="sm" variant="grey">
+                  <b-button v-if="props.rowData.name !== 'admin' && props.rowData.role_name !== 'admin'"  @click="edit(props.rowData)" size="sm" variant="grey">
                     <i class="simple-icon-pencil"></i>
                   </b-button>
-                  <b-button  @click="notify(props.rowData)"  size="sm" variant="grey">
+                  <b-button v-if="props.rowData.name !== 'admin' && props.rowData.role_name !== 'admin'" @click="notify(props.rowData)"  size="sm" variant="grey">
                     <i class="simple-icon-trash"></i>
                   </b-button>
             </template>
