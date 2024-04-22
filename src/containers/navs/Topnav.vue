@@ -202,9 +202,9 @@
 <style>
   .navbar .navbar-logo .logo {
     background: url(/assets/img/Pngs/Transparent.png) no-repeat !important;
-    background-size: cover !important; /* Scale the background image to be as large as possible */
-  /* background-position: center;
-  background-repeat: no-repeat;  */
+    background-size: 14.5em !important; /* Scale the background image to be as large as possible */
+    background-position: center;
+    background-repeat: no-repeat; 
   }
 </style>
 

@@ -735,6 +735,13 @@ export default {
             console.log("step-3-submit")
       },
 
+      isValidImage(url) {
+        // Check if the image URL returns a valid image
+        const img = new Image();
+        img.src = url;
+        return img.complete && img.naturalWidth !== 0;
+      },
+
 
       onFileChange(e) {
           const file = e.target.files[0];

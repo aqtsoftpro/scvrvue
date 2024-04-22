@@ -191,6 +191,7 @@ export default {
         }
       ).then(response => {
         this.vehicle = response.data
+        console.log(this.vehicle);
         window.scrollTo(0,0);
       })
     },

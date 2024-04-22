@@ -41,7 +41,7 @@
           <tr>
             <td>Accessories:</td>
             <td>
-              <span class="badge badge-light mr-2" v-for="accessory in vanout.accessories" :key="accessory.id">
+              <span class="badge badge-light mr-2" v-for="accessory in vanout.accessories">
                 {{ accessory.name }}
               </span>
             </td>
@@ -160,8 +160,8 @@
           <b-colxx xxs="12" xs="12" lg="12" class="mb-3">
             <b-card class="mb-4" no-body>
               <b-tabs card no-fade>
-                <b-tab title="Vehicle Out" active title-item-class="w-50 text-center">
-                  <b-form>
+                <b-tab title="Vehicle Out" active title-item-class="w-50 text-center van_out_tab" @click="changeTab(0)">
+                  <b-form @click="stopPropagation">
                     <b-row>
                       <b-colxx xxs="12" xs="4" lg="4">
                         <b-form class="av-tooltip tooltip-label-right">
@@ -413,9 +413,9 @@
                   </b-form>
                   <datatable title="" :fields="vanout_fields" :data="vanouts" :edit="edit_vanout" :view="bring_fields"
                     :role="roleName" :del="delete_vanout" :searchColumn="VanoutSearchColumns" />
-                </b-tab>
-                <b-tab title="Vehicle In" title-item-class="w-50 text-center">
-                  <b-form>
+                </b-tab> 
+                <b-tab title="Vehicle In" title-item-class="w-50 text-center" @click="changeTab(1)">
+                  <b-form @click="stopPropagation">
                     <b-row>
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
@@ -618,7 +618,7 @@
                     </div>
                   </b-form>
                   <datatable title="" :fields="van_return_fields" :data="vanins" :edit="edit_vanin" :role="roleName"
-                    :view="bring_vanin_fields" :del="delete_vanout" :searchColumn="VanReturnSearchColumns" />
+                    :view="bring_vanin_fields" :del="delete_vanin" :searchColumn="VanReturnSearchColumns" />
                 </b-tab>
               </b-tabs>
             </b-card>
@@ -944,6 +944,20 @@ export default ({
     }
   },
   methods: {
+
+    changeTab(index) {
+      // Custom functionality when a tab is clicked
+      if (index == 0) {
+        this.cancel_update_vanreturn();
+      }
+      if (index == 1) {
+        this.cancel_update_vanout();
+      }
+    },
+    stopPropagation(event) {
+      event.stopPropagation();
+    },
+
     customer_created() {
       this.get_customer_options()
       this.$refs['create_customer_modal'].hide()
@@ -1614,6 +1628,14 @@ export default ({
 
   },
   mounted() {
+
+    this.$nextTick(() => {
+      // Add event listener to tab titles
+      const tabTitles = document.querySelectorAll('.van_out_tab'); // Adjust the selector as per your HTML structure
+      tabTitles.forEach(tabTitle => {
+        tabTitle.addEventListener('click', this.handleTabClick);
+      });
+    });
 
     console.log('Date -> ', new Date().toISOString('dd-MM-yyyy'));
     //this.form.van_out_date = new Date().toISOString()
