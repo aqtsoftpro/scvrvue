@@ -7,8 +7,8 @@
         <b-colxx xxs="12" xs="12" lg="12" class="mb-3">
           <b-card class="mb-4" no-body>
             <b-tabs card no-fade>
-              <b-tab title="Tax Records" active title-item-class="w-25 text-center">
-                <tax />
+              <b-tab title="Tax Records" active title-item-class="w-25 text-center" @click="changeTab(0)">
+                <tax  @click="stopPropagation" />
                 <b-table :items="tax_records" />
               </b-tab>
               <b-tab title="Mechanic Workshop Records" title-item-class="w-25 text-center">
@@ -59,6 +59,19 @@ export default {
     }
   },
   methods: {
+
+    changeTab(index) {
+      // Custom functionality when a tab is clicked
+      if (index == 0) {
+        this.cancel_update_vanreturn();
+      }
+      if (index == 1) {
+        this.cancel_update_vanout();
+      }
+    },
+    stopPropagation(event) {
+      event.stopPropagation();
+    },
 
     get_toll_records() {
       //Tax Records

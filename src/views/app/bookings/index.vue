@@ -456,7 +456,7 @@
                       <b-colxx xxs="12" xs="4" lg="3" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
-                            <b-form-input v-model="$v.vanin_form.mileage.$model" :state="!$v.vanin_form.mileage.$error"
+                            <b-form-input type="number" v-model="$v.vanin_form.mileage.$model" :state="!$v.vanin_form.mileage.$error"
                               :placeholder="$t('forms.vanin.mileage')" @change="calculateDriven"></b-form-input>
                             <span>{{ $t('forms.vanin.mileage') }}</span>
                             <b-form-invalid-feedback v-if="$v.vanin_form.mileage.$error"> Please enter vehicle
@@ -725,7 +725,7 @@ export default ({
       vanin_form: {
         van_out_id: '',
         location_id: '',
-        mileage: '',
+        mileage: 0,
         fuel_tank: '',
         condition: '',
         require_maintenance: '',
@@ -1010,12 +1010,9 @@ export default ({
 
     calculateDriven() {
       // var = toFixed
-      var total_driven = this.vanin_form.mileage - this.out_mileage
-      console.log(this.out_mileage);
-      Number(total_driven);
-      Number(this.vanin_form.km_deriven);
-
-      this.vanin_form.km_deriven = Number(this.vanin_form.km_deriven) + Number(total_driven.toFixed(2))
+      const totalDriven = parseFloat(this.vanin_form.mileage) - parseFloat(this.out_mileage);
+      console.log(totalDriven, this.vanin_form.mileage, this.out_mileage);
+      this.vanin_form.km_deriven = (parseFloat(this.vanin_form.km_deriven) || 0) + totalDriven;
       this.vanin_form.total_driven = this.vanin_form.km_deriven
 
     },

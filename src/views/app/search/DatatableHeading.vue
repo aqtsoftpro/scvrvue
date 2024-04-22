@@ -4,7 +4,7 @@
       <h1>{{ title }}</h1>
       <div class="top-right-button-container">
         <b-button-group>
-          <!-- <b-dropdown split right @click="selectAll(true)" class="check-button" variant="primary">
+          <b-dropdown split right @click="selectAll(true)" class="check-button" variant="primary">
             <label
               class="custom-control custom-checkbox pl-4 mb-0 d-inline-block"
               slot="button-content"
@@ -25,7 +25,7 @@
             </label>
             <b-dropdown-item>{{$t('pages.delete')}}</b-dropdown-item>
             <b-dropdown-item>{{$t('pages.another-action')}}</b-dropdown-item>
-          </b-dropdown> -->
+          </b-dropdown>
         </b-button-group>
       </div>
       <!-- <piaf-breadcrumb /> -->

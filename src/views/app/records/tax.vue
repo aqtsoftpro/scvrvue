@@ -199,6 +199,19 @@ export default {
   },
 
   methods: {
+
+    changeTab(index) {
+      if (index == 0) {
+        console.log('this is just test');
+      }
+      if (index == 1) {
+        this.cancel_update_vanout();
+      }
+    },
+    stopPropagation(event) {
+      event.stopPropagation();
+    },
+
     get_tax_records() {
       //Tax Records
       this.processing_text = 'Loading ..';
@@ -352,7 +365,6 @@ export default {
   },
 
   mounted() {
-
     if (localStorage.getItem('token') !== null) {
       this.$store.commit('setUser', JSON.parse(localStorage.getItem('user')));
     } else {

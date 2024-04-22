@@ -184,7 +184,10 @@ export default {
         if(this.search == ''){
           return this.data;
         } else {
-          return this.search.toLowerCase().split(' ').every(v => model[this.selectedSearchColumn].toLowerCase().includes(v));
+          // return this.search.toLowerCase().split(' ').every(v => model[this.selectedSearchColumn].toLowerCase().includes(v));
+          return Object.values(model).some((value) =>
+            typeof value === 'string' && value.toLowerCase().includes(this.search.toLowerCase())
+          );
         }
       });
     }

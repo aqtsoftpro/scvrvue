@@ -93,8 +93,6 @@
                     </b-form-invalid-feedback>
                   </label>
                 </b-form>
-
-
               </b-colxx>
               <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
                 <!-- <label>{{$t('forms.customer.dob')}}</label>
@@ -105,17 +103,11 @@
 
                 <b-form class="av-tooltip tooltip-label-right">
                   <label class="form-group has-top-label">
-                      <b-form-input style="display:none" type="date"
-                              v-model.trim="$v.form.dob.$model"
-                              :state="!$v.form.dob.$error" />
-
                       <datepicker
                     :bootstrap-styling="true"
-                    v-model="$v.form.dob.$model"
+                    v-model="form.dob"
                   ></datepicker>
                     <span> {{$t('forms.customer.dob')}}</span>
-                    <b-form-invalid-feedback v-if="$v.form.dob.$error"> Please select date of birth
-                    </b-form-invalid-feedback>
                   </label>
                 </b-form>
 
@@ -189,42 +181,63 @@
 
               </b-colxx>
               <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-                <label>{{$t('forms.customer.driver_licence_front_picture')}}</label>
-                <b-file v-model="form.driver_licence_front_picture" ></b-file>
+                <!-- <label>{{$t('forms.customer.driver_licence_front_picture')}}</label>
+                <b-file v-model="form.driver_licence_front_picture" ></b-file> -->
+
+
+                <b-form class="av-tooltip tooltip-label-right">
+                    <b-form-group :label="$t('forms.customer.driver_licence_front_picture')">
+                        <b-form-input style="display:none" type="text" v-model.trim="$v.form.driver_licence_front_picture.$model" :state="!$v.form.driver_licence_front_picture.$error" />
+                        <!-- @change="onFileChange" -->
+                        
+                        <b-form-file
+                            v-model.trim="$v.form.driver_licence_front_picture.$model"
+                            drop-placeholder="Drop file here..."
+                            accept="image/*"
+                        >
+                        </b-form-file>
+                        <b-form-invalid-feedback v-if="$v.form.driver_licence_front_picture.$error"> Picture is required!</b-form-invalid-feedback>
+                    </b-form-group>
+                </b-form>
+
               </b-colxx>
               <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-                <label>{{$t('forms.customer.driver_licence_back_picture')}}</label>
-                <b-file v-model="form.driver_licence_back_picture" ></b-file>
+                <!-- <label>{{$t('forms.customer.driver_licence_back_picture')}}</label>
+                <b-file v-model="form.driver_licence_back_picture" ></b-file> -->
+                <b-form class="av-tooltip tooltip-label-right">
+                    <b-form-group :label="$t('forms.customer.driver_licence_back_picture')">
+                        <b-form-input style="display:none" type="text" v-model.trim="$v.form.driver_licence_back_picture.$model" :state="!$v.form.driver_licence_back_picture.$error" />
+                        <!-- @change="onFileChange" -->
+                        
+                        <b-form-file
+                            v-model.trim="$v.form.driver_licence_back_picture.$model"
+                            drop-placeholder="Drop file here..."
+                            accept="image/*"
+                        >
+                        </b-form-file>
+                        <b-form-invalid-feedback v-if="$v.form.driver_licence_back_picture.$error"> Picture is required!</b-form-invalid-feedback>
+                    </b-form-group>
+                </b-form>
+
+
               </b-colxx>
 
               <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
                   <b-form class="av-tooltip tooltip-label-right">
                     <label class="form-group has-top-label">
-                        <b-form-input style="display:none" type="date"
-                                v-model.trim="$v.form.driver_licence_expiry.$model"
-                                :state="!$v.form.driver_licence_expiry.$error" />
-
-                        <datepicker
+                    <datepicker
                       :bootstrap-styling="true"
-                      v-model="$v.form.driver_licence_expiry.$model"
+                      v-model="form.driver_licence_expiry"
                     ></datepicker>
                       <span> {{$t('forms.customer.driver_licence_expiry')}}</span>
-                      <b-form-invalid-feedback v-if="$v.form.driver_licence_expiry.$error"> Please select licence expiry
-                      </b-form-invalid-feedback>
                     </label>
                   </b-form>
               </b-colxx>
               <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-                <!-- <label>{{$t('forms.customer.secondary_id_number')}}</label>
-                <b-form-input v-model="form.secondary_id_number" ></b-form-input> -->
-
                 <b-form class="av-tooltip tooltip-label-right">
                   <label class="form-group has-top-label">
-                    <b-form-input v-model="$v.form.secondary_id_number.$model"
-                      :state="!$v.form.secondary_id_number.$error"></b-form-input>
+                    <b-form-input v-model="form.secondary_id_number"></b-form-input>
                     <span> {{$t('forms.customer.secondary_id_number')}}</span>
-                    <b-form-invalid-feedback v-if="$v.form.secondary_id_number.$error"> Please enter first name
-                    </b-form-invalid-feedback>
                   </label>
                 </b-form>
               </b-colxx>
@@ -246,17 +259,11 @@
 
                   <b-form class="av-tooltip tooltip-label-right">
                     <label class="form-group has-top-label">
-                        <b-form-input style="display:none" type="date"
-                                v-model.trim="$v.form.secondary_id_expiry.$model"
-                                :state="!$v.form.secondary_id_expiry.$error" />
-
-                        <datepicker
+                    <datepicker
                       :bootstrap-styling="true"
-                      v-model="$v.form.secondary_id_expiry.$model"
+                      v-model="form.secondary_id_expiry"
                     ></datepicker>
                       <span> {{$t('forms.customer.secondary_id_expiry')}}</span>
-                      <b-form-invalid-feedback v-if="$v.form.secondary_id_expiry.$error"> Please select id expiry
-                      </b-form-invalid-feedback>
                     </label>
                   </b-form>
 
@@ -268,11 +275,8 @@
 
                 <b-form class="av-tooltip tooltip-label-right">
                   <label class="form-group has-top-label">
-                    <b-form-input v-model="$v.form.nationality.$model"
-                      :state="!$v.form.nationality.$error"></b-form-input>
+                    <b-form-input v-model="form.nationality" ></b-form-input>
                     <span> {{$t('forms.customer.nationality')}}</span>
-                    <b-form-invalid-feedback v-if="$v.form.nationality.$error"> Please enter first name
-                    </b-form-invalid-feedback>
                   </label>
                 </b-form>
               </b-colxx>
@@ -372,12 +376,12 @@ export default {
         driver_licence_number: {
           required
         },
-        // driver_licence_front_picture: {
-        //   required
-        // },
-        // driver_licence_back_picture: {
-        //   required
-        // },
+        driver_licence_front_picture: {
+          required
+        },
+        driver_licence_back_picture: {
+          required
+        },
         driver_licence_expiry: {
           required
         },
@@ -417,6 +421,7 @@ export default {
       ).then(response => {
         this.registration = 1
         this.$notify('success filled', 'Success!', 'You have successfully completed your registration',{ duration: 3000, permanent: false });
+        this.isProcessing = false;
       }).catch(error => {
         this.$notify('error filled', 'Error!', error.response.data.message,{ duration: 3000, permanent: false });
       })

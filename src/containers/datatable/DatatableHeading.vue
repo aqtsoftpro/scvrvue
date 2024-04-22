@@ -42,10 +42,10 @@
           <div class="d-block d-md-inline-block pt-1">
             <div class="search-sm d-inline-block float-md-left mr-1 align-top">
               <b-input :placeholder="$t('menu.search')"  @input="(val) => searchChange(val)" />
-                <div v-if="searchColumn" class="mt-2 badge badge-light">Search by {{ selectedSearchColumn }}</div>
+                <!-- <div v-if="searchColumn" class="mt-2 badge badge-light">Search by {{ selectedSearchColumn }}</div> -->
 
             </div>
-            <div v-if="searchColumn" class="d-inline-block  ml-2 align-top">
+            <!-- <div v-if="searchColumn" class="d-inline-block  ml-2 align-top">
               <b-dropdown
               id="ddown2"
               right
@@ -54,13 +54,13 @@
               class="d-inline-block"
               size="xs"
             >
-              <b-dropdown-item
-                v-for="(column,index) in searchColumn"
-                :key="index"
-                @click="switchSearchColumn(column)"
-              >{{ column  }}</b-dropdown-item>
+                <b-dropdown-item
+                  v-for="(column,index) in searchColumn"
+                  :key="index"
+                  @click="switchSearchColumn(column)"
+                >{{ column  }}</b-dropdown-item>
               </b-dropdown>
-            </div>
+            </div> -->
           </div>
           <div class="float-md-right pt-1">
             <span class="text-muted text-small mr-1 mb-2">{{from}}-{{to}} of {{ total }}</span>
@@ -150,10 +150,10 @@ export default {
     };
   },
   methods: {
-    switchSearchColumn(column) {
-      this.selectedSearchColumn = column
-      this.changeSearchColumn(column)
-    }
+    // switchSearchColumn(column) {
+    //   this.selectedSearchColumn = column
+    //   this.changeSearchColumn(column)
+    // }
   },
   mounted() {
     //this.selectedSearchColumn = this.searchColumn[0]
