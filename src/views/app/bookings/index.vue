@@ -457,7 +457,7 @@
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input type="number" v-model="$v.vanin_form.mileage.$model" :state="!$v.vanin_form.mileage.$error"
-                              :placeholder="$t('forms.vanin.mileage')" @change="calculateDriven"></b-form-input>
+                              :placeholder="$t('forms.vanin.mileage')" v-on:input="calculateDriven"></b-form-input>
                             <span>{{ $t('forms.vanin.mileage') }}</span>
                             <b-form-invalid-feedback v-if="$v.vanin_form.mileage.$error"> Please enter vehicle
                               mileage!</b-form-invalid-feedback>
@@ -690,6 +690,7 @@ export default ({
       swap_with_options: [],
       booking_options: [],
       out_mileage: 0,
+      pre_km: 0,
       newData: null,
       van_out: '',
       form: {
@@ -1012,8 +1013,11 @@ export default ({
       // var = toFixed
       const totalDriven = parseFloat(this.vanin_form.mileage) - parseFloat(this.out_mileage);
       console.log(totalDriven, this.vanin_form.mileage, this.out_mileage);
-      this.vanin_form.km_deriven = (parseFloat(this.vanin_form.km_deriven) || 0) + totalDriven;
-      this.vanin_form.total_driven = this.vanin_form.km_deriven
+
+      this.vanin_form.km_deriven = totalDriven + this.pre_km;
+      // this.vanin_form.km_deriven = (parseFloat(this.vanin_form.km_deriven) || 0) + totalDriven;
+      // this.vanin_form.total_driven = totalDriven;
+      // this.vanin_form.total_driven = this.vanin_form.km_deriven
 
     },
 
@@ -1303,6 +1307,7 @@ export default ({
         .then(response => {
           this.vanin_form = response.data
           this.vanin_form.km_deriven = response.data.total_driven
+          this.pre_km = response.data.total_driven
           this.vanin_form.total_days = response.data.days_count
           this.out_mileage = response.data.mileage
           this.vanin_form.require_maintenance = parseInt(response.data.require_maintenance)
