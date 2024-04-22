@@ -600,6 +600,8 @@
                         <br>
                         <p>{{ vanin_form.total_days }}</p>
                       </b-colxx>
+                    </b-row>
+                    <b-row>
                       <div v-if="isProcessing">
                         <b-spinner variant="primary"></b-spinner>
                         <span class="text-primary">{{ processing_text }}</span>
