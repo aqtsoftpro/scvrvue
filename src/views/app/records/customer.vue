@@ -244,7 +244,6 @@
             class="simple-icon-close"></i></b-button>
       </div>
     </b-form>
-
     <b-row>
       <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
         <label class="form-group has-top-label">

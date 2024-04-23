@@ -224,7 +224,7 @@
                               v-model.trim="$v.form.reason_of_renting.$model"
                               :state="!$v.form.reason_of_renting.$error" />
                             <v-select v-model="form.reason_of_renting" aria-placeholder="New / Swap"
-                              :options="swap_options"></v-select>
+                              :options="swap_options" :disabled="!editing_mode" ></v-select>
                             <span>{{ $t('forms.vanout.reason_of_renting') }}</span>
                             <b-form-invalid-feedback v-if="$v.form.reason_of_renting.$error"> Please select reason of
                               renting!</b-form-invalid-feedback>
@@ -316,6 +316,20 @@
                         </b-form>
                       </b-colxx>
 
+                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                        <b-form class="av-tooltip tooltip-label-right">
+                          <b-form-checkbox
+                            id="checkbox-1"
+                            v-model="form.long_term"
+                            name="checkbox-1"
+                            :value="1"
+                            :unchecked-value="0"
+                          >
+                          <span>Is This Long Term Customer?</span>
+                          </b-form-checkbox>
+                        </b-form>
+                      </b-colxx>
+
                       <b-colxx xxs="12" xs="12" md="6" xxl="4" class="mb-3">
                         <label>Rental Periods
                           <!-- <b-form-input v-model="$v.form.van_out_date.$model"
@@ -329,7 +343,7 @@
                             <b-form-invalid-feedback v-if="$v.form.van_out_date.$error"> Please select van out date
                             </b-form-invalid-feedback>
                           </div>
-                          <div class="d-flex">
+                          <div v-if="form.long_term == 0" class="d-flex">
                             <datepicker type="datetime" v-model="form.due_return" placeholder="Vehical Due Back"
                               value-type="format" format="DD-MM-YYYY hh:mm">
                             </datepicker>
@@ -698,7 +712,7 @@ export default ({
         customer_id: '',
         vehicle_id: '',
         location_id: '',
-        reason_of_renting: '',
+        reason_of_renting: 'new',
         swap_with: '',
         rental_priod: '',
         rental_amount: '',
@@ -712,6 +726,7 @@ export default ({
         demage_pics: null,
         demage_video: null,
         condition: '',
+        long_term: 0,
       },
       VanoutSearchColumns: ["reg_number"],
       VanReturnSearchColumns: ["vehicle"],
@@ -900,9 +915,6 @@ export default ({
         required
       },
       mileage: {
-        required
-      },
-      due_return: {
         required
       },
     },
@@ -1383,7 +1395,7 @@ export default ({
         user_id: '',
         vehicle_id: '',
         location_id: '',
-        reason_of_renting: '',
+        reason_of_renting: 'new',
         swap_with: '',
         rental_priod: '',
         rental_amount: '',
@@ -1664,7 +1676,7 @@ export default ({
     currentUser() {
       this.user = this.currentUser
       this.roleName = this.currentUser.role_name ?? null
-    }
+    },
   }
 })
 </script>
