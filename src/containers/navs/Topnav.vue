@@ -185,7 +185,7 @@
           <template slot="button-content">
             <span class="name mr-1">{{currentUser.name}} ( {{ currentUser.role_name }} )</span>
             <span>
-              <img :alt="currentUser.name" :src="currentUser.img" />
+              <img :alt="currentUser.name" :src="currentUser.image" />
             </span>
           </template>
           <b-dropdown-item @click="profile">

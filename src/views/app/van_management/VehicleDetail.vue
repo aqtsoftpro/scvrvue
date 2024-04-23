@@ -119,11 +119,11 @@
                                       </tr>
                                       <tr>
                                         <th>Policy Start Date</th>
-                                        <td>{{ vehicle.insurance.policy_start_date }}</td>
+                                        <td>{{ formatDate(vehicle.insurance.policy_start_date) }}</td>
                                       </tr>
                                       <tr>
                                         <th>Policy End Date</th>
-                                        <td>{{ vehicle.insurance.policy_end_date }}</td>
+                                        <td>{{ formatDate(vehicle.insurance.policy_end_date) }}</td>
                                       </tr>
                                       <tr>
                                         <th>Roadside Assistance</th>
@@ -135,11 +135,11 @@
                                       </tr>
                                       <tr>
                                         <th>Roadside Assistance Start Date</th>
-                                        <td>{{ vehicle.insurance.road_side_assistance_start_date }}</td>
+                                        <td>{{ formatDate(vehicle.insurance.road_side_assistance_start_date) }}</td>
                                       </tr>
                                       <tr>
                                         <th>Roadside Assistance End Date</th>
-                                        <td>{{ vehicle.insurance.road_side_assistance_end_date }}</td>
+                                        <td>{{ formatDate(vehicle.insurance.road_side_assistance_end_date) }}</td>
                                       </tr>
                                       <tr v-if="vehicle.insurance.demage_details">
                                         <th>Damage Details</th>
@@ -173,9 +173,6 @@
                 </b-card>
               </b-colxx>
             </b-row>
-
-
-
           </b-colxx>
       </b-row>
   </div>
@@ -215,7 +212,13 @@
             }).then(response => {
                 this.vehicle = response.data
             })
-        }
+        },
+
+        formatDate(dateString) {
+          const date = new Date(dateString);
+          const options = { year: 'numeric', month: 'short', day: '2-digit' };
+          return date.toLocaleDateString('en-GB', options);
+        },
       },
       mounted() {
           this.get_vehicle_data()

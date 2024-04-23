@@ -87,14 +87,13 @@ export default {
                 email: response.data.email,
                 id: response.data.id,
                 img: '/assets/img/profile-pic-l.jpg',
+                image: response.data.image,
                 role_id: response.data.roles[0].id,
                 role_name: response.data.roles[0].name
               }
 
               //console.log(user);
-
               user = JSON.stringify(user);
-
               localStorage.setItem('user', user);
               commit('setUser', response.data)
               router.push('/app/dashboard');

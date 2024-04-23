@@ -14,16 +14,44 @@
                 <b-card class="mb-4" no-body>
                   <b-card-body>
                     <!-- image -->
-
-                        <b-img
-                          :src="user.img"
+                        <b-img v-if="imageUrl == null "
+                          :src="user.image"
                           alt="Image"
                           fluid
                           rounded
                         ></b-img>
 
+                        <b-img v-else
+                          :src="imageUrl"
+                          alt="Image"
+                          fluid
+                          rounded
+                        ></b-img>
+
+                        
+
                   </b-card-body>
-              </b-card>
+                </b-card>
+                <b-card class="mb-4 p-4" no-body>
+                  <b-form class="av-tooltip tooltip-label-right">
+                      <b-form-group label="Uploade profile image">
+                          <!-- <b-form-input style="display:none" type="text" v-model.trim="$v.form.profile_image.$model" :state="!$v.form.profile_image.$error" />                                 -->
+                          <b-form-file
+                              v-model.trim="$v.form.profile_image.$model"
+                              drop-placeholder="Drop file here..."
+                              accept="image/*"
+                              @change="previewImage"
+                          >
+                          </b-form-file>
+                          <b-form-invalid-feedback v-if="$v.form.profile_image.$error"> Picture is required!</b-form-invalid-feedback>
+                      </b-form-group>
+                  </b-form>
+                  <div v-if="isProcessing">
+                    <b-spinner variant="primary"></b-spinner>
+                    <span class="text-primary">{{ processing_text }}</span>
+                  </div>
+                  <b-button  @click.stop="updateImage"  variant="primary" class="mt-4 mb-4">Upload Image</b-button>
+                </b-card>
               </b-colxx>
               <b-colxx xxs="9" xl="9" >
                 <b-card class="mb-4" no-body>
@@ -55,15 +83,19 @@
                 </b-card>
               </b-colxx>
             </b-row>
-
-
-
           </b-colxx>
       </b-row>
   </div>
   </template>
 
   <script>
+
+import {
+  validationMixin
+} from "vuelidate";
+const {
+  required
+} = require("vuelidate/lib/validators");
   import axios from 'axios'
   import {apiUrl} from '../../constants/config.js'
 
@@ -74,20 +106,61 @@
       data() {
           return {
               isLoad: false,
-              vehicle: []
+              vehicle: [],
+
+              form: {
+                profile_image: null,
+              },
+              processing_text: '',
+              isProcessing: false,
+              imageUrl: null,
           }
       },
+
+
+      mixins: [validationMixin],
+      validations: {
+        form: {
+            profile_image: {
+              required
+            },
+        }
+      },
+
+
       methods: {
-      //   get_vehicle_data() {
-      //       const van_id = this.$route.params.id
-      //       axios.get(apiUrl + '/vehicle/' + van_id, {
-      //           headers: {
-      //               'Authorization': 'Bearer ' + localStorage.getItem('token')
-      //           }
-      //       }).then(response => {
-      //           this.vehicle = response.data
-      //       })
-      //   }
+        updateImage(){
+          this.$v.form.$touch();
+          if (this.$v.form.$anyError == true) {
+            return false;
+          }
+          this.processing_text = 'Saving User Data ...'
+          this.isProcessing = true
+          axios.post(
+            apiUrl + '/edit-pic',this.form,{
+              headers:{
+                'content-type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+              }
+            }
+          ).then(response => {
+            this.registration = 1
+            this.$notify('success filled', 'Success!', 'You have successfully completed your registration',{ duration: 3000, permanent: false });
+            this.isProcessing = false;
+          }).catch(error => {
+            this.$notify('error filled', 'Error!', error.response.data.message,{ duration: 3000, permanent: false });
+          })
+        },
+
+        previewImage(event) {
+          const file = event.target.files[0];
+          if (file && file.type.startsWith('image/')) {
+            // Preview the image
+            this.file = file;
+            this.imageUrl = URL.createObjectURL(file);
+          }
+        },
+
       },
       computed: {
         user(){
