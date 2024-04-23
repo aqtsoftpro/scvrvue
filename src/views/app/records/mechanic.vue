@@ -282,6 +282,9 @@ export default {
         workshop_address: '',
         expertise: '',
       }
+    },
+    resetForm() {
+      this.cancel_update_mechanic_record(); // Assuming you have a form ref named 'form'
     }
   },
 

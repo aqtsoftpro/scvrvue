@@ -609,6 +609,10 @@ export default {
         'date': null,
         'toll_image': null
       }
+    },
+
+    resetForm() {
+      this.cancel_update_toll_record(); // Assuming you have a form ref named 'form'
     }
   },
 

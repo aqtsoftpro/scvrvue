@@ -620,6 +620,9 @@ export default {
         email: null,
         role_id: 'Select Role',
       }
+    },    
+    resetForm() {
+      this.cancel_update_customer_record(); // Assuming you have a form ref named 'form'
     },
     get_role_options() {
       axios.get(apiUrl + '/role', {

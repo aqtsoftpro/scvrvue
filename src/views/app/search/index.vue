@@ -1,11 +1,38 @@
 <template>
   <div>
-    
-    <b-modal id="modalbasic" size="lg" ref="modalbasic" title="customer model">
+    <b-modal v-if="customer" id="customer_modal" size="lg" ref="customer_modal" :title="customer.first_name + ' ' + customer.last_name">
       <table class="stacked table">
-        <!-- <tr>
+        <tr>
           <td>First Name:</td>
           <td> {{ customer.first_name }}</td>
+        </tr>
+        <tr>
+          <td>Last Name:</td>
+          <td> {{ customer.last_name }}</td>
+        </tr>
+        <tr>
+          <td>Email:</td>
+          <td> {{ customer.email }}</td>
+        </tr>
+        <tr>
+          <td>Phone Number:</td>
+          <td> {{ customer.phone_number }}</td>
+        </tr>
+        <tr>
+          <td>Address:</td>
+          <td> {{ customer.address }}</td>
+        </tr>
+        <tr>
+          <td>Date of Birth:</td>
+          <td> {{ customer.dob }}</td>
+        </tr>
+        <tr>
+          <td>Gender:</td>
+          <td> {{ customer.gender }}</td>
+        </tr>
+        <tr>
+          <td>Occupation:</td>
+          <td> {{ customer.occupation }}</td>
         </tr>
         <tr>
           <td>Driver Licence Number:</td>
@@ -23,10 +50,26 @@
           <td>Driver Licence Expiry:</td>
           <td> {{ customer.driver_licence_expiry }}</td>
         </tr>
+        <tr v-if="customer.secondary_id_number">
+          <td>Secondary ID Number Number:</td>
+          <td> {{ customer.secondary_id_number }}</td>
+        </tr>
+        <tr v-if="customer.secondary_id_front_picture">
+          <td>Secondary ID Front Picture:</td>
+          <td> <img width="100%" :src="customer.secondary_id_front_picture" /> </td>
+        </tr>
+        <tr v-if="customer.secondary_id_back_picture">
+          <td>Secondary ID Back Picture:</td>
+          <td><img width="100%" :src="customer.secondary_id_back_picture" /></td>
+        </tr>
+        <tr v-if="customer.secondary_id_expiry">
+          <td>Secondary ID Expiry:</td>
+          <td> {{ customer.secondary_id_expiry }}</td>
+        </tr>
         <tr>
           <td>Nationatlity:</td>
           <td> {{ customer.nationality }}</td>
-        </tr> -->
+        </tr>
       </table>
     </b-modal>
     <b-row>
@@ -47,14 +90,16 @@
                   <p class="mb-1 text-muted text-small">{{item.vehicle_type}} | {{ item.make }} - {{ item.model }}</p>
                   <p class="mb-4 text-muted text-small">Purchase Date: {{ item.purchase_date }}</p>
                </router-link>
-               <router-link v-else tag="a" :to="`#`" class="w-40 w-sm-100">
+               <div v-else tag="a" :to="`#`" class="w-100 w-sm-100">
+                <b-button class="float-right"@click.stop="bring_fields(item)" v-b-modal.customer_modal variant="grey" size="sm">
+                View Customer
+                </b-button>
                   <!-- <img width="100" :src="item.picture" /> -->
                   <p class="list-item-heading mb-1 color-theme-1">{{item.first_name}} {{item.last_name}}</p>
                   <p class="mb-1 text-muted text-small">{{item.phone_number}} | {{ item.email }}</p>
                   <p class="mb-4 text-muted text-small">Joined: {{ item.address }}</p>
-                  <b-button @click.stop="bring_fields(data.item)" v-b-modal.modalbasic variant="grey" size="sm"><i
-                      class="simple-icon-eye"></i></b-button>
-               </router-link>
+                  
+               </div>
                <div class="separator mb-5" v-if="results.length!=(index+1)"></div>
              </div>
           </b-card>

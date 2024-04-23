@@ -8,22 +8,20 @@
           <b-card class="mb-4" no-body>
             <b-tabs card no-fade>
               <b-tab title="Tax Records" active title-item-class="w-25 text-center" @click="changeTab(0)">
-                <tax  @click="stopPropagation" />
+                <tax ref="taxComponent"/>
                 <b-table :items="tax_records" />
               </b-tab>
-              <b-tab title="Mechanic Workshop Records" title-item-class="w-25 text-center">
-                <!-- Content for van out -->
-                <mechanic />
+              <b-tab title="Mechanic Workshop Records" title-item-class="w-25 text-center" @click="changeTab(1)">
+                <mechanic ref="mechanicComponent" />
                 <b-table :items="mechanic_workshop_records" />
               </b-tab>
-              <b-tab title="Customer Records" title-item-class="w-25 text-center">
-                <!-- Content for van out -->
-                <customer />
+              <b-tab title="Customer Records" title-item-class="w-25 text-center" @click="changeTab(2)">
+                <customer ref="cusComponent" />
                 <b-table :items="customer_records" />
               </b-tab>
-              <b-tab title="Toll Records" title-item-class="w-25 text-center">
+              <b-tab title="Toll Records" title-item-class="w-25 text-center" @click="changeTab(3)">
                 <!-- Content for van out -->
-                <toll />
+                <toll ref="tollComponent" />
                 <b-table :items="toll_records" />
               </b-tab>
             </b-tabs>
@@ -59,20 +57,24 @@ export default {
     }
   },
   methods: {
-
     changeTab(index) {
-      // Custom functionality when a tab is clicked
       if (index == 0) {
-        this.cancel_update_vanreturn();
+        this.$refs[`taxComponent`].resetForm();
       }
-      if (index == 1) {
-        this.cancel_update_vanout();
-      }
-    },
-    stopPropagation(event) {
-      event.stopPropagation();
-    },
 
+      if (index == 1) {
+        this.$refs[`mechanicComponent`].resetForm();
+      }
+
+      if (index == 2) {
+        this.$refs[`cusComponent`].resetForm();
+      }
+
+      if (index == 3) {
+        this.$refs[`tollComponent`].resetForm();
+      }
+
+    },
     get_toll_records() {
       //Tax Records
       axios.get(

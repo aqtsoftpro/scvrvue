@@ -199,19 +199,6 @@ export default {
   },
 
   methods: {
-
-    changeTab(index) {
-      if (index == 0) {
-        console.log('this is just test');
-      }
-      if (index == 1) {
-        this.cancel_update_vanout();
-      }
-    },
-    stopPropagation(event) {
-      event.stopPropagation();
-    },
-
     get_tax_records() {
       //Tax Records
       this.processing_text = 'Loading ..';
@@ -361,6 +348,11 @@ export default {
         accountant_fee: '',
         comments: '',
       }
+    },
+
+    resetForm() {
+      this.cancel_update_tax_record(); // Assuming you have a form ref named 'form'
+      this.editing_mode = false
     }
   },
 
