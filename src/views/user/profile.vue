@@ -89,6 +89,9 @@
   </template>
 
   <script>
+import {
+    mapActions
+} from "vuex";
 
 import {
   validationMixin
@@ -129,6 +132,9 @@ const {
 
 
       methods: {
+
+        ...mapActions(["authGet"]),
+
         updateImage(){
           this.$v.form.$touch();
           if (this.$v.form.$anyError == true) {
@@ -144,8 +150,8 @@ const {
               }
             }
           ).then(response => {
-            this.registration = 1
-            this.$notify('success filled', 'Success!', 'You have successfully completed your registration',{ duration: 3000, permanent: false });
+            this.authGet()
+            this.$notify('success filled', 'Success!', 'You have successfully updated your image',{ duration: 3000, permanent: false });
             this.isProcessing = false;
           }).catch(error => {
             this.$notify('error filled', 'Error!', error.response.data.message,{ duration: 3000, permanent: false });

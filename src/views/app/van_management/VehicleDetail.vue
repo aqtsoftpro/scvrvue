@@ -78,7 +78,6 @@
                           </b-row>
                       </b-tab>
                       <b-tab title="Seller's Info">
-
                           <b-row>
                               <b-colxx sm="12">
                                   <table class="table">
@@ -157,13 +156,13 @@
                       <b-tab title="Maintenance">
                           <b-row>
                               <b-colxx sm="12">
-                                <b-table hover :fields="fields"  :items="vehicle.maintenance" ></b-table>
+                                <b-table hover :fields="fields"  :items="formattedMaintenance" ></b-table>
                               </b-colxx>
                           </b-row>
                           <b-row>
                               <b-colxx sm="12">
                                 <div>Next Maintenance Mileage<span class="badge badge-primary"> {{ (vehicle.next_maintenance_mileage) ? vehicle.next_maintenance_mileage : ' Not Set' }}</span> </div>
-                                <div>Next Maintenance Due: <span class="badge badge-primary"> {{ (vehicle.next_maintenance_due_date) ? vehicle.next_maintenance_due_date : ' Not Set' }}</span></div>
+                                <div>Next Maintenance Due: <span class="badge badge-primary"> {{ (formatDate(vehicle.next_maintenance_due_date)) ? vehicle.next_maintenance_due_date : ' Not Set' }}</span></div>
                                 <div>Next Maintenance Service: <span class="badge badge-primary"> {{ (vehicle.next_maintenance_service) ? vehicle.next_maintenance_service : ' Not Set' }}</span></div>
                                 <div>Next Maintenance Comments: <span class="badge badge-primary" v-if="vehicle.next_maintenance_comments"> {{ (vehicle.next_maintenance_comments) ? vehicle.next_maintenance_comments : '' }}</span></div>
                               </b-colxx>
@@ -222,6 +221,23 @@
       },
       mounted() {
           this.get_vehicle_data()
+      },
+
+      computed: {
+        formattedMaintenance() {
+          // Loop through maintenance array and format the date
+          return this.vehicle.maintenance.map(item => {
+            // Convert date string to a Date object
+            const date = new Date(item.date);
+            // Format the date as "DD MMM YYYY"
+            const formattedDate = date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            // Update the item with the formatted date
+            return {
+              ...item,
+              date: formattedDate
+            };
+          });
+        }
       }
   }
   </script>

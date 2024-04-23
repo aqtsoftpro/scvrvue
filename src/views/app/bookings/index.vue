@@ -1025,11 +1025,10 @@ export default ({
       // var = toFixed
       const totalDriven = parseFloat(this.vanin_form.mileage) - parseFloat(this.out_mileage);
       console.log(totalDriven, this.vanin_form.mileage, this.out_mileage);
-
       this.vanin_form.km_deriven = totalDriven + this.pre_km;
       // this.vanin_form.km_deriven = (parseFloat(this.vanin_form.km_deriven) || 0) + totalDriven;
       // this.vanin_form.total_driven = totalDriven;
-      // this.vanin_form.total_driven = this.vanin_form.km_deriven
+      this.vanin_form.total_driven = this.vanin_form.km_deriven
 
     },
 
@@ -1416,7 +1415,7 @@ export default ({
         damage_caused_by_customer: '',
         demage_picture: '',
         demage_text: '',
-        total_driven: '',
+        total_driven: 0,
         days_count: '',
       }
     },

@@ -182,7 +182,10 @@
           menu-class="mt-3"
           no-caret
         >
+
+        
           <template slot="button-content">
+            <!-- {{ currentUser }} -->
             <span class="name mr-1">{{currentUser.name}} ( {{ currentUser.role_name }} )</span>
             <span>
               <img :alt="currentUser.name" :src="currentUser.image" />
