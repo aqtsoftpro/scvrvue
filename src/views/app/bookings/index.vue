@@ -4,6 +4,12 @@
       <b-modal ref="create_customer_modal" id="modallg" size="lg" title="Create Customer" hide-footer>
         <customer :cc="customer_created" />
       </b-modal>
+
+      <b-modal ref="create_swap_modal" id="swapModal" size="lg" title="Add Swaped Vehicle Data" hide-footer>
+        <swap-form @swap_submit_data="swap_created"/>
+      </b-modal>
+
+
       <b-modal id="vanoutModal" size="lg" ref="vanoutModal">
         <table class="stacked table">
           <tr>
@@ -169,7 +175,7 @@
                             <b-form-input style="display:none" type="text" v-model.trim="$v.form.customer_id.$model"
                               :state="!$v.form.customer_id.$error" />
                             <v-select v-model="form.customer_id" label="name" :key="form.customer_id"
-                              :reduce="customer => customer.id" :options="customer_options">
+                              :reduce="customer => customer.id" :options="customer_options" v-on:input="onCustomerSelect" >
                               <template #list-header>
                                 <b-button v-b-modal.modallg variant="outline-primary btn-xs" class="mr-2 mb-2">Add
                                   Customer</b-button>
@@ -224,25 +230,21 @@
                               v-model.trim="$v.form.reason_of_renting.$model"
                               :state="!$v.form.reason_of_renting.$error" />
                             <v-select v-model="form.reason_of_renting" aria-placeholder="New / Swap"
-                              :options="swap_options" :disabled="!editing_mode" ></v-select>
+                              :options="swap_options" :disabled="!editing_mode"></v-select>
                             <span>{{ $t('forms.vanout.reason_of_renting') }}</span>
                             <b-form-invalid-feedback v-if="$v.form.reason_of_renting.$error"> Please select reason of
                               renting!</b-form-invalid-feedback>
                           </label>
-                          <label v-if="form.reason_of_renting == 'Swap'" class="form-group has-top-label">
-                            <!-- <v-select v-model="form.swap_with" label="name" 
-                              :reduce="vehicle => vehicle.id"
-                              :key="form.swap_with"
-                              v-on:input="onSwapSelect" aria-placeholder="Select Vehicle to swap with"
-                              :options="available_vehicle_options"></v-select> -->
-
+                          <b-button v-if="form.reason_of_renting == 'Swap'" @click.stop="open_swap_modal" class="btn-sm" >
+                                  {{ form.swapped_data == null ? 'Add swapped vehicle data': 'Edit swapped vehicle data'}}
+                          </b-button>
+                          <!-- <label v-if="form.reason_of_renting == 'Swap'" class="form-group has-top-label">
                               <select class="form-select custom-select" aria-label="Default select example" @change="onSwapSelect(form.swap_with)" v-model="form.swap_with">
                                 <option >Select Vehicle to swap with</option>
                                 <option v-for="vehicle in available_vehicle_options" :value="vehicle.id">{{ vehicle.name }}</option>
                               </select>
-
                             <span>{{ $t('forms.vanout.swap_with') }}</span>
-                          </label>
+                          </label> -->
                           <!-- v-on:input="onVehicleSelect" -->
                         </b-form>
                       </b-colxx>
@@ -325,7 +327,7 @@
                             :value="1"
                             :unchecked-value="0"
                           >
-                          <span>Is This Long Term Customer?</span>
+                            <span>Is This Long Term Customer?</span>
                           </b-form-checkbox>
                         </b-form>
                       </b-colxx>
@@ -415,6 +417,10 @@
                     <b-row>
 
                     </b-row>
+
+
+
+
                     <b-button v-if="!editing_mode" @click.stop="save_vanout_form" variant="primary" class="mt-4 mb-4">{{
           'Save'
         }}</b-button>
@@ -424,7 +430,15 @@
                       <b-button @click.stop="cancel_update_vanout()" variant="info" class="mt-4 mb-4"><i
                           class="simple-icon-close"></i></b-button>
                     </div>
+
+                    <b-row>
+                      <b-button @click.stop="open_swap_modal">
+this is test
+                      </b-button>
+                    </b-row>
+
                   </b-form>
+
                   <datatable title="" :fields="vanout_fields" :data="vanouts" :edit="edit_vanout" :view="bring_fields"
                     :role="roleName" :del="delete_vanout" :searchColumn="VanoutSearchColumns" />
                 </b-tab> 
@@ -677,12 +691,20 @@ import modal from "../../ui/components/Modal";
 import { mapGetters } from 'vuex';
 import datatable from './datatable'
 import Customer from '../records/customer_form'
+import SwapForm from './SwapForm'
 import AcessoriesManagement from './accessories_management.vue'
 import moment from 'moment';
 
 
 export default ({
-  components: { 'v-select': vSelect, datepicker: DatePicker, datatable: datatable, Customer, 'accessories-management': AcessoriesManagement },
+  components: { 
+    'v-select': vSelect, 
+    datepicker: DatePicker, 
+    datatable: datatable, 
+    Customer, 
+    'accessories-management': AcessoriesManagement,
+    'swap-form': SwapForm
+   },
   data() {
     return {
       today: new Date(),
@@ -727,6 +749,7 @@ export default ({
         demage_video: null,
         condition: '',
         long_term: 0,
+        swapped_data: null,
       },
       VanoutSearchColumns: ["reg_number"],
       VanReturnSearchColumns: ["vehicle"],
@@ -974,8 +997,19 @@ export default ({
     },
 
     customer_created() {
-      this.get_customer_options()
+      this.all_()
       this.$refs['create_customer_modal'].hide()
+    },
+
+    swap_created(formData) {
+      this.form.swapped_data = formData
+      console.log(this.form);
+      this.all_()
+      this.$refs['create_swap_modal'].hide()
+    },
+
+    open_swap_modal() {
+      this.$refs['create_swap_modal'].show()
     },
 
     addNewLocation() {
@@ -1127,6 +1161,20 @@ export default ({
       })
     },
 
+    onCustomerSelect(key) {
+      axios.get(apiUrl + '/customer_van_out/' + key, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+        }).then(response => {
+          console.log(response.data);
+          if (response.data) {
+            const vanOutId = response.data;
+            this.edit_vanout(vanOutId);
+          }
+        })
+    },
+
 
     bring_fields(data) {
       console.log(data)
@@ -1191,7 +1239,7 @@ export default ({
           payment_mode: ''
         }
         this.isProcessing = false
-        this.get_customer_options()
+        this.all_()
         this.get_active_vehicle_options()
       }).catch(error => {
         this.$notify('error filled', 'Error!', error.response.data.message, { duration: 3000, permanent: false });
@@ -1234,7 +1282,7 @@ export default ({
           'Van In record has been saved.',
         )
         this.isProcessing = false
-        this.get_customer_options()
+        this.all_()
         this.get_active_vehicle_options()
       }).catch(error => {
         this.$notify('error filled', 'Error!', error.response.data.message, { duration: 3000, permanent: false });
@@ -1257,6 +1305,7 @@ export default ({
         }).then(response => {
           console.log(response.data);
           this.form = response.data
+          // this.form.long_term = response.data.long_term
           this.booking_create_option = ({ id: item.id, name: item.reg_number })
           this.isProcessing = false
           var accessories_to_set = [];
@@ -1378,7 +1427,7 @@ export default ({
     },
     cancel_update_vanout() {
       this.get_active_vehicle_options()
-      this.get_customer_options()
+      this.all_()
       this.editing_mode = false;
       this.reset_form();
     },
@@ -1481,7 +1530,7 @@ export default ({
       })
     },
 
-    get_customer_options(id = null) {
+    all_(id = null) {
 
       this.processing_text = 'Loading Data ..'
       this.isProcessing = true
@@ -1661,7 +1710,7 @@ export default ({
       this.$router.push('/user/login');
     }
 
-    this.get_customer_options()
+    this.get_all_customer_options()
     // this.get_available_vehicle_options()
     this.get_active_vehicle_options()
     this.get_location_options()
