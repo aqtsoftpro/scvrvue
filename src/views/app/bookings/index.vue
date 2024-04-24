@@ -418,9 +418,6 @@
 
                     </b-row>
 
-
-
-
                     <b-button v-if="!editing_mode" @click.stop="save_vanout_form" variant="primary" class="mt-4 mb-4">{{
           'Save'
         }}</b-button>
@@ -430,12 +427,6 @@
                       <b-button @click.stop="cancel_update_vanout()" variant="info" class="mt-4 mb-4"><i
                           class="simple-icon-close"></i></b-button>
                     </div>
-
-                    <b-row>
-                      <b-button @click.stop="open_swap_modal">
-this is test
-                      </b-button>
-                    </b-row>
 
                   </b-form>
 
