@@ -162,7 +162,7 @@
                           <b-row>
                               <b-colxx sm="12">
                                 <div>Next Maintenance Mileage<span class="badge badge-primary"> {{ (vehicle.next_maintenance_mileage) ? vehicle.next_maintenance_mileage : ' Not Set' }}</span> </div>
-                                <div>Next Maintenance Due: <span class="badge badge-primary"> {{ (formatDate(vehicle.next_maintenance_due_date)) ? vehicle.next_maintenance_due_date : ' Not Set' }}</span></div>
+                                <div>Next Maintenance Due: <span class="badge badge-primary"> {{ ( formatDate(vehicle.next_maintenance_due_date) ) ? vehicle.next_maintenance_due_date : ' Not Set' }}</span></div>
                                 <div>Next Maintenance Service: <span class="badge badge-primary"> {{ (vehicle.next_maintenance_service) ? vehicle.next_maintenance_service : ' Not Set' }}</span></div>
                                 <div>Next Maintenance Comments: <span class="badge badge-primary" v-if="vehicle.next_maintenance_comments"> {{ (vehicle.next_maintenance_comments) ? vehicle.next_maintenance_comments : '' }}</span></div>
                               </b-colxx>

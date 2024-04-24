@@ -95,13 +95,13 @@
                 </b-form>
               </b-colxx>
               <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-                <!-- <label>{{$t('forms.customer.dob')}}</label>
+                <label>{{$t('forms.customer.dob')}}</label>
                 <datepicker
                     :bootstrap-styling="true"
                     v-model="form.dob"
-                  ></datepicker> -->
+                  ></datepicker>
 
-                <b-form class="av-tooltip tooltip-label-right">
+                <!-- <b-form class="av-tooltip tooltip-label-right">
                   <label class="form-group has-top-label">
                       <datepicker
                     :bootstrap-styling="true"
@@ -109,7 +109,7 @@
                   ></datepicker>
                     <span> {{$t('forms.customer.dob')}}</span>
                   </label>
-                </b-form>
+                </b-form> -->
 
 
               </b-colxx>
@@ -125,26 +125,26 @@
 
 
                   <b-form class="av-tooltip tooltip-label-right">
-                  <label class="form-group has-top-label">
-                    <!-- <b-form-input v-model="$v.form.gender.$model"
-                      :state="!$v.form.gender.$error"></b-form-input> -->
+                    <label class="form-group has-top-label">
+                      <!-- <b-form-input v-model="$v.form.gender.$model"
+                        :state="!$v.form.gender.$error"></b-form-input> -->
 
-                      <b-form-input style="display:none" type="text"
-                              v-model.trim="$v.form.gender.$model"
-                              :state="!$v.form.gender.$error" />
+                        <b-form-input style="display:none" type="text"
+                                v-model.trim="$v.form.gender.$model"
+                                :state="!$v.form.gender.$error" />
 
-                      <v-select v-model="$v.form.gender.$model"
-                        :reduce="gender => gender.id"
-                        label="name"
-                        aria-placeholder="Select Gender"
-                        :options="[{ id: 1, name: 'Male' }, { id: 2, name: 'Female' }]"
-                      ></v-select>
+                        <v-select v-model="$v.form.gender.$model"
+                          :reduce="gender => gender.id"
+                          label="name"
+                          aria-placeholder="Select Gender"
+                          :options="[{ id: 1, name: 'Male' }, { id: 2, name: 'Female' }]"
+                        ></v-select>
 
-                    <span> {{$t('forms.customer.gender')}}</span>
-                    <b-form-invalid-feedback v-if="$v.form.gender.$error"> Please select gender
-                    </b-form-invalid-feedback>
-                  </label>
-                </b-form>
+                      <span> {{$t('forms.customer.gender')}}</span>
+                      <b-form-invalid-feedback v-if="$v.form.gender.$error"> Please select gender
+                      </b-form-invalid-feedback>
+                    </label>
+                  </b-form>
 
 
               </b-colxx>

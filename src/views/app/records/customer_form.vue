@@ -24,37 +24,96 @@
   <b-form>
   <b-row>
     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-      <label class="form-group has-top-label">
+      <!-- <label class="form-group has-top-label">
         <b-form-input v-model="form.first_name" ></b-form-input>
         <span>{{ $t('forms.customer.first_name') }}</span>
-      </label>
+      </label> -->
+
+      <b-form class="av-tooltip tooltip-label-right">
+        <label class="form-group has-top-label">
+          <b-form-input v-model="$v.form.first_name.$model"
+            :state="!$v.form.first_name.$error"></b-form-input>
+          <span> {{$t('forms.customer.first_name')}}</span>
+          <b-form-invalid-feedback v-if="$v.form.first_name.$error"> Please enter first name
+          </b-form-invalid-feedback>
+        </label>
+      </b-form>
     </b-colxx>
     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-      <label class="form-group has-top-label">
+      <!-- <label class="form-group has-top-label">
         <b-form-input v-model="form.last_name" ></b-form-input>
         <span>{{ $t('forms.customer.last_name') }}</span>
-      </label>
+      </label> -->
+
+      <b-form class="av-tooltip tooltip-label-right">
+        <label class="form-group has-top-label">
+          <b-form-input v-model="$v.form.last_name.$model"
+            :state="!$v.form.last_name.$error"></b-form-input>
+          <span> {{$t('forms.customer.last_name')}}</span>
+          <b-form-invalid-feedback v-if="$v.form.last_name.$error"> Please enter last name
+          </b-form-invalid-feedback>
+        </label>
+      </b-form>
+
+
     </b-colxx>
     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-      <label class="form-group has-top-label">
+      <!-- <label class="form-group has-top-label">
         <b-form-input v-model="form.email" ></b-form-input>
         <span>{{ $t('forms.customer.email') }}</span>
-      </label>
+      </label> -->
+
+      <b-form class="av-tooltip tooltip-label-right">
+        <label class="form-group has-top-label">
+          <b-form-input v-model="$v.form.email.$model"
+            :state="!$v.form.email.$error"></b-form-input>
+          <span> {{$t('forms.customer.email')}}</span>
+          <b-form-invalid-feedback v-if="$v.form.email.$error"> Please enter email address
+          </b-form-invalid-feedback>
+        </label>
+      </b-form>
+
+
     </b-colxx>
     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-      <label class="form-group has-top-label">
+      <!-- <label class="form-group has-top-label">
       <b-form-input v-model="form.phone_number" ></b-form-input>
 		<span>{{ $t('forms.customer.phone_number') }}</span>
-	  </label>
+	  </label> -->
+
+    <b-form class="av-tooltip tooltip-label-right">
+      <label class="form-group has-top-label">
+        <b-form-input v-model="$v.form.phone_number.$model"
+          :state="!$v.form.phone_number.$error"></b-form-input>
+        <span> {{$t('forms.customer.phone_number')}}</span>
+        <b-form-invalid-feedback v-if="$v.form.phone_number.$error"> Please enter phone number
+        </b-form-invalid-feedback>
+      </label>
+    </b-form>
+
+
     </b-colxx>
     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-      <label class="form-group has-top-label">
+      <!-- <label class="form-group has-top-label">
       <b-form-input v-model="form.address" ></b-form-input>
 		<span>{{ $t('forms.customer.address') }}</span>
-	  </label>
+	  </label> -->
+
+
+    <b-form class="av-tooltip tooltip-label-right">
+      <label class="form-group has-top-label">
+        <b-form-input v-model="$v.form.address.$model"
+          :state="!$v.form.address.$error"></b-form-input>
+        <span> {{$t('forms.customer.address')}}</span>
+        <b-form-invalid-feedback v-if="$v.form.address.$error"> Please enter address
+        </b-form-invalid-feedback>
+      </label>
+    </b-form>
+
+
     </b-colxx>
     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-      <label class="form-group has-top-label">
+      <!-- <label class="form-group has-top-label">
         <b-form-input style="display:none" type="text" v-model.trim="form.dob" />
         <datepicker
           :bootstrap-styling="true"
@@ -65,10 +124,22 @@
         ></datepicker>
 		<span>{{ $t('forms.customer.dob') }}</span>
     <b-form-invalid-feedback>Purchase date is required!</b-form-invalid-feedback>
-		</label>
+		</label> -->
+
+    <b-form class="av-tooltip tooltip-label-right">
+      <label class="form-group has-top-label">
+      <datepicker
+        :bootstrap-styling="true"
+        v-model="form.dob"
+      ></datepicker>
+        <span> {{$t('forms.customer.dob')}}</span>
+      </label>
+    </b-form>
+
+
     </b-colxx>
     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-      <label class="form-group has-top-label">
+      <!-- <label class="form-group has-top-label">
       <v-select v-model="form.gender"
         :reduce="customer => customer.id"
         label="name"
@@ -76,31 +147,115 @@
         :options="gender_options"
       ></v-select>
 		<span>{{ $t('forms.customer.gender') }}</span>
-	  </label>
+	  </label> -->
+
+      <b-form class="av-tooltip tooltip-label-right">
+        <label class="form-group has-top-label">
+          <!-- <b-form-input v-model="$v.form.gender.$model"
+            :state="!$v.form.gender.$error"></b-form-input> -->
+
+            <b-form-input style="display:none" type="text"
+                    v-model.trim="$v.form.gender.$model"
+                    :state="!$v.form.gender.$error" />
+
+            <v-select v-model="$v.form.gender.$model"
+              :reduce="gender => gender.id"
+              label="name"
+              aria-placeholder="Select Gender"
+              :options="[{ id: 1, name: 'Male' }, { id: 2, name: 'Female' }]"
+            ></v-select>
+
+          <span> {{$t('forms.customer.gender')}}</span>
+          <b-form-invalid-feedback v-if="$v.form.gender.$error"> Please select gender
+          </b-form-invalid-feedback>
+        </label>
+      </b-form>
+
+
     </b-colxx>
     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-      <label class="form-group has-top-label">
+      <!-- <label class="form-group has-top-label">
       <b-form-input v-model="form.occupation" ></b-form-input>
 		<span>{{ $t('forms.customer.occupation') }}</span>
-	  </label>
+	  </label> -->
+
+    <b-form class="av-tooltip tooltip-label-right">
+      <label class="form-group has-top-label">
+        <b-form-input v-model="$v.form.occupation.$model"
+          :state="!$v.form.occupation.$error"></b-form-input>
+        <span> {{$t('forms.customer.occupation')}}</span>
+        <b-form-invalid-feedback v-if="$v.form.occupation.$error"> Please enter accupation
+        </b-form-invalid-feedback>
+      </label>
+    </b-form>
+
+
+
     </b-colxx>
     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-	  <label class="form-group has-top-label">
+	  <!-- <label class="form-group has-top-label">
 		<b-form-input v-model="form.driver_licence_number" ></b-form-input>
 	  	<span>{{ $t('forms.customer.driver_licence_number') }}</span>
-	  </label>
+	  </label> -->
+
+    <b-form class="av-tooltip tooltip-label-right">
+      <label class="form-group has-top-label">
+        <b-form-input v-model="$v.form.driver_licence_number.$model"
+          :state="!$v.form.driver_licence_number.$error"></b-form-input>
+        <span> {{$t('forms.customer.driver_licence_number')}}</span>
+        <b-form-invalid-feedback v-if="$v.form.driver_licence_number.$error"> Please enter driving licence number
+        </b-form-invalid-feedback>
+      </label>
+    </b-form>
+
+
     </b-colxx>
     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-      <label>{{$t('forms.customer.driver_licence_front_picture')}}</label>
-      <b-file v-model="form.driver_licence_front_picture" ></b-file>
+      <!-- <label>{{$t('forms.customer.driver_licence_front_picture')}}</label>
+      <b-file v-model="form.driver_licence_front_picture" ></b-file> -->
+
+      <b-form class="av-tooltip tooltip-label-right">
+          <b-form-group :label="$t('forms.customer.driver_licence_front_picture')">
+              <b-form-input style="display:none" type="text" v-model.trim="$v.form.driver_licence_front_picture.$model" :state="!$v.form.driver_licence_front_picture.$error" />
+              <!-- @change="onFileChange" -->
+              
+              <b-form-file
+                  v-model.trim="$v.form.driver_licence_front_picture.$model"
+                  drop-placeholder="Drop file here..."
+                  accept="image/*"
+              >
+              </b-form-file>
+              <b-form-invalid-feedback v-if="$v.form.driver_licence_front_picture.$error"> Picture is required!</b-form-invalid-feedback>
+          </b-form-group>
+      </b-form>
+
+
     </b-colxx>
     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
 
-      <label>{{$t('forms.customer.driver_licence_back_picture')}}</label>
-      <b-file v-model="form.driver_licence_back_picture" ></b-file>
+      <!-- <label>{{$t('forms.customer.driver_licence_back_picture')}}</label>
+      <b-file v-model="form.driver_licence_back_picture" ></b-file> -->
+
+      <b-form class="av-tooltip tooltip-label-right">
+          <b-form-group :label="$t('forms.customer.driver_licence_back_picture')">
+              <b-form-input style="display:none" type="text" v-model.trim="$v.form.driver_licence_back_picture.$model" :state="!$v.form.driver_licence_back_picture.$error" />
+              <!-- @change="onFileChange" -->
+              
+              <b-form-file
+                  v-model.trim="$v.form.driver_licence_back_picture.$model"
+                  drop-placeholder="Drop file here..."
+                  accept="image/*"
+              >
+              </b-form-file>
+              <b-form-invalid-feedback v-if="$v.form.driver_licence_back_picture.$error"> Picture is required!</b-form-invalid-feedback>
+          </b-form-group>
+      </b-form>
+
+
+
     </b-colxx>
     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
-		<label class="form-group has-top-label">
+		<!-- <label class="form-group has-top-label">
       <b-form-input style="display:none" type="text" v-model.trim="form.driver_licence_expiry" />
       	<datepicker
           :bootstrap-styling="true"
@@ -110,7 +265,19 @@
         ></datepicker>
 		<span>{{ $t('forms.customer.driver_licence_expiry') }}</span>
     <b-form-invalid-feedback>Driver licence expiry!</b-form-invalid-feedback>
-		</label>
+		</label> -->
+
+    <b-form class="av-tooltip tooltip-label-right">
+      <label class="form-group has-top-label">
+      <datepicker
+        :bootstrap-styling="true"
+        v-model="form.driver_licence_expiry"
+      ></datepicker>
+        <span> {{$t('forms.customer.driver_licence_expiry')}}</span>
+      </label>
+    </b-form>
+
+
     </b-colxx>
     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
 	  <label class="form-group has-top-label">
@@ -211,10 +378,19 @@
 </template>
 <script>
 
+import {
+  validationMixin
+} from "vuelidate";
+const {
+  required
+} = require("vuelidate/lib/validators");
+
 import axios from 'axios'
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import Datepicker from "vuejs-datepicker";
+// import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
 import {apiUrl} from "../../../constants/config.js";
 import { mapGetters } from 'vuex';
 
@@ -222,7 +398,7 @@ export default {
   props: ['cc'],
   components: {
     'v-select': vSelect,
-    Datepicker
+    'datepicker' : Datepicker
   },
   data() {
     return {
@@ -269,6 +445,58 @@ export default {
       },
       customer_fields: ['first_name', 'last_name', 'email', 'phone_number', 'address', 'added', 'updated', 'actions']
     }
+  },
+
+  mixins: [validationMixin],
+  validations: {
+    form: {
+      first_name: {
+        required
+      },
+      last_name: {
+        required
+      },
+      email: {
+        required
+      },
+      phone_number: {
+        required
+      },
+      address: {
+        required
+      },
+      dob: {
+        required
+      },
+      gender: {
+        required
+      },
+      occupation: {
+        required
+      },
+      driver_licence_number: {
+        required
+      },
+      driver_licence_front_picture: {
+        required
+      },
+      driver_licence_back_picture: {
+        required
+      },
+      driver_licence_expiry: {
+        required
+      },
+      nationality: {
+        required
+      },
+      secondary_id_number: {
+        required
+      },
+      secondary_id_expiry: {
+        required
+      },
+    },
+
   },
 
   computed: {
@@ -353,6 +581,12 @@ export default {
     },
 
     save_customer_record(){
+
+      this.$v.form.$touch();
+      if (this.$v.form.$anyError == true) {
+        return false;
+      }
+
       this.processing_text = "Saving Data ..."
       this.processing = true
       axios.post(

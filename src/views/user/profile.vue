@@ -153,6 +153,9 @@ const {
             this.authGet()
             this.$notify('success filled', 'Success!', 'You have successfully updated your image',{ duration: 3000, permanent: false });
             this.isProcessing = false;
+            window.setTimeout(() => {
+              window.location.reload();
+            }, 3000);
           }).catch(error => {
             this.$notify('error filled', 'Error!', error.response.data.message,{ duration: 3000, permanent: false });
           })
