@@ -6,7 +6,9 @@
       </b-modal>
 
       <b-modal ref="create_swap_modal" id="swapModal" size="lg" title="Add Swaped Vehicle Data" hide-footer>
-        <swap-form @swap_submit_data="swap_created" :vehicle_id="checkVehicle" />
+        <swap-form @swap_submit_data="swap_created"
+        :vehicle_id="checkVehicle" :locations="location_options" :payment_options="payment_mode_options"
+        :accessories="accessory_options" />
       </b-modal>
 
       <b-modal id="vanoutModal" size="lg" ref="vanoutModal">
@@ -994,7 +996,7 @@ export default ({
 
     swap_created(formData) {
       this.form.swapped_data = formData
-      console.log(this.form);
+      console.log(this.form.swapped_data);
       this.all_()
       this.$refs['create_swap_modal'].hide()
     },
@@ -1057,28 +1059,6 @@ export default ({
       this.vanin_form.total_driven = this.vanin_form.km_deriven
 
     },
-
-    // calculateDays() {
-
-    //   var returnDateObj = new Date(this.vanin_form.return_date);
-    //   var vanOutDateObj = new Date(this.van_out);
-
-    //   console.log(vanOutDateObj);
-    //   console.log(returnDateObj);
-
-    //   // Calculate the difference in milliseconds
-    //   var timeDiff = returnDateObj.getTime() - vanOutDateObj.getTime();
-    //   console.log(typeof (timeDiff));
-    //   // Convert milliseconds to dayskm_deriven
-    //   var day_count = timeDiff / (1000 * 3600 * 24);
-    //   console.log(day_count);
-    //   if (!isNaN(day_count)) {
-    //     this.vanin_form.total_days = Math.round(day_count);
-    //   } else {
-    //     this.vanin_form.total_days = 0;
-    //   }
-    //   this.vanin_form.days_count = this.vanin_form.total_days
-    // },
 
     calculateDays() {
       // Assuming this.vanin_form.return_date and this.van_out are date strings in "DD-MM-YYYY h:mm" format
