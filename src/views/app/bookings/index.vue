@@ -6,9 +6,8 @@
       </b-modal>
 
       <b-modal ref="create_swap_modal" id="swapModal" size="lg" title="Add Swaped Vehicle Data" hide-footer>
-        <swap-form @swap_submit_data="swap_created"/>
+        <swap-form @swap_submit_data="swap_created" :vehicle_id="checkVehicle" />
       </b-modal>
-
 
       <b-modal id="vanoutModal" size="lg" ref="vanoutModal">
         <table class="stacked table">
@@ -769,6 +768,7 @@ export default ({
         total_days: '',
         demage_vid: null
       },
+      checkVehicle: null,
       vanout_fields: [
         {
           name: "reg_number",
@@ -797,15 +797,15 @@ export default ({
         {
           name: "van_out_date",
           title: 'Vehicle Out Date',
-          sortField: "name",
+          sortField: "van_out_date",
           titleClass: "center aligned",
           dataClass: "center aligned",
           width: "5%"
         },
         {
-          name: "due_return",
+          name: "return_date",
           title: 'Due Return',
-          sortField: "due_return",
+          sortField: "return_date",
           titleClass: "center aligned",
           dataClass: "center aligned",
           width: "5%"
@@ -1038,6 +1038,7 @@ export default ({
         this.out_mileage = response.data.mileage
         this.van_out = response.data.van_out_date
         this.vanin_form.rental_amount = response.data.rental_amount
+        this.vanin_form.bond_return_amount = response.data.bond_deposit;
         this.$notify('success filled', 'Sucess!', 'The booking data has been autofilled!', { duration: 3000 });
         this.isProcessing = false
       }).catch(error => {
@@ -1282,6 +1283,7 @@ export default ({
     },
 
     edit_vanout(item) {
+      
       console.log(item);
       this.processing_text = 'Loading Data ...'
       this.isProcessing = true
@@ -1289,6 +1291,7 @@ export default ({
       this.get_available_vehicle_options(item.vehicle_id, item.swap_with)
       this.editing_mode = true;
       //get vanout data
+      this.checkVehicle = item.vehicle_id;
       axios.get(apiUrl + '/vanout/' + item.id, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -1296,7 +1299,7 @@ export default ({
         }).then(response => {
           console.log(response.data);
           this.form = response.data
-          // this.form.long_term = response.data.long_term
+          this.form.long_term = response.data.long_term
           this.booking_create_option = ({ id: item.id, name: item.reg_number })
           this.isProcessing = false
           var accessories_to_set = [];
@@ -1646,6 +1649,7 @@ export default ({
         {
           //parse json data
           this.vanouts = response.data
+
           this.get_vanout_options()
           // this.$notify(
           //   'info filled',

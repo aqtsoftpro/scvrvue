@@ -72,7 +72,7 @@
       </div>
     </b-form>
 
-    <b-table id="mechanic_table" :items="mechanic_records" :fields="tax_fields" current-page="currentPage"
+    <!-- <b-table id="mechanic_table" :items="mechanic_records" :fields="tax_fields" current-page="currentPage"
       :per-page="perPage">
       <template #cell(added)="data">
         <ul class="menu">
@@ -81,7 +81,6 @@
         </ul>
       </template>
       <template #cell(actions)="data">
-        <!-- <b-button  @click.stop="view_vanout(data.item)"  variant="info"  size="xs" ><i class="simple-icon-eye"></i></b-button> -->
         <b-button @click.stop="edit_mechanic_record(data.item)" variant="grey" size="xs"><i
             class="simple-icon-pencil"></i></b-button>
         <b-button v-if="user.role_id == 1" @click.stop="delete_mechanic_record(data.item)" variant="grey" size="xs"><i
@@ -90,7 +89,11 @@
     </b-table>
     <p class="mt-3">Current Page: {{ currentPage }}</p>
     <b-pagination align="center" size="md" v-model="currentPage" :total-rows="rows" :per-page="perPage"
-      aria-controls="mechanic-table"></b-pagination>
+      aria-controls="mechanic-table"></b-pagination> -->
+
+      <datatable title="" :fields="tax_fields" :data="mechanic_records" :edit="edit_mechanic_record"
+                   :del="delete_mechanic_record" />
+
   </div>
 </template>
 <script>
@@ -107,11 +110,13 @@ import "vue-select/dist/vue-select.css";
 import Datepicker from "vuejs-datepicker";
 import { apiUrl } from "../../../constants/config.js";
 import { mapGetters } from 'vuex';
+import datatable from './datatable'
 
 export default {
   components: {
     'v-select': vSelect,
-    Datepicker
+    Datepicker,
+    datatable: datatable,
   },
   data() {
     return {
@@ -129,7 +134,72 @@ export default {
         expertise: '',
         comments: ''
       },
-      tax_fields: ['name', 'workshop_contact', 'workshop_address', 'expertise', 'comments', 'added', 'actions']
+      // tax_fields: ['name', 'workshop_contact', 'workshop_address', 'expertise', 'comments', 'added', 'actions'],
+
+      tax_fields: [
+        {
+          name: "name",
+          title: 'Name',
+          sortField: "name",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "workshop_contact",
+          title: 'Workshop Contact',
+          sortField: "workshop_contact",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "workshop_address",
+          title: 'Workshop Address',
+          sortField: "workshop_address",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "expertise",
+          title: 'Expertise',
+          sortField: "expertise",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "10%"
+        },
+        {
+          name: "filer_contact",
+          title: 'Filer Contact',
+          sortField: "filer_contact",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "comments",
+          title: 'Comments',
+          sortField: "comments",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "8%"
+        },
+        {
+          name: "__slot:added",
+          title: 'Added / Updated',
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "15%"
+        },
+        {
+          name: "__slot:actions",
+          title: "Actions",
+          titleClass: "center aligned text-right",
+          dataClass: "center aligned text-right",
+          width: "15%"
+        }
+      ],
     }
   },
 

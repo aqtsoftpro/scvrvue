@@ -270,7 +270,7 @@
       </b-colxx>
     </b-row>
 
-    <b-table id="customers-table" :items="customer_records" :fields="customer_fields" :per-page="perPage"
+    <!-- <b-table id="customers-table" :items="customer_records" :fields="customer_fields" :per-page="perPage"
       :current-page="currentPage">
       <template #cell(role_name)="data">
         <div class="badge badge-light">{{ data.value }}</div>
@@ -292,7 +292,10 @@
     </b-table>
     <p class="mt-3">Current Page: {{ currentPage }}</p>
     <b-pagination align="center" size="md" v-model="currentPage" :total-rows="rows" :per-page="perPage"
-      aria-controls="customers-table"></b-pagination>
+      aria-controls="customers-table"></b-pagination> -->
+
+      <datatable title="" :fields="customer_fields" :view="bring_fields" :data="customer_records" :edit="edit_customer_record"
+                   :del="delete_customer_record" />
 
   </div>
 </template>
@@ -305,6 +308,7 @@ import Datepicker from "vuejs-datepicker";
 import { apiUrl } from "../../../constants/config.js";
 import { mapGetters } from 'vuex';
 import { validationMixin } from 'vuelidate';
+import datatable from './datatable';
 const {
   required
 } = require("vuelidate/lib/validators");
@@ -312,7 +316,8 @@ const {
 export default {
   components: {
     'v-select': vSelect,
-    Datepicker
+    Datepicker,
+    datatable: datatable,
   },
   data() {
     return {
@@ -357,7 +362,63 @@ export default {
         secondary_id_expiry: null,
 
       },
-      customer_fields: ['first_name', 'last_name', 'email', 'phone_number', 'address', 'added', 'actions']
+      // customer_fields: ['first_name', 'last_name', 'email', 'phone_number', 'address', 'added', 'actions'],
+
+      customer_fields: [
+        {
+          name: "first_name",
+          title: 'First Name',
+          sortField: "first_name",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "last_name",
+          title: 'Last Name',
+          sortField: "last_name",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "email",
+          title: 'Email',
+          sortField: "email",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "phone_number",
+          title: 'Phone Number',
+          sortField: "phone_number",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "10%"
+        },
+        {
+          name: "address",
+          title: 'Address',
+          sortField: "address",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "__slot:added",
+          title: 'Added / Updated',
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "15%"
+        },
+        {
+          name: "__slot:actions",
+          title: "Actions",
+          titleClass: "center aligned text-right",
+          dataClass: "center aligned text-right",
+          width: "15%"
+        }],
     }
   },
 

@@ -194,7 +194,7 @@
       </b-form>
     </b-colxx>
 
-    <b-table id="toll_table" :items="toll_records" :fields="toll_fields" current-page="currentPage" :per-page="perPage">
+    <!-- <b-table id="toll_table" :items="toll_records" :fields="toll_fields" current-page="currentPage" :per-page="perPage">
       <template #cell(toll_image)="data">
         <img widh="100%" :src="data.item.toll_image" class="list-thumbnail responsive border-0" />
       </template>
@@ -205,7 +205,6 @@
         </ul>
       </template>
       <template #cell(actions)="data">
-        <!-- <b-button  @click.stop="view_vanout(data.item)"  variant="info"  size="xs" ><i class="simple-icon-eye"></i></b-button> -->
         <b-button @click.stop="edit_toll_record(data.item)" variant="grey" size="xs"><i
             class="simple-icon-pencil"></i></b-button>
         <b-button v-if="user.role_id == 1" @click.stop="delete_toll_record(data.item)" variant="grey" size="xs"><i
@@ -214,7 +213,12 @@
     </b-table>
     <p class="mt-3">Current Page: {{ currentPage }}</p>
     <b-pagination align="center" size="md" v-model="currentPage" :total-rows="rows" :per-page="perPage"
-      aria-controls="toll-table"></b-pagination>
+      aria-controls="toll-table"></b-pagination> -->
+
+      <datatable title="" :fields="toll_fields" :data="toll_records" :edit="edit_toll_record"
+                   :del="delete_toll_record" />
+
+
   </div>
 </template>
 <script>
@@ -235,11 +239,13 @@ import Datepicker from "vuejs-datepicker";
 import { apiUrl } from "../../../constants/config.js";
 import moment from 'moment';
 import { mapGetters } from 'vuex';
+import datatable from './datatable'
 
 export default {
   components: {
     'v-select': vSelect,
-    'datepicker': Datepicker
+    'datepicker': Datepicker,
+    datatable: datatable,
   },
   data() {
     return {
@@ -273,7 +279,79 @@ export default {
         'due_date': null,
         'trip_cost': null,
       },
-      toll_fields: ['id', 'date', 'due_date', 'reg_plate_number', 'toll_cost', 'customer', 'payment_status', 'added', 'actions'],
+      // toll_fields: ['id', 'date', 'due_date', 'reg_plate_number', 'toll_cost', 'customer', 'payment_status', 'added', 'actions'],
+
+      toll_fields: [
+        {
+          name: "id",
+          title: 'Id',
+          sortField: "id",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "date",
+          title: 'Date',
+          sortField: "Date",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "due_date",
+          title: 'Due Date',
+          sortField: "due_date",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "reg_plate_number",
+          title: 'Reg Plate Number',
+          sortField: "reg_plate_number",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "10%"
+        },
+        {
+          name: "toll_cost",
+          title: 'Toll Cost',
+          sortField: "toll_cost",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "customer",
+          title: 'Customer',
+          sortField: "customer",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "payment_status",
+          title: 'Payment Status',
+          sortField: "payment_status",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "8%"
+        },
+        {
+          name: "__slot:added",
+          title: 'Added / Updated',
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "15%"
+        },
+        {
+          name: "__slot:actions",
+          title: "Actions",
+          titleClass: "center aligned text-right",
+          dataClass: "center aligned text-right",
+          width: "15%"
+        }],
     }
   },
 
@@ -613,7 +691,59 @@ export default {
 
     resetForm() {
       this.cancel_update_toll_record(); // Assuming you have a form ref named 'form'
-    }
+    },
+
+    edit_vanout(item) {
+      console.log(item);
+      this.processing_text = 'Loading Data ...'
+      this.isProcessing = true
+      this.van_out_date = ''
+      this.get_available_vehicle_options(item.vehicle_id, item.swap_with)
+      this.editing_mode = true;
+      //get vanout data
+      axios.get(apiUrl + '/vanout/' + item.id, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+        }).then(response => {
+          console.log(response.data);
+          this.form = response.data
+          // this.form.long_term = response.data.long_term
+          this.booking_create_option = ({ id: item.id, name: item.reg_number })
+          this.isProcessing = false
+          var accessories_to_set = [];
+          response.data.accessories.map((value, key) => {
+            accessories_to_set.push(value.id)
+          })
+          console.log(accessories_to_set)
+          this.form.accessories = accessories_to_set
+        })
+
+      this.get_active_vehicle_options(item.vehicle_id)
+      this.get_all_customer_options(item.customer_id)
+    },
+
+    delete_vanout(item) {
+
+      this.processint_text = 'Deleting Vehicle Out Data...';
+      this.isProcessing = true
+
+      axios.delete(apiUrl + '/vanout/' + item.id, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
+        //refresh the table data
+        this.get_vanouts()
+        this.get_active_vehicle_options()
+        this.$notify(
+          'success filled',
+          'Success!',
+          response.data.message
+        )
+        this.isProcessing = false
+      })
+    },
   },
 
   mounted() {

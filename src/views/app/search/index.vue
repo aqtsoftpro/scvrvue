@@ -83,13 +83,19 @@
           <b-card class="mb-4" >
             <!-- <datatable /> -->
              <div v-for="(item,index) in results" :key="index" :class="{'mb-3':results.length!=(index+1)}">
-               <router-link v-if="searchRequest.mode == 'vehicle'" tag="a" :to="{path: '/app/van_management/vehicle_detail/' + item.id }" class="w-40 w-sm-100">
+               <div v-if="searchRequest.mode == 'vehicle'"  class="w-100 w-sm-100">
+                  <!-- <route-link class="float-right" :to="{path: '/app/van_management/vehicle_detail/' + item.id }">
+                    View Customer
+                  </route-link> -->
+                  <b-button class="float-right"@click.stop="toDetail(item)" v-b-modal.customer_modal variant="grey" size="sm">
+                    Vehicle Detail
+                  </b-button>
 
                   <img width="100" :src="item.picture" />
                   <p class="list-item-heading mb-1 color-theme-1">{{item.reg_plate_number}}</p>
                   <p class="mb-1 text-muted text-small">{{item.vehicle_type}} | {{ item.make }} - {{ item.model }}</p>
                   <p class="mb-4 text-muted text-small">Purchase Date: {{ item.purchase_date }}</p>
-               </router-link>
+               </div>
                <div v-else tag="a" :to="`#`" class="w-100 w-sm-100">
                 <b-button class="float-right"@click.stop="bring_fields(item)" v-b-modal.customer_modal variant="grey" size="sm">
                 View Customer
@@ -141,6 +147,12 @@
       bring_fields(fields) {
 
         this.customer = fields
+      },
+
+      toDetail(item) {
+        return this.$router.push({ path: '/app/van_management/vehicle_detail/' + item.id });
+
+        // return {path: '/app/van_management/vehicle_detail/' + item.id }
       },
 
     },

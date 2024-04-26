@@ -22,7 +22,10 @@
               <b-tab title="Toll Records" title-item-class="w-25 text-center" @click="changeTab(3)">
                 <!-- Content for van out -->
                 <toll ref="tollComponent" />
-                <b-table :items="toll_records" />
+                <!-- <b-table :items="toll_records" /> -->
+                <!-- <datatable title="" :fields="toll_fields" :data="toll_records" :edit="edit_vanout"
+                    :role="roleName" :del="delete_vanout" /> -->
+
               </b-tab>
             </b-tabs>
           </b-card>
@@ -40,20 +43,24 @@ import Mechanic from './mechanic'
 import Customer from './customer'
 import Toll from './toll'
 import {apiUrl} from '../../../constants/config.js'
+import datatable from './datatable'
 
 export default {
   components: {
     'tax' : Tax,
     'mechanic' : Mechanic,
     'customer' : Customer,
-    'toll' : Toll
+    'toll' : Toll,
+    datatable: datatable, 
+
   },
   data() {
     return {
       tax_records: [],
       mechanic_workshop_records: [],
       customer_records: [],
-      toll_records: []
+      toll_records: [],
+
     }
   },
   methods: {
@@ -137,6 +144,7 @@ export default {
         }
       })
     },
+
 
   },
   mounted() {

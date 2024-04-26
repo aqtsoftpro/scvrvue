@@ -101,7 +101,7 @@
       </div>
     </b-form>
 
-    <b-table id="tax_table" :items="tax_records" :fields="tax_fields" current-page="currentPage" :per-page="perPage">
+    <!-- <b-table id="tax_table" :items="tax_records" :fields="tax_fields" current-page="currentPage" :per-page="perPage">
       <template #cell(added)="data">
         <ul class="menu">
           <li class="menu-item">Added: {{ data.item.added }}</li>
@@ -109,7 +109,6 @@
         </ul>
       </template>
       <template #cell(actions)="data">
-        <!-- <b-button  @click.stop="view_vanout(data.item)"  variant="info"  size="xs" ><i class="simple-icon-eye"></i></b-button> -->
         <b-button @click.stop="edit_tax_record(data.item)" variant="grey" size="xs"><i
             class="simple-icon-pencil"></i></b-button>
         <b-button v-if="user.role_id == 1" @click.stop="delete_tax_record(data.item)" variant="grey" size="xs"><i
@@ -118,7 +117,10 @@
     </b-table>
     <p class="mt-3">Current Page: {{ currentPage }}</p>
     <b-pagination align="center" size="md" v-model="currentPage" :total-rows="rows" :per-page="perPage"
-      aria-controls="tax-table"></b-pagination>
+      aria-controls="tax-table"></b-pagination> -->
+      <datatable title="" :fields="tax_fields" :data="tax_records" :edit="edit_tax_record"
+                   :del="delete_tax_record" />
+
   </div>
 </template>
 <script>
@@ -135,11 +137,13 @@ import "vue-select/dist/vue-select.css";
 import Datepicker from "vuejs-datepicker";
 import { apiUrl } from "../../../constants/config.js";
 import { mapGetters } from 'vuex';
+import datatable from './datatable'
 
 export default {
   components: {
     'v-select': vSelect,
-    Datepicker
+    Datepicker,
+    datatable: datatable,
   },
   data() {
     return {
@@ -160,7 +164,79 @@ export default {
         accountant_fee: '',
         comments: '',
       },
-      tax_fields: ['type', 'amount', 'date', 'filer_name', 'filer_contact', 'accountant_fee', 'comments', 'added', 'actions'],
+      // tax_fields: ['type', 'amount', 'date', 'filer_name', 'filer_contact', 'accountant_fee', 'comments', 'added', 'actions'],
+
+      tax_fields: [
+        {
+          name: "type",
+          title: 'Type',
+          sortField: "type",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "amount",
+          title: 'Amount',
+          sortField: "amount",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "date",
+          title: 'Date',
+          sortField: "date",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "filer_name",
+          title: 'Filer Name',
+          sortField: "filer_name",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "10%"
+        },
+        {
+          name: "filer_contact",
+          title: 'Filer Contact',
+          sortField: "filer_contact",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "accountant_fee",
+          title: 'Accountant Fee',
+          sortField: "accountant_fee",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "comments",
+          title: 'Comments',
+          sortField: "comments",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "8%"
+        },
+        {
+          name: "__slot:added",
+          title: 'Added / Updated',
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "15%"
+        },
+        {
+          name: "__slot:actions",
+          title: "Actions",
+          titleClass: "center aligned text-right",
+          dataClass: "center aligned text-right",
+          width: "15%"
+        }],
     }
   },
 

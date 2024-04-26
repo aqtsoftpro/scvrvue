@@ -27,18 +27,13 @@
                     </b-form>
                 </b-colxx>
                 <b-colxx xxs="12" xs="6" lg="6" class="mb-3">
-                    <b-form class="av-tooltip tooltip-label-right">
-                        <b-form-group label="Uplaod video">
-                            <!-- <b-form-input style="display:none" type="text" v-model.trim="$v.form.video.$model" :state="!$v.form.video.$error" />                             -->
-                            <b-form-file
-                                v-model.trim="$v.form.video"
-                                drop-placeholder="Drop file here..."
-                                accept="video/*"
-                            >
-                            </b-form-file>
-                            <!-- <b-form-invalid-feedback v-if="$v.form.video.$error"> Video is required!</b-form-invalid-feedback> -->
-                        </b-form-group>
-                    </b-form>
+                   
+                <span>Vehicle Condition Video </span>
+                <b-form-file v-model="form.video" placeholder="Upload video"
+                    drop-placeholder="Drop file here..." accept="video/*">
+                </b-form-file>
+
+
                 </b-colxx>
                 <b-colxx xxs="12" xs="6" lg="6" class="mb-3">
                     <b-form class="av-tooltip tooltip-label-right">
@@ -147,7 +142,7 @@ import { apiUrl } from "../../../constants/config.js";
 import { mapGetters } from 'vuex';
 
 export default {
-    props: ['sc'],
+    props: ['sc', 'vehicle_id'],
     components: {
         'v-select': vSelect,
         'datepicker': DatePicker
@@ -274,12 +269,18 @@ export default {
             this.$router.push('/user/login');
         }
 
-        this.get_available_vehicle_options();
+        this.get_available_vehicle_options(this.vehicle_id);
+
+        // console.log(vehicle_id);
     },
     watch: {
         currentUser() {
             this.user = this.currentUser
         },
+
+        vehicle_id() {
+            this.get_available_vehicle_options(this.vehicle_id, null);
+        }
 
         // available_vehicle_options() {
         //     this.available_vehicle = available_vehicle_options
