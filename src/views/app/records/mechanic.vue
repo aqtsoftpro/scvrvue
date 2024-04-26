@@ -159,7 +159,7 @@ export default {
           sortField: "workshop_address",
           titleClass: "center aligned",
           dataClass: "center aligned",
-          width: "5%"
+          width: "10%"
         },
         {
           name: "expertise",
@@ -168,14 +168,6 @@ export default {
           titleClass: "center aligned",
           dataClass: "center aligned",
           width: "10%"
-        },
-        {
-          name: "filer_contact",
-          title: 'Filer Contact',
-          sortField: "filer_contact",
-          titleClass: "center aligned",
-          dataClass: "center aligned",
-          width: "5%"
         },
         {
           name: "comments",
