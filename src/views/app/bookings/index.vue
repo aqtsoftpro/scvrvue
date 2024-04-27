@@ -1150,11 +1150,10 @@ export default ({
 
 
     bring_fields(data) {
-      console.log(data)
-      this.vanout = data
-      this.vanout.swapped_name = data.swaped_detail?.reg_plate_number ?? null;
-      this.vanout.swapped_model = data.swaped_detail?.model ?? null;
-      this.$refs.vanoutModal.show()
+      return this.$router.push({ path: '/app/bookings/out/' + data.id });
+      // this.vanout.swapped_name = data.swaped_detail?.reg_plate_number ?? null;
+      // this.vanout.swapped_model = data.swaped_detail?.model ?? null;
+      // this.$refs.vanoutModal.show()
     },
 
     bring_vanin_fields(data) {

@@ -189,16 +189,6 @@
             return {
                 isLoad: false,
                 vanout: [],
-                fields: [
-                  { key: 'vehicle', label: 'Vehicle' },
-                  { key: 'mileage', label: 'Mileage' },
-                  { key: 'date', label: 'Date' },
-                  { key: 'service_type', label: 'Service Type' },
-                  { key: 'cost', label: 'Cost' },
-                  { key: 'place', label: 'Place' },
-                  { key: 'mechanic_name', label: 'Mechanic Name' },
-                  { key: 'comments', label: 'comments' },
-                ],
             }
         },
         methods: {
@@ -226,7 +216,7 @@
         computed: {
           formattedMaintenance() {
             // Loop through maintenance array and format the date
-            return this.vanout.maintenance.map(item => {
+            return this.vanout.map(item => {
               // Convert date string to a Date object
               const date = new Date(item.date);
               // Format the date as "DD MMM YYYY"
