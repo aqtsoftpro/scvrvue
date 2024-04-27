@@ -63,6 +63,11 @@ const routes = [
           import(/* webpackChunkName: "bookings" */ "./views/app/bookings")
       },
       {
+        path: "bookings/out/:id",
+        component: () =>
+          import(/* webpackChunkName: "vehicle-list" */ "./views/app/bookings/BookingDetail"),
+      },
+      {
         path: "van_management",
         component: () =>
           import(/* webpackChunkName: "van_management" */ "./views/app/van_management")

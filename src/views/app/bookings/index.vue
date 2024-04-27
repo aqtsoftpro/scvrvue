@@ -1031,7 +1031,7 @@ export default ({
       this.processing_text = 'Loading Data ... ';
       this.isProcessing = true
       let booking_id = id
-      axios.get(apiUrl + '/vanout/' + booking_id, {
+      axios.get(apiUrl + '/vanout-return/' + booking_id, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
@@ -1269,7 +1269,7 @@ export default ({
       this.processing_text = 'Loading Data ...'
       this.isProcessing = true
       this.van_out_date = ''
-      this.get_available_vehicle_options(item.vehicle_id, item.swap_with)
+      this.get_available_vehicle_options(item.old_vehicle, item.swap_with)
       this.editing_mode = true;
       this.swap_status = true;
       //get vanout data
@@ -1282,6 +1282,9 @@ export default ({
           console.log(response.data);
           this.form = response.data
           this.form.long_term = response.data.long_term
+          if (response.data.reason_of_renting == 'Swap') {
+            this.swap_status = false;
+          }
           this.booking_create_option = ({ id: item.id, name: item.reg_number })
           this.isProcessing = false
           var accessories_to_set = [];
@@ -1320,7 +1323,7 @@ export default ({
           // }
         })
 
-      this.get_active_vehicle_options(item.vehicle_id)
+      this.get_active_vehicle_options(item.old_vehicle)
       this.get_all_customer_options(item.customer_id)
     },
 
