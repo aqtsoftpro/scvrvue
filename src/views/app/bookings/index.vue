@@ -8,7 +8,7 @@
       <b-modal ref="create_swap_modal" id="swapModal" size="lg" title="Add Swaped Vehicle Data" hide-footer>
         <swap-form @swap_submit_data="swap_created"
         :vehicle_id="checkVehicle" :locations="location_options" :payment_options="payment_mode_options"
-        :accessories="accessory_options" />
+        :accessories="accessory_options" :booking="booking" />
       </b-modal>
 
       <b-modal id="vanoutModal" size="lg" ref="vanoutModal">
@@ -231,13 +231,13 @@
                               v-model.trim="$v.form.reason_of_renting.$model"
                               :state="!$v.form.reason_of_renting.$error" />
                             <v-select v-model="form.reason_of_renting" aria-placeholder="New / Swap"
-                              :options="swap_options" :disabled="!editing_mode"></v-select>
+                              :options="swap_options" :disabled="!swap_status"></v-select>
                             <span>{{ $t('forms.vanout.reason_of_renting') }}</span>
                             <b-form-invalid-feedback v-if="$v.form.reason_of_renting.$error"> Please select reason of
                               renting!</b-form-invalid-feedback>
                           </label>
                           <b-button v-if="form.reason_of_renting == 'Swap'" @click.stop="open_swap_modal" class="btn-sm" >
-                                  {{ form.swapped_data == null ? 'Add swapped vehicle data': 'Edit swapped vehicle data'}}
+                            Add swapped vehicle data
                           </b-button>
                           <!-- <label v-if="form.reason_of_renting == 'Swap'" class="form-group has-top-label">
                               <select class="form-select custom-select" aria-label="Default select example" @change="onSwapSelect(form.swap_with)" v-model="form.swap_with">
@@ -721,6 +721,7 @@ export default ({
       pre_km: 0,
       newData: null,
       van_out: '',
+      swap_status: false,
       form: {
         booking_id: '',
         customer_id: '',
@@ -741,7 +742,6 @@ export default ({
         demage_video: null,
         condition: '',
         long_term: 0,
-        swapped_data: null,
       },
       VanoutSearchColumns: ["reg_number"],
       VanReturnSearchColumns: ["vehicle"],
@@ -904,7 +904,8 @@ export default ({
       ],
       swap_options: ["New", "Swap"],
       vanouts: [],
-      vanins: []
+      vanins: [],
+      booking: null
       // venout_fields: ['reg_number', 'customer', 'rental_amount', {'van_out_date': 'Rental Period'}, 'due_return', 'actions'],
       // van_return_fields: ['vehicle', 'customer', 'rental_amount', 'rental_period', 'return_date', 'actions']
     }
@@ -994,10 +995,10 @@ export default ({
       this.$refs['create_customer_modal'].hide()
     },
 
-    swap_created(formData) {
-      this.form.swapped_data = formData
-      console.log(this.form.swapped_data);
+    swap_created() {
       this.all_()
+      // this.form.
+      this.swap_status = false;
       this.$refs['create_swap_modal'].hide()
     },
 
@@ -1263,13 +1264,14 @@ export default ({
     },
 
     edit_vanout(item) {
-      
+      this.booking = item;
       console.log(item);
       this.processing_text = 'Loading Data ...'
       this.isProcessing = true
       this.van_out_date = ''
       this.get_available_vehicle_options(item.vehicle_id, item.swap_with)
       this.editing_mode = true;
+      this.swap_status = true;
       //get vanout data
       this.checkVehicle = item.vehicle_id;
       axios.get(apiUrl + '/vanout/' + item.id, {

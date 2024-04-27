@@ -1,122 +1,5 @@
 <template>
     <div>
-        <!-- <b-form>
-            <b-row>
-                <b-colxx xxs="12" xs="6" lg="6" class="mb-3">
-                    <b-form class="av-tooltip tooltip-label-right">
-                        <label class="form-group has-top-label">
-                            <b-form-input style="display:none" type="text" v-model.trim="$v.swapForm.swapped.$model"
-                              :state="!$v.swapForm.swapped.$error" />
-                            <v-select v-model="swapForm.swapped" v-on:input="onSwapSelect" label="name"
-                              :key="swapForm.swapped" :reduce="vehicle => vehicle.id"
-                              :options="available_vehicles"></v-select>
-                            <span>{{ $t('forms.vanout.vehicles') }}</span>
-                            <b-form-invalid-feedback v-if="$v.swapForm.swapped.$error"> Please select swapped
-                              vehicle!</b-form-invalid-feedback>
-                          </label>
-                    </b-form>
-                </b-colxx>
-                <b-colxx xxs="12" xs="6" lg="6" class="mb-3">
-                    <b-form class="av-tooltip tooltip-label-right">
-                        <label class="form-group has-top-label">
-                            <b-form-input v-model="$v.swapForm.condition.$model" :state="!$v.swapForm.condition.$error"></b-form-input>
-                            <span> Add vehicle condition </span>
-                            <b-form-invalid-feedback v-if="$v.swapForm.condition.$error">Add Vehicle Condition
-                            </b-form-invalid-feedback>
-                        </label>                         
-                    </b-form>
-                </b-colxx>
-                <b-colxx xxs="12" xs="6" lg="6" class="mb-3">
-                   
-                <span>Vehicle Condition Video </span>
-                <b-form-file v-model="swapForm.video" placeholder="Upload video"
-                    drop-placeholder="Drop file here..." accept="video/*">
-                </b-form-file>
-
-
-                </b-colxx>
-                <b-colxx xxs="12" xs="6" lg="6" class="mb-3">
-                    <b-form class="av-tooltip tooltip-label-right">
-                        <label class="form-group has-top-label">
-                            <b-form-input type="number" step="any" v-model="$v.swapForm.amount.$model" :state="!$v.swapForm.amount.$error"></b-form-input>
-                            <span> Add vehicle amount </span>
-                            <b-form-invalid-feedback v-if="$v.swapForm.amount.$error">Add Vehicle amount
-                            </b-form-invalid-feedback>
-                        </label>                         
-                    </b-form>
-                </b-colxx>
-                <b-colxx xxs="12" xs="6" lg="6" class="mb-3">
-                    <b-form class="av-tooltip tooltip-label-right">                       
-                        <label class="form-group has-top-label">
-                            <b-form-input style="display:none" type="text" v-model.trim="$v.swapForm.amount_status.$model"
-                              :state="!$v.swapForm.amount_status.$error" />
-                            <v-select v-model="swapForm.amount_status"  label="name"  :reduce="item => item.id"
-                              :options="status_options"></v-select>
-                            <span>Select amount status</span>
-                            <b-form-invalid-feedback v-if="$v.swapForm.amount_status.$error"> Please select amount status
-                              vehicle!</b-form-invalid-feedback>
-                        </label>
-                    </b-form>
-                </b-colxx>
-                <b-colxx xxs="12" xs="6" lg="6" class="mb-3">
-                    <b-form class="av-tooltip tooltip-label-right">
-                        <label class="form-group has-top-label">
-                            <b-form-input type="number" step="any" v-model="$v.swapForm.rem_amount.$model" :state="!$v.swapForm.rem_amount.$error"></b-form-input>
-                            <span> Add vehicle remaining amount </span>
-                            <b-form-invalid-feedback v-if="$v.swapForm.rem_amount.$error">Add Vehicle amount
-                            </b-form-invalid-feedback>
-                        </label>                         
-                    </b-form>
-                </b-colxx>
-                <b-colxx xxs="12" xs="6" lg="6" class="mb-3">
-                    <b-form class="av-tooltip tooltip-label-right">
-                        <label class="form-group has-top-label">
-                            <b-form-input v-model="$v.swapForm.amount_tracking_id.$model" :state="!$v.swapForm.amount_tracking_id.$error"></b-form-input>
-                            <span> Add vehicle amount tracking </span>
-                            <b-form-invalid-feedback v-if="$v.swapForm.amount_tracking_id.$error">Add Vehicle amount_tracking_id
-                            </b-form-invalid-feedback>
-                        </label>                         
-                    </b-form>
-                </b-colxx>
-                <b-colxx xxs="12" xs="6" lg="6" class="mb-3">
-                    <b-form class="av-tooltip tooltip-label-right">
-                        <span class="mb-3">Please select vehicle out date</span>
-                        <label class="form-group has-top-label">
-                            <b-form-input style="display:none" type="text" v-model.trim="$v.swapForm.out_date.$model"
-                              :state="!$v.swapForm.out_date.$error" />
-                            
-                            <datepicker type="datetime" v-model="$v.swapForm.out_date.$model"
-                              :state="!$v.swapForm.out_date.$error" placeholder="Select date"
-                              value-type="format" format="DD-MM-YYYY h:mm"></datepicker>
-                            <b-form-invalid-feedback v-if="$v.swapForm.out_date.$error"> Please select vehicle out date
-                            </b-form-invalid-feedback>
-                        </label>                         
-                    </b-form>
-                </b-colxx>
-
-                <b-colxx xxs="12" xs="6" lg="6" class="mb-3">
-                    <b-form class="av-tooltip tooltip-label-right">
-                        <b-form-group label="Uplaod images">
-                            <b-form-file
-                                v-model.trim="$v.swapForm.images"
-                                drop-placeholder="Drop file here..."
-                                accept="image/*"
-                                multiple
-                            >
-                            </b-form-file>
-                        </b-form-group>
-                    </b-form>
-                </b-colxx>
-
-            </b-row>
-            <div v-if="isProcessing">
-                <b-spinner variant="primary"></b-spinner>
-                <span class="text-primary">{{ processing_text }}</span>
-            </div>
-            <b-button @click.stop="save_swap_record" variant="primary" class="mt-4 mb-4">{{
-                                'Save' }}</b-button>
-        </b-form> -->
-
         <b-form >
             <b-row>
                 <b-colxx xxs="12" xs="6" lg="6" class="mb-3">
@@ -169,11 +52,11 @@
                     </label>
                 </b-colxx>
 
-                <b-colxx xxs="12" xs="6" lg="6" class="mb-3" ref="images_column">
+                <b-colxx xxs="12" xs="6" lg="6" class="mb-3"
+                    ref="images_column">
                     <span>{{ $t('forms.vanin.demage_picture') }}</span>
                     <b-form-file v-model="swapForm.images" :placeholder="$t('forms.vanin.demage_picture')"
-                        drop-placeholder="Drop file here..." accept="image/*" multiple
-                        @change="handleSwapImages"></b-form-file>
+                        drop-placeholder="Drop file here..." accept="image/*" multiple @change="handleSwapImages"></b-form-file>
                 </b-colxx>
 
                 <b-colxx xxs="12" xs="6" lg="6" class="mb-3" ref="video_column">
@@ -226,7 +109,7 @@
             <b-row>
                 <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                     <b-form class="av-tooltip tooltip-label-right">
-                        <b-form-checkbox id="checkbox-1" v-model="swapForm.long_term" name="checkbox-1" :value="1"
+                        <b-form-checkbox id="checkbox-swaped" v-model="swapForm.long_term" name="checkbox-swaped" :value="1"
                             :unchecked-value="0">
                             <span>Is This Long Term Customer?</span>
                         </b-form-checkbox>
@@ -287,13 +170,6 @@
             <b-button @click.stop="save_swap_record" variant="primary" class="mt-4 mb-4">{{
             'Save'
         }}</b-button>
-            <!-- <div >
-                <b-button @click.stop="update_vanout(swapForm.id)" variant="secondary" class="mt-4 mb-4">{{ ' Update'
-                    }}</b-button>
-                <b-button @click.stop="cancel_update_vanout()" variant="info" class="mt-4 mb-4"><i
-                        class="simple-icon-close"></i></b-button>
-            </div> -->
-
         </b-form>
 
     </div>
@@ -316,7 +192,7 @@ import { apiUrl } from "../../../constants/config.js";
 import { mapGetters } from 'vuex';
 
 export default {
-    props: ['sc', 'vehicle_id', 'locations', 'payment_options', 'accessories'],
+    props: ['sc', 'vehicle_id', 'locations', 'payment_options', 'accessories', 'booking'],
     components: {
         'v-select': vSelect,
         'datepicker': DatePicker
@@ -344,6 +220,7 @@ export default {
                 video: null,
                 condition: '',
                 long_term: 0,
+                booking_id: this.booking.id
             },
 
             available_vehicles: [],
@@ -400,8 +277,31 @@ export default {
             })
         },
 
-        onSwapSelect() {
+        onSwapSelect(key) {
 
+            this.processing_text = 'Loading Data ... ';
+            this.isProcessing = true
+
+            const vehicle_id = key
+
+            axios.get(apiUrl + '/vehicle/' + vehicle_id, {
+                headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(response => {
+
+                let maintenanceData = response.data
+
+                if (maintenanceData) {
+                this.swapForm.mileage = response.data.mileage
+                this.$notify('success filled ', 'Success!', 'The mileage data has been added to field', { duration: 3000, permanent: false });
+                this.isProcessing = false
+                } else {
+                this.swapForm.mileage = ''
+                this.$notify('info filled', 'Info!', 'No milage data for this vehicle, please manually fill it', { duration: 3000, permanent: false });
+                this.isProcessing = false
+                }
+            })
         },
 
         save_swap_record() {
@@ -410,8 +310,52 @@ export default {
             if (this.$v.swapForm.$anyError == true) {
                 return false;
             }
-            this.$emit('swap_submit_data', this.swapForm);
-            // this.sc(this.form)
+
+            this.processing_text = 'Saving Data ... ';
+            this.isProcessing = true
+
+            axios.post(apiUrl + '/swap-store', this.swapForm, {
+                headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'content-type': 'multipart/form-data',
+                }
+            }).then(response => {
+                //send success notification
+                this.$notify(
+                'success filled',
+                'Success!',
+                response.data.message,
+                { duration: 3000, permanent: false });
+
+                this.$v.swapForm.$reset()
+
+                this.swapForm = {
+                    vehicle_id: '',
+                    location_id: '',
+                    rental_priod: '',
+                    rental_amount: '',
+                    amount_frequency: 'Per Week',
+                    mileage: '',
+                    accessories: [],
+                    out_date: '',
+                    due_return: '',
+                    bond_deposit: null,
+                    payment_mode: null,
+                    images: null,
+                    video: null,
+                    condition: '',
+                    long_term: 0,
+                    booking_id: null
+                }
+                this.isProcessing = false
+
+                this.$emit('swap_submit_data');
+
+            }).catch(error => {
+                this.$notify('error filled', 'Error!', error.response.data.message, { duration: 3000, permanent: false });
+                this.isProcessing = false
+            });
+
         },
         reset_form() {
             this.form = {
@@ -422,7 +366,7 @@ export default {
         },
 
         handleSwapImages(event) {
-            this.swapForm.images = event.target.files;
+            this.swapForm.images = event.target.files[0];
             console.log(event); // Check the selected files in the console
         },
     },
@@ -446,7 +390,11 @@ export default {
 
         vehicle_id() {
             this.get_available_vehicle_options(this.vehicle_id, null);
-        }
+        },
+
+        booking(){
+            this.swapForm.booking_id = this.booking.id;
+        },
 
         // available_vehicle_options() {
         //     this.available_vehicle = available_vehicle_options
