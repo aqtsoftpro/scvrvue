@@ -61,7 +61,7 @@
 
                                         <tr>
                                           <th>Vehicle Return Date</th>
-                                          <td>{{ vanout.swaps[0].van_out_date }}</td>
+                                          <td>{{ vanout.vehicle_return_date }}</td>
                                         </tr>
                                       </tbody>
                                     </table>
@@ -91,7 +91,7 @@
                               </b-colxx>
                             </b-row>
                         </b-tab>
-                        <b-tab v-for="(swap, index) in vanout.swaps" :title="'Swaped Detail: '+ (index + 1)">
+                        <b-tab v-if="vanout.swaps.length > 0" v-for="(swap, index) in vanout.swaps" :title="'Swaped Detail: '+ (index + 1)">
                             <b-row>
                                 <b-colxx sm="12">
                                   <table class="table">
@@ -136,11 +136,9 @@
                                             <th>Vehicle Condition</th>
                                             <td>{{ swap.condition }}</td>
                                           </tr>
-
                                           <tr>
                                             <th>Vehicle Return Date</th>
-                                            <td v-if="vanout.swaps[index + 1]">{{ vanout.swaps[index + 1].van_out_date }}</td>
-                                            <td v-else > {{ vanout.van_return }}</td>
+                                            <td >{{ swap.vehicle_return_date }}</td>
                                           </tr>
                                     </tbody>
                                   </table>
