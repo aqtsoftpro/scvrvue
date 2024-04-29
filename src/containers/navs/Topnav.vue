@@ -343,6 +343,8 @@ export default {
       );
     }
   },
+
+
   computed: {
     ...mapGetters({
       currentUser: "currentUser",
@@ -350,7 +352,17 @@ export default {
       menuClickCount: "getMenuClickCount",
       selectedMenuHasSubItems: "getSelectedMenuHasSubItems"
     })
+
   },
+
+  mounted() {
+    if(localStorage.getItem('token') !== null) {
+      this.$store.commit('setUser', JSON.parse(localStorage.getItem('user')));
+    } else{
+      this.$router.push('/user/login');
+    }
+  },
+
   beforeDestroy() {
     document.removeEventListener("click", this.handleDocumentforMobileSearch);
   },

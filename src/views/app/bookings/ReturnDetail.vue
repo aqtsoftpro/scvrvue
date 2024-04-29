@@ -2,8 +2,7 @@
     <div>
         <b-row>
             <b-colxx xxs="12">
-                <h1>   {{ vanout.customer }}</h1>
-                <!-- <h4>Booking ID: {{  vanout.booking_id }}</h4> -->
+                <h1>   {{ van_return.customer }}</h1>
                 <div class="separator mb-5"></div>
             </b-colxx>
         </b-row>
@@ -20,44 +19,44 @@
                                       <tbody>
                                         <tr>
                                           <th>Booking Status</th>
-                                          <td>{{ vanout.status == 1 ? 'Active': 'Inactive' }}</td>
+                                          <td>{{ van_return.status == 1 ? 'Active': 'Inactive' }}</td>
                                         </tr>
                                         <tr>
                                           <th>Vehicle Registration</th>
-                                          <td>{{ vanout.reg_number }}</td>
+                                          <td>{{ van_return.vehicle }}</td>
                                         </tr>
                                         <tr>
                                           <th>Vehicle Make</th>
-                                          <td>{{ vanout.vehicle }}</td>
+                                          <td>{{ van_return.van_out.vehicle.make }}</td>
                                         </tr>
                                         <tr>
                                           <th>Vehicle Model</th>
-                                          <td>{{ vanout.vehicle_model }}</td>
+                                          <td>{{ van_return.van_out.vehicle.model }}</td>
                                         </tr>
                                         <tr>
                                           <th>Location</th>
-                                          <td>{{ vanout.location }}</td>
+                                          <td>{{ van_return.location }}</td>
                                         </tr>
                                         <tr>
                                           <th>Mileage</th>
-                                          <td>{{ vanout.mileage }}</td>
+                                          <td>{{ van_return.van_out.vehicle.mileage }}</td>
                                         </tr>
                                         <tr>
                                           <th>Vehicle Out Date</th>
-                                          <td>{{ vanout.van_out_date }}</td>
+                                          <td>{{ van_return.van_out.van_out_date }}</td>
                                         </tr>
                                         <tr>
                                           <th>Vehicle Due Date</th>
-                                          <td>{{ vanout.return_date }}</td>
+                                          <td>{{ van_return.van_out.due_return }}</td>
                                         </tr>
                                         <tr>
                                           <th>Vehicle Condition</th>
-                                          <td>{{ vanout.condition }}</td>
+                                          <td>{{ van_return.condition }}</td>
                                         </tr>
 
                                         <tr>
                                           <th>Vehicle Return Date</th>
-                                          <td>{{ vanout.vehicle_return_date }}</td>
+                                          <td>{{ van_return.van_out.vehicle_return_date }}</td>
                                         </tr>
                                       </tbody>
                                     </table>
@@ -70,17 +69,17 @@
                                       <h4 class="p-3">
                                         Vehicle condition detail images
                                       </h4>
-                                      <b-button size="sm" variant="secondary" @click="viewVid(vanout.video)" >
+                                      <b-button size="sm" variant="secondary" @click="viewVid(van_return.video)" >
                                         View Video
                                       </b-button>
                                     </div>
                                   </b-card>
                                 </b-colxx>
                               <!-- <span>click here to downlaod video </span> -->
-                              <!-- <b-a :href="vanout.video" target="_blank" rel="noopener noreferrer"> Click Me</b-a> -->
+                              <!-- <b-a :href="van_return.video" target="_blank" rel="noopener noreferrer"> Click Me</b-a> -->
                             </b-row>
                             <b-row>
-                              <b-colxx v-for="item in vanout.galleries" xxs="12" xl="6" class="mb-3" >
+                              <b-colxx v-for="item in van_return.galleries" xxs="12" xl="6" class="mb-3" >
                                 <b-card class="mb-4 h-100" no-body>
                                   <b-card-body>
                                       <b-img
@@ -96,7 +95,7 @@
                               </b-colxx>
                             </b-row>
                         </b-tab>
-                        <b-tab v-if="vanout.swaps.length > 0" v-for="(swap, index) in vanout.swaps" :title="'Swaped Detail: '+ (index + 1)">
+                        <b-tab v-if="van_return.swaps.length > 0" v-for="(swap, index) in van_return.swaps" :title="'Swaped Detail: '+ (index + 1)">
                             <b-row>
                                 <b-colxx sm="12">
                                   <table class="table">
@@ -196,18 +195,18 @@
         data() {
             return {
                 isLoad: false,
-                vanout: [],
+                van_return: [],
             }
         },
         methods: {
-          get_vanout_detail() {
+          get_van_return_detail() {
               const id = this.$route.params.id
-              axios.get(apiUrl + '/vanout/' + id, {
+              axios.get(apiUrl + '/van_return/' + id, {
                   headers: {
                       'Authorization': 'Bearer ' + localStorage.getItem('token')
                   }
               }).then(response => {
-                  this.vanout = response.data
+                  this.van_return = response.data
               })
           },
 
@@ -225,13 +224,13 @@
           },
         },
         mounted() {
-            this.get_vanout_detail()
+            this.get_van_return_detail()
         },
   
         computed: {
           formattedMaintenance() {
             // Loop through maintenance array and format the date
-            return this.vanout.map(item => {
+            return this.van_return.map(item => {
               // Convert date string to a Date object
               const date = new Date(item.date);
               // Format the date as "DD MMM YYYY"

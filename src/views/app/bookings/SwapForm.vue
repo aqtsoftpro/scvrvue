@@ -167,9 +167,9 @@
 
             </b-row>
 
-            <b-button @click.stop="save_swap_record" variant="primary" class="mt-4 mb-4">{{
-            'Save'
-        }}</b-button>
+            <b-button v-if="formData" @click.stop="update_swap_record(formData.id)" variant="primary" class="mt-4 mb-4">Update</b-button>
+
+            <b-button v-else @click.stop="save_swap_record" variant="primary" class="mt-4 mb-4">Save</b-button>
         </b-form>
 
     </div>
@@ -192,7 +192,7 @@ import { apiUrl } from "../../../constants/config.js";
 import { mapGetters } from 'vuex';
 
 export default {
-    props: ['sc', 'vehicle_id', 'locations', 'payment_options', 'accessories', 'booking'],
+    props: ['sc', 'vehicle_id', 'locations', 'payment_options', 'accessories', 'booking', 'formData'],
     components: {
         'v-select': vSelect,
         'datepicker': DatePicker
@@ -267,7 +267,7 @@ export default {
             this.processing_text = 'Loading Data..'
             this.isProcessing = true
 
-            axios.get(apiUrl + '/available_vehicles_options/' + id + '/' + swap, {
+            axios.get(apiUrl + '/available_vehicles_options/' + id + '/' + swap +'/'+ this.booking.vehicle_type_id, {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }
@@ -348,14 +348,62 @@ export default {
                     booking_id: null
                 }
                 this.isProcessing = false
-
                 this.$emit('swap_submit_data');
-
             }).catch(error => {
                 this.$notify('error filled', 'Error!', error.response.data.message, { duration: 3000, permanent: false });
                 this.isProcessing = false
             });
 
+        },
+
+        update_swap_record(swap_id) {
+            this.$v.swapForm.$touch();
+            if (this.$v.swapForm.$anyError == true) {
+                return false;
+            }
+
+            this.processing_text = 'Updating Data ... ';
+            this.isProcessing = true
+
+            axios.post(apiUrl + '/swap-update/'+swap_id, this.swapForm, {
+                headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'content-type': 'multipart/form-data',
+                }
+            }).then(response => {
+                //send success notification
+                this.$notify(
+                'success filled',
+                'Success!',
+                response.data.message,
+                { duration: 3000, permanent: false });
+
+                this.$v.swapForm.$reset()
+
+                this.swapForm = {
+                    vehicle_id: '',
+                    location_id: '',
+                    rental_priod: '',
+                    rental_amount: '',
+                    amount_frequency: 'Per Week',
+                    mileage: '',
+                    accessories: [],
+                    out_date: '',
+                    due_return: '',
+                    bond_deposit: null,
+                    payment_mode: null,
+                    images: null,
+                    video: null,
+                    condition: '',
+                    long_term: 0,
+                    booking_id: null
+                }
+                this.isProcessing = false
+                this.$emit('swap_submit_data');
+            }).catch(error => {
+                this.$notify('error filled', 'Error!', error.response.data.message, { duration: 3000, permanent: false });
+                this.isProcessing = false
+            });
         },
         reset_form() {
             this.form = {
@@ -381,7 +429,14 @@ export default {
 
         this.get_available_vehicle_options(this.vehicle_id);
 
-        // console.log(vehicle_id);
+        this.swapForm = this.formData;
+        this.swapForm.out_date = this.formData.van_out_date;
+        var accessories_to_set = [];
+        this.formData.accessories.map((value, key) => {
+            accessories_to_set.push(value.id)
+        })
+        console.log(accessories_to_set)
+        this.swapForm.accessories = accessories_to_set
     },
     watch: {
         currentUser() {

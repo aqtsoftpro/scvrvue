@@ -5,10 +5,10 @@
         <customer :cc="customer_created" />
       </b-modal>
 
-      <b-modal ref="create_swap_modal" id="swapModal" size="lg" title="Add Swaped Vehicle Data" hide-footer>
+      <b-modal ref="create_swap_modal" id="swapModal" size="lg" :title="swap_modal_title" hide-footer>
         <swap-form @swap_submit_data="swap_created"
         :vehicle_id="checkVehicle" :locations="location_options" :payment_options="payment_mode_options"
-        :accessories="accessory_options" :booking="booking" />
+        :accessories="accessory_options" :booking="booking" :formData="swap_data" />
       </b-modal>
 
       <b-modal id="vanoutModal" size="lg" ref="vanoutModal">
@@ -430,6 +430,65 @@
                     </div>
 
                   </b-form>
+                  <div v-if="editing_mode">
+                      <b-button v-for="swap in swapped_data"
+                        :class="visible ? null : 'collapsed'"
+                        :aria-expanded="visible ? 'true' : 'false'"
+                        aria-controls="collapse-4"
+                        @click="get_swapped(swap)"
+                      >
+                        {{ swap.reg_number }}
+                      </b-button>
+                      <b-collapse v-if="swapped_item" id="collapse-4" v-model="visible" class="mt-2">
+                        <b-card>
+                          <b-row v-if="swapped_item.status == 1" class="justify-content-end">
+                            <b-button size="sm" variant="grey" @click="swapped_modal(swapped_item)" >
+                              <i class="simple-icon-pencil"></i>
+                            </b-button>
+                          </b-row>
+                          <b-row>
+                            <b-colxx xs="12" lg="6">
+                              <table class="stacked table">
+                                <tr>
+                                  <th>Registration:</th>
+                                  <td> {{ swapped_item.reg_number }}</td>
+                                </tr>
+                                <tr>
+                                  <th>Vehicle Model:</th>
+                                  <td> {{ swapped_item.vehicle_model }}</td>
+                                </tr>
+                                <tr>
+                                  <th>Vehicle Make:</th>
+                                  <td> {{ swapped_item.vehicle }}</td>
+                                </tr>
+                              </table> 
+                            </b-colxx>
+
+                            <b-colxx xs="12" lg="6">
+                              <table class="stacked table">
+                                <tr>
+                                  <th>Vehicle Out Date:</th>
+                                  <td> {{ swapped_item.van_out_date }}</td>
+                                </tr>
+                                <tr>
+                                  <th>Vehicle Accessories:</th>
+                                  <td>
+                                    <b-badge pill v-for="accessory in swapped_item.accessories " class="mx-1" >
+                                      {{ accessory.name }}
+                                    </b-badge>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th>Vehicle Return Date:</th>
+                                  <td> {{ swapped_item.return_date }}</td>
+                                </tr>
+                              </table> 
+                            </b-colxx>
+
+                          </b-row>
+                        </b-card>
+                      </b-collapse>
+                  </div>
 
                   <datatable title="" :fields="vanout_fields" :data="vanouts" :edit="edit_vanout" :view="bring_fields"
                     :role="roleName" :del="delete_vanout" :searchColumn="VanoutSearchColumns" />
@@ -905,7 +964,12 @@ export default ({
       swap_options: ["New", "Swap"],
       vanouts: [],
       vanins: [],
-      booking: null
+      booking: null,
+      visible: false,
+      swapped_data: [],
+      swapped_item: null,
+      swap_data: null,
+      swap_modal_title: 'Add New Swapped Vehicle Data'
       // venout_fields: ['reg_number', 'customer', 'rental_amount', {'van_out_date': 'Rental Period'}, 'due_return', 'actions'],
       // van_return_fields: ['vehicle', 'customer', 'rental_amount', 'rental_period', 'return_date', 'actions']
     }
@@ -997,12 +1061,20 @@ export default ({
 
     swap_created() {
       this.all_()
-      // this.form.
       this.swap_status = false;
       this.$refs['create_swap_modal'].hide()
+      this.edit_vanout(this.booking);
     },
 
     open_swap_modal() {
+      this.swap_modal_title = 'Add New Swapped Vehicle Data'
+      this.$refs['create_swap_modal'].show()
+    },
+
+    swapped_modal(data) {
+      this.visible = false;
+      this.swap_modal_title = 'Edit Swapped Vehicle'
+      this.swap_data = data;
       this.$refs['create_swap_modal'].show()
     },
 
@@ -1157,9 +1229,12 @@ export default ({
     },
 
     bring_vanin_fields(data) {
-      console.log(data)
-      this.vanin = data
-      this.$refs.vanInModal.show()
+
+      return this.$router.push({ path: '/app/bookings/in/' + data.id });
+
+      // console.log(data)
+      // this.vanin = data
+      // this.$refs.vanInModal.show()
     },
 
     save_vanout_form() {
@@ -1263,23 +1338,24 @@ export default ({
     },
 
     edit_vanout(item) {
-      this.booking = item;
       console.log(item);
+      this.booking = item;
       this.processing_text = 'Loading Data ...'
       this.isProcessing = true
       this.van_out_date = ''
-      this.get_available_vehicle_options(item.old_vehicle, item.swap_with)
+      this.get_available_vehicle_options(item.old_vehicle, item.swap_with, item.vehicle_type_id)
       this.editing_mode = true;
       this.swap_status = true;
       //get vanout data
-      this.checkVehicle = item.vehicle_id;
+      this.checkVehicle = item.old_vehicle;
       axios.get(apiUrl + '/vanout/' + item.id, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
         }).then(response => {
           console.log(response.data);
-          this.form = response.data
+          this.form = response.data;
+          this.swapped_data = response.data.swaps;
           this.form.long_term = response.data.long_term
           if (response.data.reason_of_renting == 'Swap') {
             this.swap_status = false;
@@ -1322,8 +1398,13 @@ export default ({
           // }
         })
 
-      this.get_active_vehicle_options(item.old_vehicle)
+      this.get_active_vehicle_options(item.old_vehicle, item.vehicle_type_id)
       this.get_all_customer_options(item.customer_id)
+    },
+
+    get_swapped(swap) {
+      this.visible = !this.visible;
+      this.swapped_item = swap;
     },
 
     edit_vanin(item) {
@@ -1522,12 +1603,12 @@ export default ({
         this.isProcessing = false
       })
     },
-    get_available_vehicle_options(id, swap) {
+    get_available_vehicle_options(id, swap=null, type=null) {
 
       this.processing_text = 'Loading Data..'
       this.isProcessing = true
 
-      axios.get(apiUrl + '/available_vehicles_options/' + id + '/' + swap, {
+      axios.get(apiUrl + '/available_vehicles_options/' + id + '/' + swap +'/'+type, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
@@ -1536,9 +1617,9 @@ export default ({
         this.isProcessing = false
       })
     },
-    get_active_vehicle_options(id = null) {
+    get_active_vehicle_options(id = null, type=null) {
 
-      axios.get(apiUrl + '/vehicle_options?selected=' + id,
+      axios.get(apiUrl + '/vehicle_options?selected=' + id +'&type=' + type,
         {
           headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
