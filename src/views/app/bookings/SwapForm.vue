@@ -272,6 +272,7 @@ export default {
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }
             }).then(response => {
+                console.log(response.data);
                 this.available_vehicles = response.data;
                 this.isProcessing = false
             })
@@ -429,14 +430,17 @@ export default {
 
         this.get_available_vehicle_options(this.vehicle_id);
 
-        this.swapForm = this.formData;
-        this.swapForm.out_date = this.formData.van_out_date;
-        var accessories_to_set = [];
-        this.formData.accessories.map((value, key) => {
-            accessories_to_set.push(value.id)
-        })
-        console.log(accessories_to_set)
-        this.swapForm.accessories = accessories_to_set
+        if (this.formData !== null) {
+            this.swapForm = this.formData;
+            this.swapForm.out_date = this.formData.van_out_date;
+            var accessories_to_set = [];
+            this.formData.accessories.map((value, key) => {
+                accessories_to_set.push(value.id)
+            })
+            console.log(accessories_to_set)
+            this.swapForm.accessories = accessories_to_set
+        }
+
     },
     watch: {
         currentUser() {
