@@ -514,14 +514,10 @@
                       </b-colxx>
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
-                          <label class="form-group has-top-label">
+                          <!-- <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text"
                               v-model.trim="$v.vanin_form.location_id.$model"
                               :state="!$v.vanin_form.location_id.$error" />
-                            <!-- <v-select v-model="$v.vanin_form.location_id.$model" label="name" taggable
-                              :create-option="location => ({ name: location.name, id: location.id })"
-                              :reduce="location => location.id" aria-placeholder="Select Location"
-                              :options="location_options"></v-select> -->
 
                             <v-select v-model="vanin_form.location_id" label="name" :key="form.location_id"
                               :reduce="location => location.id" aria-placeholder="Select Location"
@@ -530,7 +526,20 @@
                             <span>{{ $t('forms.vanin.location') }}</span>
                             <b-form-invalid-feedback v-if="$v.vanin_form.location_id.$error"> Please select
                               Location!</b-form-invalid-feedback>
+                          </label> -->
+
+                          <label class="form-group has-top-label">
+                            <b-form-input style="display:none" type="text" v-model.trim="$v.vanin_form.location_id.$model"
+                              :state="!$v.vanin_form.location_id.$error" />
+                            <v-select v-model="vanin_form.location_id" label="name" :key="vanin_form.location_id"
+                              :reduce="location => location.id" aria-placeholder="Select Location"
+                              :options="location_options"></v-select>
+                            <span>{{ $t('forms.vanout.location') }}</span>
+                            <b-form-invalid-feedback v-if="$v.vanin_form.location_id.$error"> Please select the
+                              location!</b-form-invalid-feedback>
                           </label>
+
+
                         </b-form>
                         <div v-if="vanin_form.location_id == '4'">
                           <b-form-input placeholder="Title of location" v-model="new_location"></b-form-input>
@@ -1149,9 +1158,11 @@ export default ({
       var returnDateObj = moment(this.vanin_form.return_date, "DD-MM-YYYY h:mm");
       var vanOutDateObj = moment(this.van_out, "DD-MM-YYYY h:mm");
 
+      console.log(returnDateObj, vanOutDateObj);
+
       // Calculate the difference in days
       var day_count = returnDateObj.diff(vanOutDateObj, 'days');
-
+      console.log(day_count);
       if (!isNaN(day_count)) {
         this.vanin_form.total_days = day_count;
       } else {

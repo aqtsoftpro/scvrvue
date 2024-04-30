@@ -67,7 +67,7 @@
                                     </table>
                                 </b-colxx>
                             </b-row>
-                            <b-row v-if="vanout.galleries.length > 0" class="mb-2">
+                            <b-row v-if="galleries.length > 0" class="mb-2">
                                 <b-colxx xxs="12">
                                   <b-card no-body class="p-3">
                                     <div class="d-flex justify-content-between mb-3">
@@ -149,7 +149,7 @@
                                   </table>
                                 </b-colxx>
                             </b-row>
-                            <b-row v-if="swap.images.length > 0" class="mb-2">
+                            <b-row class="mb-2">
                                 <b-colxx xxs="12">
                                   <b-card no-body class="p-3">
                                     <div class="d-flex justify-content-between mb-3">
@@ -201,6 +201,7 @@
             return {
                 isLoad: false,
                 vanout: [],
+                galleries: [],
             }
         },
         methods: {
@@ -212,6 +213,7 @@
                   }
               }).then(response => {
                   this.vanout = response.data
+                  this.galleries = response.data.galleries ?? [];
               })
           },
 

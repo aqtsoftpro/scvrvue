@@ -79,10 +79,8 @@
                                     </div>
                                   </b-card>
                                 </b-colxx>
-                              <!-- <span>click here to downlaod video </span> -->
-                              <!-- <b-a :href="van_return.video" target="_blank" rel="noopener noreferrer"> Click Me</b-a> -->
                             </b-row>
-                            <b-row>
+                            <b-row v-if="van_return.galleries.length > 0">
                               <b-colxx v-for="item in van_return.galleries" xxs="12" xl="6" class="mb-3" >
                                 <b-card class="mb-4 h-100" no-body>
                                   <b-card-body>
@@ -99,7 +97,7 @@
                               </b-colxx>
                             </b-row>
                         </b-tab>
-                        <b-tab v-if="van_return.swaps.length > 0" v-for="(swap, index) in van_return.swaps" :title="'Swaped Detail: '+ (index + 1)">
+                        <b-tab v-if="van_return.swaps > 0" v-for="(swap, index) in van_return.swaps" :title="'Swaped Detail: '+ (index + 1)">
                             <b-row>
                                 <b-colxx sm="12">
                                   <table class="table">
