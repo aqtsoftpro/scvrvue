@@ -1050,6 +1050,7 @@ export default ({
         this.cancel_update_vanout();
       }
     },
+
     stopPropagation(event) {
       event.stopPropagation();
     },
@@ -1061,7 +1062,6 @@ export default ({
 
     swap_created(newBooking) {
       console.log(newBooking);
-      this.get_active_vehicle_options(newBooking.vehicle_id)     
       this.get_vanouts()
       this.swap_status = false;
       this.$refs['create_swap_modal'].hide()
@@ -1069,6 +1069,7 @@ export default ({
       this.form.bond_deposit = newBooking.bond_deposit
       this.form.payment_mode = newBooking.payment_mode
       this.swapped_data.push(newBooking);
+      this.get_all_vehicle_options(newBooking.vehicle_id)
     },
 
     open_swap_modal() {
@@ -1084,7 +1085,6 @@ export default ({
     },
 
     addNewLocation() {
-
       this.processing_text = 'Saving Data ... ';
       this.isProcessing = true
 
@@ -1225,7 +1225,6 @@ export default ({
         })
     },
 
-
     bring_fields(data) {
       return this.$router.push({ path: '/app/bookings/out/' + data.id });
       // this.vanout.swapped_name = data.swaped_detail?.reg_plate_number ?? null;
@@ -1234,9 +1233,7 @@ export default ({
     },
 
     bring_vanin_fields(data) {
-
       return this.$router.push({ path: '/app/bookings/in/' + data.id });
-
       // console.log(data)
       // this.vanin = data
       // this.$refs.vanInModal.show()
@@ -1300,19 +1297,14 @@ export default ({
     },
 
     save_vanin_form() {
-
       this.$v.vanin_form.$touch();
       if (this.$v.vanin_form.$anyError == true) {
         return false;
       }
-
       // console.log(this.vanin_form)
-
       // this.processing_text = 'Saving Van-in Data ....'
       // this.isProcessing = true
-
       (this.vanin_form.fuel_tank == 'Fuel Tank Level') ? '' : this.vanin_form.fuel_tank
-
       this.processing_text = 'Saving Vehicle Return Data ....'
       this.isProcessing = true
 
@@ -1325,8 +1317,8 @@ export default ({
         this.reset_form()
         this.$v.vanin_form.$reset()
         //refresh the table data
-        this.get_vanins()
-        this.get_vanouts()
+        // this.get_vanins()
+        // this.get_vanouts()
         //send success notification
         this.$notify(
           'success filled',
@@ -1336,6 +1328,8 @@ export default ({
         this.isProcessing = false
         this.all_()
         this.get_active_vehicle_options()
+        this.get_vanins()
+        this.get_vanouts()
       }).catch(error => {
         this.$notify('error filled', 'Error!', error.response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
@@ -1636,6 +1630,7 @@ export default ({
     },
 
     get_all_vehicle_options(id) {
+      console.log('this is all vehicle options');
       axios.get(apiUrl + '/vehicle_options?selected=' + id, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
