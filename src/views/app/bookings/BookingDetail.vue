@@ -2,7 +2,12 @@
     <div>
         <b-row>
             <b-colxx xxs="12">
-                <h1>   {{ vanout.customer }}</h1>
+              <div class="d-flex">
+                <router-link :to="{ path: '/app/bookings' }" class="btn btn-primary mb-4"
+                            variant="primary">Back to Booking</router-link>
+                            &nbsp; &nbsp;    
+                <h1 class="ms-2">   {{ vanout.customer }}</h1>
+              </div>
                 <!-- <h4>Booking ID: {{  vanout.booking_id }}</h4> -->
                 <div class="separator mb-5"></div>
             </b-colxx>
@@ -55,7 +60,7 @@
                                           <td>{{ vanout.condition }}</td>
                                         </tr>
 
-                                        <tr>
+                                        <tr v-if="vanout.vehicle_return_date">
                                           <th>Vehicle Return Date</th>
                                           <td>{{ vanout.vehicle_return_date }}</td>
                                         </tr>
@@ -137,7 +142,7 @@
                                             <th>Vehicle Condition</th>
                                             <td>{{ swap.condition }}</td>
                                           </tr>
-                                          <tr>
+                                          <tr v-if="swap.vehicle_return_date" >
                                             <th>Vehicle Return Date</th>
                                             <td >{{ swap.vehicle_return_date }}</td>
                                           </tr>
@@ -145,14 +150,14 @@
                                   </table>
                                 </b-colxx>
                             </b-row>
-                            <b-row class="mb-2">
+                            <b-row v-if="swap.images.length > 0" class="mb-2">
                                 <b-colxx xxs="12">
                                   <b-card no-body class="p-3">
                                     <div class="d-flex justify-content-between mb-3">
                                       <h4 class="p-3">
                                         Vehicle condition detail images
                                       </h4>
-                                      <b-button size="sm" variant="secondary" @click="viewVid(swap.video)" >
+                                      <b-button v-if="swap.video" size="sm" variant="secondary" @click="viewVid(swap.video)" >
                                         View Video
                                       </b-button>
                                     </div>

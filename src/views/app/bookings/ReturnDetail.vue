@@ -2,7 +2,12 @@
     <div>
         <b-row>
             <b-colxx xxs="12">
-                <h1>   {{ van_return.customer }}</h1>
+              <div class="d-flex">
+                <router-link :to="{ path: '/app/bookings' }" class="btn btn-primary mb-4"
+                            variant="primary">Back to Booking</router-link>
+                            &nbsp; &nbsp; 
+                            <h1>{{ van_return.customer }}</h1>
+                </div>
                 <div class="separator mb-5"></div>
             </b-colxx>
         </b-row>
@@ -54,7 +59,7 @@
                                           <td>{{ van_return.condition }}</td>
                                         </tr>
 
-                                        <tr>
+                                        <tr v-if="van_return.van_out.vehicle_return_date" >
                                           <th>Vehicle Return Date</th>
                                           <td>{{ van_return.van_out.vehicle_return_date }}</td>
                                         </tr>
@@ -62,14 +67,14 @@
                                     </table>
                                 </b-colxx>
                             </b-row>
-                            <b-row class="mb-2">
+                            <b-row v-if="van_return.galleries.length > 0" class="mb-2">
                                 <b-colxx xxs="12">
                                   <b-card no-body class="p-3">
                                     <div class="d-flex justify-content-between mb-3">
                                       <h4 class="p-3">
                                         Vehicle condition detail images
                                       </h4>
-                                      <b-button size="sm" variant="secondary" @click="viewVid(van_return.video)" >
+                                      <b-button v-if="van_return.video" size="sm" variant="secondary" @click="viewVid(van_return.video)" >
                                         View Video
                                       </b-button>
                                     </div>
@@ -136,7 +141,7 @@
                                             <th>Vehicle Condition</th>
                                             <td>{{ swap.condition }}</td>
                                           </tr>
-                                          <tr>
+                                          <tr v-if="swap.vehicle_return_date" >
                                             <th>Vehicle Return Date</th>
                                             <td >{{ swap.vehicle_return_date }}</td>
                                           </tr>
