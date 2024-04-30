@@ -1059,11 +1059,16 @@ export default ({
       this.$refs['create_customer_modal'].hide()
     },
 
-    swap_created() {
-      this.all_()
+    swap_created(newBooking) {
+      console.log(newBooking);
+      this.get_active_vehicle_options(newBooking.vehicle_id)     
+      this.get_vanouts()
       this.swap_status = false;
       this.$refs['create_swap_modal'].hide()
-      this.edit_vanout(this.booking);
+      this.form.vehicle_id = newBooking.vehicle_id
+      this.form.bond_deposit = newBooking.bond_deposit
+      this.form.payment_mode = newBooking.payment_mode
+      this.swapped_data.push(newBooking);
     },
 
     open_swap_modal() {
@@ -1398,7 +1403,7 @@ export default ({
           // }
         })
 
-      this.get_active_vehicle_options(item.old_vehicle, item.vehicle_type_id)
+      this.get_active_vehicle_options(item.vehicle_id, item.vehicle_type_id)
       this.get_all_customer_options(item.customer_id)
     },
 

@@ -6,7 +6,7 @@
                 <router-link :to="{ path: '/app/bookings' }" class="btn btn-primary mb-4"
                             variant="primary">Back to Booking</router-link>
                             &nbsp; &nbsp;    
-                <h1 class="ms-2">   {{ vanout.customer }}</h1>
+                <h1 class="ms-2"> {{ vanout.customer }}</h1>
               </div>
                 <!-- <h4>Booking ID: {{  vanout.booking_id }}</h4> -->
                 <div class="separator mb-5"></div>

@@ -214,8 +214,8 @@ export default {
                 accessories: [],
                 out_date: '',
                 due_return: '',
-                bond_deposit: null,
-                payment_mode: null,
+                bond_deposit: this.booking.bond_deposit,
+                payment_mode: this.booking.payment_mode,
                 images: null,
                 video: null,
                 condition: '',
@@ -231,6 +231,8 @@ export default {
                 { id: 'other', name: 'Other' }
 
             ],
+
+            newBooking: null
         }
     },
 
@@ -306,11 +308,11 @@ export default {
         },
 
         save_swap_record() {
-
             this.$v.swapForm.$touch();
             if (this.$v.swapForm.$anyError == true) {
                 return false;
             }
+            this.booking.vehicle_id = this.swapForm.vehicle_id;
 
             this.processing_text = 'Saving Data ... ';
             this.isProcessing = true
@@ -322,6 +324,8 @@ export default {
                 }
             }).then(response => {
                 //send success notification
+                this.newBooking = response.data.data;
+
                 this.$notify(
                 'success filled',
                 'Success!',
@@ -349,7 +353,7 @@ export default {
                     booking_id: null
                 }
                 this.isProcessing = false
-                this.$emit('swap_submit_data');
+                this.$emit('swap_submit_data', this.newBooking);
             }).catch(error => {
                 this.$notify('error filled', 'Error!', error.response.data.message, { duration: 3000, permanent: false });
                 this.isProcessing = false
@@ -365,7 +369,7 @@ export default {
 
             this.processing_text = 'Updating Data ... ';
             this.isProcessing = true
-
+            this.booking.vehicle_id = this.swapForm.vehicle_id;
             axios.post(apiUrl + '/swap-update/'+swap_id, this.swapForm, {
                 headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -373,6 +377,7 @@ export default {
                 }
             }).then(response => {
                 //send success notification
+                this.newBooking = response.data.data;
                 this.$notify(
                 'success filled',
                 'Success!',
@@ -400,7 +405,7 @@ export default {
                     booking_id: null
                 }
                 this.isProcessing = false
-                this.$emit('swap_submit_data');
+                this.$emit('swap_submit_data', this.newBooking);
             }).catch(error => {
                 this.$notify('error filled', 'Error!', error.response.data.message, { duration: 3000, permanent: false });
                 this.isProcessing = false
@@ -428,7 +433,7 @@ export default {
             this.$router.push('/user/login');
         }
 
-        this.get_available_vehicle_options(this.vehicle_id);
+        this.get_available_vehicle_options();
 
         if (this.formData !== null) {
             this.swapForm = this.formData;
