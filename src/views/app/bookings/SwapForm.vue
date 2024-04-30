@@ -206,7 +206,7 @@ export default {
             processing_text: 'Loading data please wait ...',
             swapForm: {
                 vehicle_id: '',
-                location_id: '',
+                location_id: this.booking.location_id,
                 rental_priod: '',
                 rental_amount: '',
                 amount_frequency: 'Per Week',

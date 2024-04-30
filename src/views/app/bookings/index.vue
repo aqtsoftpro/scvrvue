@@ -209,7 +209,7 @@
                             <b-form-input style="display:none" type="text" v-model.trim="$v.form.location_id.$model"
                               :state="!$v.form.location_id.$error" />
                             <v-select v-model="form.location_id" label="name" :key="form.location_id"
-                              :reduce="location => location.id" aria-placeholder="Select Customer"
+                              :reduce="location => location.id" aria-placeholder="Select Location"
                               :options="location_options"></v-select>
                             <span>{{ $t('forms.vanout.location') }}</span>
                             <b-form-invalid-feedback v-if="$v.form.location_id.$error"> Please select the
@@ -518,10 +518,15 @@
                             <b-form-input style="display:none" type="text"
                               v-model.trim="$v.vanin_form.location_id.$model"
                               :state="!$v.vanin_form.location_id.$error" />
-                            <v-select v-model="$v.vanin_form.location_id.$model" label="name" taggable
+                            <!-- <v-select v-model="$v.vanin_form.location_id.$model" label="name" taggable
                               :create-option="location => ({ name: location.name, id: location.id })"
                               :reduce="location => location.id" aria-placeholder="Select Location"
+                              :options="location_options"></v-select> -->
+
+                            <v-select v-model="vanin_form.location_id" label="name" :key="form.location_id"
+                              :reduce="location => location.id" aria-placeholder="Select Location"
                               :options="location_options"></v-select>
+
                             <span>{{ $t('forms.vanin.location') }}</span>
                             <b-form-invalid-feedback v-if="$v.vanin_form.location_id.$error"> Please select
                               Location!</b-form-invalid-feedback>
@@ -666,7 +671,7 @@
                         <b-form class="av-tooltip tooltip-label-right">
                           <div>{{ $t('forms.vanin.return_date') }}</div>
                           <datepicker :bootstrap-styling="true" type="datetime" :placeholder="$t('forms.vanin.return_date')"
-                            v-model="$v.vanin_form.return_date.$model" :state="!$v.vanin_form.return_date.$error"
+                            v-model="vanin_form.return_date" :state="!$v.vanin_form.return_date.$error"
                             value-type="format" @change="calculateDays" format="DD-MM-YYYY h:mm"></datepicker>
                           
                           <b-form-invalid-feedback v-if="$v.vanin_form.return_date.$error"> Please select return
@@ -1065,10 +1070,11 @@ export default ({
       this.get_vanouts()
       this.swap_status = false;
       this.$refs['create_swap_modal'].hide()
-      this.form.vehicle_id = newBooking.vehicle_id
-      this.form.bond_deposit = newBooking.bond_deposit
-      this.form.payment_mode = newBooking.payment_mode
-      this.swapped_data.push(newBooking);
+      this.edit_vanout(this.booking);
+      // this.form.vehicle_id = newBooking.vehicle_id
+      // this.form.bond_deposit = newBooking.bond_deposit
+      // this.form.payment_mode = newBooking.payment_mode
+      // this.swapped_data.push(newBooking);
       this.get_all_vehicle_options(newBooking.vehicle_id)
     },
 
@@ -1342,7 +1348,7 @@ export default ({
       this.processing_text = 'Loading Data ...'
       this.isProcessing = true
       this.van_out_date = ''
-      this.get_available_vehicle_options(item.old_vehicle, item.swap_with, item.vehicle_type_id)
+      // item.swap_with,
       this.editing_mode = true;
       this.swap_status = true;
       //get vanout data
@@ -1354,6 +1360,7 @@ export default ({
         }).then(response => {
           console.log(response.data);
           this.form = response.data;
+          this.form.vehicle_id = response.data.old_vehicle_id
           this.swapped_data = response.data.swaps;
           this.form.long_term = response.data.long_term
           if (response.data.reason_of_renting == 'Swap') {
@@ -1367,6 +1374,7 @@ export default ({
           })
           console.log(accessories_to_set)
           this.form.accessories = accessories_to_set
+          this.get_active_vehicle_options(this.form.vehicle_id)
 
           // if (item.swap_with != null) {
           //   axios.get(apiUrl + '/vehicle/' + item.swap_with, {
@@ -1397,7 +1405,7 @@ export default ({
           // }
         })
 
-      this.get_active_vehicle_options(item.vehicle_id, item.vehicle_type_id)
+      this.get_active_vehicle_options(item.old_vehicle_id, item.vehicle_type_id)
       this.get_all_customer_options(item.customer_id)
     },
 

@@ -2,11 +2,10 @@
     <div>
         <b-row>
             <b-colxx xxs="12">
-              <div class="d-flex">
-                <router-link :to="{ path: '/app/bookings' }" class="btn btn-primary mb-4"
-                            variant="primary">Back to Booking</router-link>
-                            &nbsp; &nbsp;    
+              <div class="d-flex justify-content-between">
                 <h1 class="ms-2"> {{ vanout.customer }}</h1>
+                <router-link :to="{ path: '/app/bookings' }" class="btn btn-primary mb-4"
+                            variant="primary">Back to Bookings</router-link>
               </div>
                 <!-- <h4>Booking ID: {{  vanout.booking_id }}</h4> -->
                 <div class="separator mb-5"></div>
@@ -68,16 +67,16 @@
                                     </table>
                                 </b-colxx>
                             </b-row>
-                            <b-row class="mb-2">
+                            <b-row v-if="vanout.galleries.length > 0" class="mb-2">
                                 <b-colxx xxs="12">
                                   <b-card no-body class="p-3">
                                     <div class="d-flex justify-content-between mb-3">
                                       <h4 class="p-3">
                                         Vehicle condition detail images
                                       </h4>
-                                      <b-button size="sm" variant="secondary" @click="viewVid(vanout.video)" >
+                                      <!-- <b-button size="sm" variant="secondary" @click="viewVid(vanout.video)" >
                                         View Video
-                                      </b-button>
+                                      </b-button> -->
                                     </div>
                                   </b-card>
                                 </b-colxx>

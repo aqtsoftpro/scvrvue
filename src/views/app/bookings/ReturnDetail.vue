@@ -2,11 +2,10 @@
     <div>
         <b-row>
             <b-colxx xxs="12">
-              <div class="d-flex">
-                <router-link :to="{ path: '/app/bookings' }" class="btn btn-primary mb-4"
-                            variant="primary">Back to Booking</router-link>
-                            &nbsp; &nbsp; 
-                            <h1>{{ van_return.customer }}</h1>
+              <div class="d-flex justify-content-between">
+                  <h1>{{ van_return.customer }}</h1>
+                  <router-link :to="{ path: '/app/bookings' }" class="btn btn-primary mb-4"
+                  variant="primary">Back to Booking</router-link>
                 </div>
                 <div class="separator mb-5"></div>
             </b-colxx>
