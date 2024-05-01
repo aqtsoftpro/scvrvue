@@ -86,37 +86,34 @@
                                     </table>
                                 </b-colxx>
                             </b-row>
-                            <b-row v-if="galleries && galleries.length > 0" class="mb-2">
-                                <b-colxx xxs="12">
-                                  <b-card no-body class="p-3">
-                                    <div class="d-flex justify-content-between mb-3">
-                                      <h4 class="p-3">
-                                        Vehicle condition detail images
-                                      </h4>
-                                      <!-- <b-button size="sm" variant="secondary" @click="viewVid(vanout.video)" >
-                                        View Video
-                                      </b-button> -->
-                                    </div>
+                            <b-row class="mb-2">
+                                <b-colxx v-if="vanout && vanout.video" xxs="12" xl="4">
+                                  <b-card class="mb-4">
+                                    <h3>video</h3>
+                                    <hr>
+                                    <b-embed type="video" aspect="4by3" controls poster="poster.png">
+                                      <source :src="vanout.video" type="video/webm">
+                                      <!-- <source src="dev-stories.mp4" type="video/mp4"> -->
+                                    </b-embed>
                                   </b-card>
                                 </b-colxx>
-                              <!-- <span>click here to downlaod video </span> -->
-                              <!-- <b-a :href="vanout.video" target="_blank" rel="noopener noreferrer"> Click Me</b-a> -->
-                            </b-row>
-                            <b-row>
-                              <b-colxx v-for="item in vanout.galleries" xxs="12" xl="6" class="mb-3" >
-                                <b-card class="mb-4 h-100" no-body>
-                                  <b-card-body>
-                                      <b-img
-                                        :src="item.image"
-                                        alt="Image"
-                                        fluid
-                                        rounded
-                                        width="800"
-                                        height="750"
-                                      ></b-img>
-                                  </b-card-body>
-                                </b-card>
-                              </b-colxx>
+                                <b-colxx xxs="12" xl="8">
+                                  <b-row>
+                                    <b-colxx v-for="item in vanout.galleries" xxs="12" xl="6" >
+                                      <b-card class="mb-4" no-body>
+                                        <b-card-body>
+                                              <b-img
+                                                :src="item.image"
+                                                alt="Image"
+                                                fluid
+                                                rounded
+                                                height="200"
+                                              ></b-img>
+                                        </b-card-body>
+                                      </b-card>
+                                    </b-colxx>
+                                  </b-row>
+                                </b-colxx>
                             </b-row>
                         </b-tab>
                         <b-tab v-if="vanout.swaps && vanout.swaps.length > 0" v-for="(swap, index) in vanout.swaps" :title="'Swaped Detail: '+ (index + 1)">
@@ -187,35 +184,33 @@
                                   </table>
                                 </b-colxx>
                             </b-row>
-                            <b-row v-if="swap && swap.images > 0" class="mb-2">
-                                <b-colxx xxs="12">
-                                  <b-card no-body class="p-3">
-                                    <div class="d-flex justify-content-between mb-3">
-                                      <h4 class="p-3">
-                                        Vehicle condition detail images
-                                      </h4>
-                                      <b-button v-if="swap.video" size="sm" variant="secondary" @click="viewVid(swap.video)" >
-                                        View Video
-                                      </b-button>
-                                    </div>
+                            <b-row class="mb-2">
+                                <b-colxx v-if="swap && swap.video" xxs="12" xl="4">
+                                  <b-card class="mb-4">
+                                    <h3>video</h3>
+                                    <hr>
+                                    <b-embed type="video" aspect="4by3" controls poster="poster.png">
+                                      <source :src="swap.video" type="video/webm">
+                                    </b-embed>
                                   </b-card>
                                 </b-colxx>
-                            </b-row>
-                            <b-row>
-                              <b-colxx v-for="item in swap.images" xxs="12" xl="6" class="mb-3" >
-                                <b-card class="mb-4 h-100" no-body>
-                                  <b-card-body>
-                                      <b-img
-                                        :src="item.image"
-                                        alt="Image"
-                                        fluid
-                                        rounded
-                                        width="800"
-                                        height="750"
-                                      ></b-img>
-                                  </b-card-body>
-                                </b-card>
-                              </b-colxx>
+                                <b-colxx xxs="12" xl="8">
+                                  <b-row>
+                                    <b-colxx v-for="item in swap.images" xxs="12" xl="6" >
+                                      <b-card class="mb-4" no-body>
+                                        <b-card-body>
+                                              <b-img
+                                                :src="item.image"
+                                                alt="Image"
+                                                fluid
+                                                rounded
+                                                height="200"
+                                              ></b-img>
+                                        </b-card-body>
+                                      </b-card>
+                                    </b-colxx>
+                                  </b-row>
+                                </b-colxx>
                             </b-row>
                         </b-tab>
                     </b-tabs>
