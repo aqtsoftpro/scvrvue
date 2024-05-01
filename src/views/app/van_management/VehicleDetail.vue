@@ -13,17 +13,13 @@
               <b-colxx xxs="3" xl="3" >
                 <b-card class="mb-4" no-body>
                   <b-card-body>
-                    <!-- image -->
-
-                        <b-img
-                          :src="vehicle.picture"
-                          alt="Image"
-                          fluid
-                          rounded
-                        ></b-img>
-
+                    <b-img
+                      :src="vehicle.picture"
+                      alt="Image"
+                      fluid
+                      rounded
+                    ></b-img>
                   </b-card-body>
-
               </b-card>
               <router-link :to="{ path: '/app/van_management'}" class="btn btn-primary mt-2" variant="primary">Back to Vehicle Listing</router-link>
               </b-colxx>
@@ -99,14 +95,14 @@
                               </b-colxx>
                           </b-row>
                       </b-tab>
-                      <b-tab title="Insurance Info">
+                      <b-tab v-if="vehicle && vehicle.insurance" title="Insurance Info">
                           <b-row>
                               <b-colxx sm="12">
                                   <table class="table">
                                     <tbody>
                                       <tr>
                                         <th class="col-sm-6">Insurance Company</th>
-                                        <td>{{ vehicle.insurance.company_name }}</td>
+                                        <td>{{ optionCheck(vehicle.insurance.company_name) }}</td>
                                       </tr>
                                       <tr>
                                         <th>Policy Number</th>
@@ -153,7 +149,7 @@
                               </b-colxx>
                           </b-row>
                       </b-tab>
-                      <b-tab title="Maintenance">
+                      <b-tab v-if="formattedMaintenance && formattedMaintenance.length > 0" title="Maintenance">
                           <b-row>
                               <b-colxx sm="12">
                                 <b-table hover :fields="fields"  :items="formattedMaintenance" ></b-table>
@@ -218,6 +214,11 @@
           const options = { year: 'numeric', month: 'short', day: '2-digit' };
           return date.toLocaleDateString('en-GB', options);
         },
+
+        optionCheck(value) {
+          return value !== undefined && value !== null ? value : 'Not found';
+        },
+
       },
       mounted() {
           this.get_vehicle_data()
@@ -226,17 +227,19 @@
       computed: {
         formattedMaintenance() {
           // Loop through maintenance array and format the date
-          return this.vehicle.maintenance.map(item => {
-            // Convert date string to a Date object
-            const date = new Date(item.date);
-            // Format the date as "DD MMM YYYY"
-            const formattedDate = date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-            // Update the item with the formatted date
-            return {
-              ...item,
-              date: formattedDate
-            };
-          });
+          if (this.vehicle.maintenance && this.vehicle.maintenance.length > 0) {
+            return this.vehicle.maintenance.map(item => {
+              // Convert date string to a Date object
+              const date = new Date(item.date);
+              // Format the date as "DD MMM YYYY"
+              const formattedDate = date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+              // Update the item with the formatted date
+              return {
+                ...item,
+                date: formattedDate
+              };
+            });
+          }
         }
       }
   }
