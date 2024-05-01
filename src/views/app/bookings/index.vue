@@ -539,10 +539,12 @@
                               location!</b-form-invalid-feedback> -->
 
                               <b-form-select v-model="vanin_form.location_id" 
+                              aria-placeholder="Select Location"
                               :options="location_options"
                                 value-field="id"
                                 text-field="name"
                               ></b-form-select>
+                              <span>{{ $t('forms.vanout.location') }}</span>
 
                           </label>
 

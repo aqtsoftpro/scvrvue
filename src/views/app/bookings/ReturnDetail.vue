@@ -41,26 +41,60 @@
                                           <th>Location</th>
                                           <td>{{ van_return.location }}</td>
                                         </tr>
+
+                                        <tr>
+                                          <th>Rental Amount</th>
+                                          <td>{{ van_return.rental_amount }}</td>
+                                        </tr>
+
+                                        <tr>
+                                          <th>Fuel Tank</th>
+                                          <td>{{ van_return.fuel_tank }}</td>
+                                        </tr>
+
+                                        <tr v-if="booking">
+                                            <th>Payment Mode</th>
+                                            <td>{{ booking.payment_mode }}</td>
+                                          </tr>
+                                          <tr v-if="booking">
+                                            <th>Bond / Deposit</th>
+                                            <td>{{ booking.bond_deposit }}</td>
+                                          </tr>
+
+                                          <tr v-if="booking">
+                                            <th>Bond Return Amount</th>
+                                            <td>{{ van_return.bond_return_amount }}</td>
+                                          </tr>
+                                          <tr v-if="booking && booking.accessories && booking.accessories.length > 0">
+                                            <th>Vehicle Accessories:</th>
+                                            <td>
+                                              <b-badge pill v-for="accessory in booking.accessories " class="mx-1" >
+                                                {{ accessory.name }}
+                                              </b-badge>
+                                            </td>
+                                          </tr>
+
+
                                         <tr>
                                           <th>Mileage</th>
                                           <td>{{ optionCheck(vehicle && vehicle.mileage) }}</td>
                                         </tr>
                                         <tr>
                                           <th>Vehicle Out Date</th>
-                                          <td>{{ optionCheck(vehicle && vehicle.van_out_date) }}</td>
+                                          <td>{{ optionCheck(booking && booking.van_out_date) }}</td>
                                         </tr>
                                         <tr>
                                           <th>Vehicle Due Date</th>
-                                          <td>{{ optionCheck(vehicle && vehicle.due_return) }}</td>
+                                          <td>{{ optionCheck(booking && booking.due_return) }}</td>
                                         </tr>
                                         <tr>
                                           <th>Vehicle Condition</th>
-                                          <td>{{ van_return.condition }}</td>
+                                          <td>{{ optionCheck(booking && booking.condition) }}</td>
                                         </tr>
 
-                                        <tr v-if="van_return && van_return.van_out && van_return.van_out.vehicle_return_date" >
+                                        <tr v-if="booking && booking.vehicle_return_date" >
                                           <th>Vehicle Return Date</th>
-                                          <td>{{ vehicle.vehicle_return_date }}</td>
+                                          <td>{{ booking.vehicle_return_date }}</td>
                                         </tr>
                                       </tbody>
                                     </table>
@@ -97,7 +131,7 @@
                               </b-colxx>
                             </b-row>
                         </b-tab>
-                        <b-tab v-if="van_return.swaps > 0" v-for="(swap, index) in van_return.swaps" :title="'Swaped Detail: '+ (index + 1)">
+                        <b-tab v-if="vanswaps && vanswaps.length > 0" v-for="(swap, index) in van_return.swaps" :title="'Swaped Detail: '+ (index + 1)">
                             <b-row>
                                 <b-colxx sm="12">
                                   <table class="table">
@@ -136,7 +170,7 @@
                                           </tr>
                                           <tr>
                                             <th>Vehicle Condition</th>
-                                            <td>{{ swap.condition }}</td>
+                                            <td>{{ optionCheck(swap && swap.condition) }}</td>
                                           </tr>
                                           <tr v-if="swap.vehicle_return_date" >
                                             <th>Vehicle Return Date</th>
@@ -146,7 +180,7 @@
                                   </table>
                                 </b-colxx>
                             </b-row>
-                            <b-row class="mb-2">
+                            <b-row v-if="swap && swap.images.length > 0" class="mb-2">
                                 <b-colxx xxs="12">
                                   <b-card no-body class="p-3">
                                     <div class="d-flex justify-content-between mb-3">
@@ -200,6 +234,8 @@
                 van_return: [],
                 vehicle: null,
                 main_galleries: [],
+                vanswaps: [],
+                booking : null,
             }
         },
         methods: {
@@ -213,6 +249,8 @@
                   this.van_return = response.data;
                   this.vehicle = response.data.van_out.vehicle ?? null;
                   this.main_galleries = response.data.galleries ?? [];
+                  this.vanswaps = response.data.swaps ?? []; 
+                  this.booking = response.data.van_out ?? null
               })
           },
 
