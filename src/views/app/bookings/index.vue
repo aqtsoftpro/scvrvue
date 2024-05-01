@@ -529,15 +529,24 @@
                           </label> -->
 
                           <label class="form-group has-top-label">
-                            <b-form-input style="display:none" type="text" v-model.trim="$v.vanin_form.location_id.$model"
+                            <!-- <b-form-input style="display:none" type="text" v-model.trim="$v.vanin_form.location_id.$model"
                               :state="!$v.vanin_form.location_id.$error" />
                             <v-select v-model="vanin_form.location_id" label="name" :key="vanin_form.location_id"
                               :reduce="location => location.id" aria-placeholder="Select Location"
                               :options="location_options"></v-select>
                             <span>{{ $t('forms.vanout.location') }}</span>
                             <b-form-invalid-feedback v-if="$v.vanin_form.location_id.$error"> Please select the
-                              location!</b-form-invalid-feedback>
+                              location!</b-form-invalid-feedback> -->
+
+                              <b-form-select v-model="vanin_form.location_id" 
+                              :options="location_options"
+                                value-field="id"
+                                text-field="name"
+                              ></b-form-select>
+
                           </label>
+
+
 
 
                         </b-form>
@@ -787,6 +796,7 @@ export default ({
       customer_options: [],
       vehicle_options: [],
       location_options: [],
+      custom_locations: [],
       accessory_options: [],
       swap_with_options: [],
       booking_options: [],
@@ -1672,6 +1682,9 @@ export default ({
         }
       }).then(response => {
         this.location_options = response.data
+        // this.custom_locations = this.location_options.map(item => {
+          
+        // })
       })
     },
 
