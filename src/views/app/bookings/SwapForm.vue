@@ -433,7 +433,7 @@ export default {
             this.$router.push('/user/login');
         }
 
-        this.get_available_vehicle_options();
+        this.get_available_vehicle_options(this.formData.vehicle_id);
 
         if (this.formData !== null) {
             this.swapForm = this.formData;
