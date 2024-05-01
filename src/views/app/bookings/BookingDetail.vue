@@ -50,9 +50,16 @@
                                           <th>Bond / Deposit</th>
                                           <td>{{ vanout.bond_deposit }}</td>
                                         </tr>
-                                        <tr v-if="vanout.accessories.length > 0">
-                                          <th>Location</th>
-                                          <td>{{ vanout.location }}</td>
+                                        <tr v-if="vanout && vanout.accessories && vanout.accessories.length > 0">
+                                          <!-- <th>Location</th>
+                                          <td>{{ vanout.location }}</td> -->
+
+                                          <th>Vehicle Accessories:</th>
+                                          <td>
+                                            <b-badge pill v-for="accessory in vanout.accessories " class="mx-1" >
+                                              {{ accessory.name }}
+                                            </b-badge>
+                                          </td>
                                         </tr>
                                         <tr>
                                           <th>Mileage</th>
@@ -79,7 +86,7 @@
                                     </table>
                                 </b-colxx>
                             </b-row>
-                            <b-row v-if="galleries.length > 0" class="mb-2">
+                            <b-row v-if="galleries && galleries.length > 0" class="mb-2">
                                 <b-colxx xxs="12">
                                   <b-card no-body class="p-3">
                                     <div class="d-flex justify-content-between mb-3">
@@ -112,7 +119,7 @@
                               </b-colxx>
                             </b-row>
                         </b-tab>
-                        <b-tab v-if="vanout.swaps.length > 0" v-for="(swap, index) in vanout.swaps" :title="'Swaped Detail: '+ (index + 1)">
+                        <b-tab v-if="vanout.swaps && vanout.swaps.length > 0" v-for="(swap, index) in vanout.swaps" :title="'Swaped Detail: '+ (index + 1)">
                             <b-row>
                                 <b-colxx sm="12">
                                   <table class="table">
@@ -138,6 +145,25 @@
                                             <td>{{ swap.location }}</td>
                                           </tr>
                                           <tr>
+                                            <th>Payment Mode</th>
+                                            <td>{{ swap.payment_mode }}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Bond / Deposit</th>
+                                            <td>{{ swap.bond_deposit }}</td>
+                                          </tr>
+                                          <tr v-if="swap && swap.accessories && swap.accessories.length > 0">
+                                            <!-- <th>Location</th>
+                                            <td>{{ swap.location }}</td> -->
+
+                                            <th>Vehicle Accessories:</th>
+                                            <td>
+                                              <b-badge pill v-for="accessory in swap.accessories " class="mx-1" >
+                                                {{ accessory.name }}
+                                              </b-badge>
+                                            </td>
+                                          </tr>
+                                          <tr>
                                             <th>Mileage</th>
                                             <td>{{ swap.mileage }}</td>
                                           </tr>
@@ -161,7 +187,7 @@
                                   </table>
                                 </b-colxx>
                             </b-row>
-                            <b-row class="mb-2">
+                            <b-row v-if="swap && swap.images > 0" class="mb-2">
                                 <b-colxx xxs="12">
                                   <b-card no-body class="p-3">
                                     <div class="d-flex justify-content-between mb-3">
@@ -227,6 +253,10 @@
                   this.vanout = response.data
                   this.galleries = response.data.galleries ?? [];
               })
+          },
+
+          optionCheck(value) {
+            return value !== undefined && value !== null ? value : 'Not found';
           },
 
           viewVid(url) {
