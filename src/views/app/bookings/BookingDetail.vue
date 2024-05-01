@@ -43,6 +43,18 @@
                                           <td>{{ vanout.location }}</td>
                                         </tr>
                                         <tr>
+                                          <th>Payment Mode</th>
+                                          <td>{{ vanout.payment_mode }}</td>
+                                        </tr>
+                                        <tr>
+                                          <th>Bond / Deposit</th>
+                                          <td>{{ vanout.bond_deposit }}</td>
+                                        </tr>
+                                        <tr v-if="vanout.accessories.length > 0">
+                                          <th>Location</th>
+                                          <td>{{ vanout.location }}</td>
+                                        </tr>
+                                        <tr>
                                           <th>Mileage</th>
                                           <td>{{ vanout.mileage }}</td>
                                         </tr>

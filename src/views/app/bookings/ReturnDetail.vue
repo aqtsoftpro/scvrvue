@@ -27,15 +27,15 @@
                                         </tr>
                                         <tr>
                                           <th>Vehicle Registration</th>
-                                          <td>{{ van_return.vehicle }}</td>
+                                          <td>{{ van_return.vehicle_name }}</td>
                                         </tr>
                                         <tr>
-                                          <th>Vehicle Make</th>
-                                          <td>{{ van_return.van_out.vehicle.make }}</td>
+                                          <th >Vehicle Make</th>
+                                          <td>{{ optionCheck(vehicle && vehicle.make) }}</td>
                                         </tr>
                                         <tr>
                                           <th>Vehicle Model</th>
-                                          <td>{{ van_return.van_out.vehicle.model }}</td>
+                                          <td>{{ optionCheck(vehicle && vehicle.model) }}</td>
                                         </tr>
                                         <tr>
                                           <th>Location</th>
@@ -43,30 +43,30 @@
                                         </tr>
                                         <tr>
                                           <th>Mileage</th>
-                                          <td>{{ van_return.van_out.vehicle.mileage }}</td>
+                                          <td>{{ optionCheck(vehicle && vehicle.mileage) }}</td>
                                         </tr>
                                         <tr>
                                           <th>Vehicle Out Date</th>
-                                          <td>{{ van_return.van_out.van_out_date }}</td>
+                                          <td>{{ optionCheck(vehicle && vehicle.van_out_date) }}</td>
                                         </tr>
                                         <tr>
                                           <th>Vehicle Due Date</th>
-                                          <td>{{ van_return.van_out.due_return }}</td>
+                                          <td>{{ optionCheck(vehicle && vehicle.due_return) }}</td>
                                         </tr>
                                         <tr>
                                           <th>Vehicle Condition</th>
                                           <td>{{ van_return.condition }}</td>
                                         </tr>
 
-                                        <tr v-if="van_return.van_out.vehicle_return_date" >
+                                        <tr v-if="van_return && van_return.van_out && van_return.van_out.vehicle_return_date" >
                                           <th>Vehicle Return Date</th>
-                                          <td>{{ van_return.van_out.vehicle_return_date }}</td>
+                                          <td>{{ vehicle.vehicle_return_date }}</td>
                                         </tr>
                                       </tbody>
                                     </table>
                                 </b-colxx>
                             </b-row>
-                            <b-row v-if="van_return.galleries.length > 0" class="mb-2">
+                            <b-row v-if="main_galleries.length > 0" class="mb-2">
                                 <b-colxx xxs="12">
                                   <b-card no-body class="p-3">
                                     <div class="d-flex justify-content-between mb-3">
@@ -80,7 +80,7 @@
                                   </b-card>
                                 </b-colxx>
                             </b-row>
-                            <b-row v-if="van_return.galleries.length > 0">
+                            <b-row v-if="main_galleries.length > 0">
                               <b-colxx v-for="item in van_return.galleries" xxs="12" xl="6" class="mb-3" >
                                 <b-card class="mb-4 h-100" no-body>
                                   <b-card-body>
@@ -198,6 +198,8 @@
             return {
                 isLoad: false,
                 van_return: [],
+                vehicle: null,
+                main_galleries: [],
             }
         },
         methods: {
@@ -208,8 +210,14 @@
                       'Authorization': 'Bearer ' + localStorage.getItem('token')
                   }
               }).then(response => {
-                  this.van_return = response.data
+                  this.van_return = response.data;
+                  this.vehicle = response.data.van_out.vehicle ?? null;
+                  this.main_galleries = response.data.galleries ?? [];
               })
+          },
+
+          optionCheck(value) {
+            return value !== undefined && value !== null ? value : 'Not found';
           },
 
           viewVid(url) {
