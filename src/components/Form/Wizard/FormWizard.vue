@@ -4,7 +4,7 @@
         <li :class="{'nav-item':true,'step-doing': tab.isActive, 'step-done':tab.isDone }" v-for="(tab,tabIndex) in tabs" v-bind:key="tab.name" v-if="tab.type!='done'">
             <a :class="{
                 'nav-link':true,
-                // 'disabled':topNavDisabled
+                'disabled':topNavDisabled
             }" href="#" @click.prevent="clickedTab(tabIndex)">
                 <span>{{tab.name}}</span>
                 <small>{{tab.desc}}</small>
@@ -44,7 +44,7 @@ export default {
             default: false
         },
         topNavDisabled: {
-            default: true
+            default: false
         },
         withValidate: {
             default: true
@@ -80,6 +80,7 @@ export default {
     methods: {
         tabStatusFix() {
             this.tabs.forEach((tab, tabIndex) => {
+                // console.log("thuis is just test");
                 let isDone = tab.isDone;
                 if (!isDone) {
                     isDone = this.currentActive > tabIndex;
@@ -89,6 +90,10 @@ export default {
             });
         },
         clickedTab(tabIndex) {
+            // this.currentActive = tabIndex;
+            // this.tabStatusFix();
+            // this.tabs[this.currentActive].isActive = true;
+
             if (!this.topNavDisabled) {
                 if (!(this.lastStepEnd && this.isCompleted)) {
                     this.currentActive = tabIndex;
