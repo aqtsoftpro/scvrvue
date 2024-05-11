@@ -2,8 +2,8 @@
 <b-card class="mb-4" no-body>
     <b-card-body class="wizard wizard-default">
         <form-wizard ref="vehicleWiz" :editing_mode="editing_mode"  :done="dataDone" :last-step-end="true">
-            <tab :name="$t('wizard.step-name-1')" :validate="validateStep1" :submit="submitStep1" :desc="$t('wizard.step-desc-1')" :selected="true">
-                <div class="wizard-basic-step">
+            <tab :name="$t('wizard.step-name-1')" :validate="validateStep1" :submit="submitStep1" :desc="$t('wizard.step-desc-1')" :selected="true">  
+              <div class="wizard-basic-step">
                   <!-- one row three colxx -->
                   <b-row class="mb-4">
                     <b-colxx xxs="12" xs="12" lg="12">

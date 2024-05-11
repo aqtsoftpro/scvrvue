@@ -4,7 +4,7 @@
         <li :class="{'nav-item':true,'step-doing': tab.isActive, 'step-done':tab.isDone }" v-for="(tab,tabIndex) in tabs" v-bind:key="tab.name" v-if="tab.type!='done'">
             <a :class="{
                 'nav-link':true,
-                'disabled':topNavDisabled
+                // 'disabled':topNavDisabled
             }" href="#" @click.prevent="clickedTab(tabIndex)">
                 <span>{{tab.name}}</span>
                 <small>{{tab.desc}}</small>

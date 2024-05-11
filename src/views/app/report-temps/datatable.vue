@@ -169,16 +169,34 @@ export default {
     },
   },
   computed: {
+    // filteredList() {
+    //   this.array = this.data
+    //   return this.array.filter((model) => {
+    //     if(this.search == ''){
+    //       return this.data;
+    //     } else {
+    //       return this.search.toLowerCase().split(' ').every(v => model[this.selectedSearchColumn].toLowerCase().includes(v));
+    //     }
+    //   });
+    // },
+
+
     filteredList() {
       this.array = this.data
       return this.array.filter((model) => {
         if(this.search == ''){
           return this.data;
         } else {
-          return this.search.toLowerCase().split(' ').every(v => model[this.selectedSearchColumn].toLowerCase().includes(v));
+          // return this.search.toLowerCase().split(' ').every(v => model[this.selectedSearchColumn].toLowerCase().includes(v));
+          return Object.values(model).some((value) =>
+            typeof value === 'string' && value.toLowerCase().includes(this.search.toLowerCase())
+            // typeof value === 'number' && value.includes(this.search)
+          );
         }
       });
     }
+
+
   },
   mounted() {
     // this.items = this.data
