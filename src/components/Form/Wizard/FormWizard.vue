@@ -119,7 +119,36 @@ export default {
 
             let valid = true;
             if (this.withValidate) {
-                valid = this.tabs[this.currentActive].validate();
+                if (this.currentActive == 3) {
+                    if (!((this.tabs[this.currentActive].validate() && this.tabs[this.currentActive - 1].validate()) && (this.tabs[this.currentActive - 2].validate() && this.tabs[this.currentActive - 3].validate()))) {
+                        valid = false
+                    }
+                }
+
+                if (this.currentActive == 2) {
+                    if (!((this.tabs[this.currentActive].validate() && this.tabs[this.currentActive - 1].validate()) && this.tabs[this.currentActive - 2].validate())) {
+                        valid = false
+                    }
+                }
+
+                if (this.currentActive == 1) {
+                    if (!(this.tabs[this.currentActive].validate() && this.tabs[this.currentActive - 1].validate())) {
+                        valid = false
+                    }
+                }
+
+                if (this.currentActive == 0) {
+                    if (!this.tabs[this.currentActive].validate()) {
+                        valid = false
+                    }
+                }
+
+
+                // if (this.currentActive == 1) {
+                //     if (!(this.tabs[this.currentActive].validate())) {
+                //         valid = false
+                //     }
+                // }
                 console.log('Valid ==>', valid)
                 if (valid) this.tabs[this.currentActive].submit();
             }

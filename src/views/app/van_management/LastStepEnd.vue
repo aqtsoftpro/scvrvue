@@ -333,115 +333,118 @@
             <tab :name="$t('wizard.step-name-4')" :desc="$t('wizard.step-desc-4')">
                 <div class="wizard-basic-step">
                   <b-card  v-for="(maintenance,index) in formStep4.maintenance_records" :key="index" class="mb-3">
-                  <b-row   class="maintenance_row">
-                    <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-                      <b-form>
-                        <label class="form-group has-top-label">
-                          <b-form-input style="display:none" type="text" v-model.trim="formStep4.maintenance_records[index].maintenance_date" />
-                          <datepicker
-                          :bootstrap-styling="true"
-                          :placeholder="$t('forms.van_management.maintenance_date')"
-                          v-model="formStep4.maintenance_records[index].maintenance_date"
-                          format="dd-MM-yyyy"
-                        ></datepicker>
-                      <span>{{ $t('forms.van_management.maintenance_date') }}</span>
-                      <b-form-invalid-feedback>Maintenance Date Required!</b-form-invalid-feedback>
-                      </label>
-                       </b-form>
-                    </b-colxx>
-                    <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-                      <b-form>
-                        <label class="form-group has-top-label">
-                        <b-form-input v-model="formStep4.maintenance_records[index].maintenance_mileage" type="text" :placeholder="$t('forms.van_management.maintenance_mileage')" />
-                        <span>{{ $t('forms.van_management.maintenance_mileage') }}</span>
-                      </label>
-                      </b-form>
-                    </b-colxx>
-                    <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
-                      <b-form>
-                        <label class="form-group has-top-label">
-                        <v-select v-model="formStep4.maintenance_records[index].maintenance_type_id"
-                          label="name"
-                          :reduce="maintenance => maintenance.id"
-                          aria-placeholder="Service Type"
-                          :options="service_type_options"
-                        ></v-select>
-                        <span>{{ $t('forms.van_management.maintenance_type') }}</span>
-                        </label>
-                      </b-form>
-                    </b-colxx>
-                    <b-colxx xxs="12" xs="2" lg="2" class="mb-3">
-                      <b-form>
-                        <label class="form-group has-top-label">
-                          <b-form-input v-model="formStep4.maintenance_records[index].maintenance_cost" type="text" :placeholder="$t('forms.van_management.maintenance_cost')" />
-                          <span>{{ $t('forms.van_management.maintenance_cost') }}</span>
-                        </label>
-                      </b-form>
-                    </b-colxx>
-                    <b-colxx xxs="12" xs="2" lg="2" class="mb-3" v-if="formStep4.maintenance_records[index].maintenance_type_id == 1 || formStep4.maintenance_records[index].maintenance_type_id == 2">
-                      <b-form>
-                        <label class="form-group has-top-label">
-                          <b-form-input v-model="formStep4.maintenance_records[index].maintenance_place" type="text" :placeholder="$t('forms.van_management.maintenance_place')" />
-                          <span>{{ $t('forms.van_management.maintenance_place') }}</span>
-                        </label>
-                      </b-form>
-                    </b-colxx>
-                    <b-colxx xxs="12" xs="2" lg="2" class="mb-3" v-if="formStep4.maintenance_records[index].maintenance_type_id == 1 || formStep4.maintenance_records[index].maintenance_type_id == 2">
-                      <b-form>
-                        <label class="form-group has-top-label">
-                          <b-form-input v-model="formStep4.maintenance_records[index].mechanic_name" type="text" :placeholder="$t('forms.van_management.mechanic_name')" />
-                          <span>{{ $t('forms.van_management.mechanic_name') }}</span>
-                        </label>
-                      </b-form>
-                    </b-colxx>
-                    <b-colxx xxs="12" xs="2" lg="2" v-if="formStep4.maintenance_records[index].maintenance_type_id == 2" >
-                      <b-form>
+                    <b-row   class="maintenance_row">
+                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                        <b-form>
                           <label class="form-group has-top-label">
-                          <b-form-input  v-model="formStep4.maintenance_records[index].part_replaced" type="text" :placeholder="$t('forms.van_management.part_replaced')" />
-                          <span>{{ $t('forms.van_management.part_replaced') }}</span>
-                          </label>
-                      </b-form>
-                    </b-colxx>
-                    <b-colxx xxs="12" xs="2" lg="2" v-if="formStep4.maintenance_records[index].maintenance_type_id == 2" >
-                      <b-form>
-                          <label class="form-group has-top-label">
-                          <b-form-input  v-model="formStep4.maintenance_records[index].part_repaired" type="text" :placeholder="$t('forms.van_management.part_repaired')" />
-                          <span>{{ $t('forms.van_management.part_repaired') }}</span>
+                            <b-form-input style="display:none" type="text" v-model.trim="formStep4.maintenance_records[index].maintenance_date" />
+                            <datepicker
+                            :bootstrap-styling="true"
+                            :placeholder="$t('forms.van_management.maintenance_date')"
+                            v-model="formStep4.maintenance_records[index].maintenance_date"
+                            format="dd-MM-yyyy"
+                          ></datepicker>
+                        <span>{{ $t('forms.van_management.maintenance_date') }}</span>
+                        <b-form-invalid-feedback>Maintenance Date Required!</b-form-invalid-feedback>
                         </label>
-                      </b-form>
-                    </b-colxx>
-                    <b-colxx xxs="12" xs="4" lg="4"  class="mb-3"  v-if="formStep4.maintenance_records[index].maintenance_type_id != 3">
-                      <b-form>
-                        <label class="form-group has-top-label">
-                          <b-form-input v-model="formStep4.maintenance_records[index].comments" type="text" :placeholder="$t('forms.van_management.comments')" />
-                          <span>{{ $t('forms.van_management.comments') }}</span>
-                        </label>
-                      </b-form>
-                    </b-colxx>
-                    <b-colxx xxs="12" xs="4" lg="4" class="mb-3" v-if="formStep4.maintenance_records[index].maintenance_type_id == 3">
-                      <b-form>
-                        <label class="form-group has-top-label">
-                        <v-select v-model="formStep4.maintenance_records[index].tyre_replaced"
-                          label="name"
-                          :reduce="maintenance => maintenance.id"
-                          aria-placeholder="Tyres"
-                          :options="tyres_replaced"
-                        ></v-select>
-                        <span>{{ $t('forms.van_management.tyre_replaced') }}</span>
-                        </label>
-                      </b-form>
-                    </b-colxx>
-
-                    <b-colxx xxs="12" xs="1" lg="1" >
-                      <b-form>
-
-                          <b-button type="button" variant="danger" @click="remove_maintenance_row(index)">Remove</b-button>
-
                         </b-form>
-                    </b-colxx>
-                  </b-row>
+                      </b-colxx>
+                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                        <b-form>
+                          <label class="form-group has-top-label">
+                          <b-form-input v-model="formStep4.maintenance_records[index].maintenance_mileage" type="text" :placeholder="$t('forms.van_management.maintenance_mileage')" />
+                          <span>{{ $t('forms.van_management.maintenance_mileage') }}</span>
+                        </label>
+                        </b-form>
+                      </b-colxx>
+                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                        <b-form>
+                          <label class="form-group has-top-label">
+                          <v-select v-model="formStep4.maintenance_records[index].maintenance_type_id"
+                            label="name"
+                            :reduce="maintenance => maintenance.id"
+                            aria-placeholder="Service Type"
+                            :options="service_type_options"
+                          ></v-select>
+                          <span>{{ $t('forms.van_management.maintenance_type') }}</span>
+                          </label>
+                        </b-form>
+                      </b-colxx>
+                      <b-colxx xxs="12" xs="2" lg="2" class="mb-3">
+                        <b-form>
+                          <label class="form-group has-top-label">
+                            <b-form-input v-model="formStep4.maintenance_records[index].maintenance_cost" type="text" :placeholder="$t('forms.van_management.maintenance_cost')" />
+                            <span>{{ $t('forms.van_management.maintenance_cost') }}</span>
+                          </label>
+                        </b-form>
+                      </b-colxx>
+                      <b-colxx xxs="12" xs="2" lg="2" class="mb-3" v-if="formStep4.maintenance_records[index].maintenance_type_id == 1 || formStep4.maintenance_records[index].maintenance_type_id == 2">
+                        <b-form>
+                          <label class="form-group has-top-label">
+                            <b-form-input v-model="formStep4.maintenance_records[index].maintenance_place" type="text" :placeholder="$t('forms.van_management.maintenance_place')" />
+                            <span>{{ $t('forms.van_management.maintenance_place') }}</span>
+                          </label>
+                        </b-form>
+                      </b-colxx>
+                      <b-colxx xxs="12" xs="2" lg="2" class="mb-3" v-if="formStep4.maintenance_records[index].maintenance_type_id == 1 || formStep4.maintenance_records[index].maintenance_type_id == 2">
+                        <b-form>
+                          <label class="form-group has-top-label">
+                            <b-form-input v-model="formStep4.maintenance_records[index].mechanic_name" type="text" :placeholder="$t('forms.van_management.mechanic_name')" />
+                            <span>{{ $t('forms.van_management.mechanic_name') }}</span>
+                          </label>
+                        </b-form>
+                      </b-colxx>
+                      <b-colxx xxs="12" xs="2" lg="2" v-if="formStep4.maintenance_records[index].maintenance_type_id == 2" >
+                        <b-form>
+                            <label class="form-group has-top-label">
+                            <b-form-input  v-model="formStep4.maintenance_records[index].part_replaced" type="text" :placeholder="$t('forms.van_management.part_replaced')" />
+                            <span>{{ $t('forms.van_management.part_replaced') }}</span>
+                            </label>
+                        </b-form>
+                      </b-colxx>
+                      <b-colxx xxs="12" xs="2" lg="2" v-if="formStep4.maintenance_records[index].maintenance_type_id == 2" >
+                        <b-form>
+                            <label class="form-group has-top-label">
+                            <b-form-input  v-model="formStep4.maintenance_records[index].part_repaired" type="text" :placeholder="$t('forms.van_management.part_repaired')" />
+                            <span>{{ $t('forms.van_management.part_repaired') }}</span>
+                          </label>
+                        </b-form>
+                      </b-colxx>
+                      <b-colxx xxs="12" xs="4" lg="4"  class="mb-3"  v-if="formStep4.maintenance_records[index].maintenance_type_id != 3">
+                        <b-form>
+                          <label class="form-group has-top-label">
+                            <b-form-input v-model="formStep4.maintenance_records[index].comments" type="text" :placeholder="$t('forms.van_management.comments')" />
+                            <span>{{ $t('forms.van_management.comments') }}</span>
+                          </label>
+                        </b-form>
+                      </b-colxx>
+                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3" v-if="formStep4.maintenance_records[index].maintenance_type_id == 3">
+                        <b-form>
+                          <label class="form-group has-top-label">
+                          <v-select v-model="formStep4.maintenance_records[index].tyre_replaced"
+                            label="name"
+                            :reduce="maintenance => maintenance.id"
+                            aria-placeholder="Tyres"
+                            :options="tyres_replaced"
+                          ></v-select>
+                          <span>{{ $t('forms.van_management.tyre_replaced') }}</span>
+                          </label>
+                        </b-form>
+                      </b-colxx>
+
+                      <b-colxx xxs="12" xs="1" lg="1" >
+                        <b-form>
+
+                            <b-button type="button" variant="danger" @click="remove_maintenance_row(index)">Remove</b-button>
+
+                          </b-form>
+                      </b-colxx>
+                    </b-row>
                   </b-card>
                   <b-button type="button" variant="primary" @click="add_maintenance_row">Add Row</b-button>
+                  <b-card v-if="maintain_records.length > 0 && maintain_records[0].maintenance_date !== ''" class="my-3">
+                    <b-table hover :fields="fields"  :items="maintain_records" ></b-table>
+                  </b-card>
                   <b-row class="mt-4">
                     <b-colxx xxs="12" xs="12" lg="12"  class="mb-3">
                         Next Maintenance Due:
@@ -487,7 +490,7 @@
                             </label>
                         </b-form>
                     </b-colxx>
-                    </b-row>
+                  </b-row>
                 </div>
             </tab>
             <tab type="done">
@@ -560,6 +563,32 @@ export default {
               {id: 'rear', name: 'Rear'},
               {id: 'all', name: 'All'},
             ],
+
+            fields: [
+                { key: 'maintenance_date', label: 'Date' },
+                { key: 'maintenance_mileage', label: 'Mileage' },
+                { key: 'maintenance_cost', label: 'Cost' },
+                { key: 'mechanic_name', label: 'Mechanic Name' },
+                { key: 'maintenance_place', label: 'Place' },
+                { key: 'part_replaced', label: 'Part Replaced' },
+            ],
+
+            maintain_records : [
+                {
+                  'maintenance_id': "",
+                  'maintenance_mileage' : "",
+                  'maintenance_date' : "",
+                  'maintenance_type_id': "",
+                  'maintenance_cost': "",
+                  'maintenance_place': "",
+                  'mechanic_name': "",
+                  'part_replaced': "",
+                  'part_repaired': "",
+                  'tyre_replaced': "",
+                  'comments': ""
+                }
+            ],
+
             next_maintenance_service_options: [
               {id: 'Engine Oil', name: 'Engine Oil'},
               {id: 'Transmission Oil', name: 'Transmission Oil'},
@@ -789,35 +818,38 @@ export default {
           })
       },
       register_vehicle() {
+        // this.validateStep1
+        this.$v.formStep1.$touch();
+        if (!this.$v.formStep1.$anyError) {
+          this.processing_text = 'Saving vehicle data..'
+          this.processing = true
+          axios.post(apiUrl + '/vehicle', {...this.formStep1, ...this.formStep2, ...this.formStep3, ...this.formStep4}, {
+            headers: {
+              'content-type': 'multipart/form-data',
+              'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+          }).then(response => {
 
-        this.processing_text = 'Saving vehicle data..'
-        this.processing = true
-        axios.post(apiUrl + '/vehicle', {...this.formStep1, ...this.formStep2, ...this.formStep3, ...this.formStep4}, {
-          headers: {
-            'content-type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
-        }).then(response => {
+            this.$notify(
+              'success filled',
+              'Success!',
+              'Vehicle Registered Successfully!',
+              { duration: 3000, permanent: false });
 
-          this.$notify(
-            'success filled',
-            'Success!',
-            'Vehicle Registered Successfully!',
-            { duration: 3000, permanent: false });
+              this.vehicle_registration_success = true;
+              this.getVehicles();
+              this.processing = false
+              this.$refs.vehicleWiz.reset()
 
-            this.vehicle_registration_success = true;
-            this.getVehicles();
-            this.processing = false
-            this.$refs.vehicleWiz.reset()
-
-        }).catch(error => {
-          this.$notify(
-            'error filled',
-            'Error!',
-            error.response.data.message,
-            { duration: 3000, permanent: false });
-            this.processing = false
-        })
+          }).catch(error => {
+            this.$notify(
+              'error filled',
+              'Error!',
+              error.response.data.message,
+              { duration: 3000, permanent: false });
+              this.processing = false
+          })
+        }
       },
 
       update_vehicle(id) {
@@ -861,7 +893,10 @@ export default {
         if(this.editingMode == true){
             this.update_vehicle(this.vehicle.id);
         } else {
+          this.$v.formStep3.$touch()
+          if (!this.$v.formStep3.$anyError) {
             this.register_vehicle();
+          } 
         }
       }
     },
@@ -905,7 +940,22 @@ export default {
             this.formStep3.demage_details = this.vehicle.insurance.demage_details
             this.formStep3.damage_picture = this.vehicle.insurance.damage_picture
             this.vehicle.maintenance.forEach((currentValue, index) => {
-              this.formStep4.maintenance_records.unshift({
+              // this.formStep4.maintenance_records.unshift({
+              //   'maintenance_id': currentValue.id,
+              //   'maintenance_type_id': currentValue.service_type_id,
+              //   'maintenance_mileage': currentValue.mileage,
+              //   'maintenance_date': currentValue.date,
+              //   'maintenance_cost': currentValue.cost,
+              //   'maintenance_place': currentValue.place,
+              //   'mechanic_name': currentValue.mechanic_name,
+              //   'part_repaired': currentValue.part_repaired,
+              //   'part_replaced': currentValue.part_replaced,
+              //   'tyre_replaced': currentValue.tyre_replaced,
+              //   'comments': currentValue.comments
+
+              // })
+
+              this.maintain_records.unshift({
                 'maintenance_id': currentValue.id,
                 'maintenance_type_id': currentValue.service_type_id,
                 'maintenance_mileage': currentValue.mileage,
@@ -919,6 +969,8 @@ export default {
                 'comments': currentValue.comments
 
               })
+
+
             })
             //Step 4 Values
             // this.formStep4.maintenance_records.forEach(index, item => {
