@@ -443,7 +443,11 @@
                   </b-card>
                   <b-button type="button" variant="primary" @click="add_maintenance_row">Add Row</b-button>
                   <b-card v-if="maintain_records.length > 0 && maintain_records[0].maintenance_date !== ''" class="my-3">
-                    <b-table hover :fields="fields"  :items="maintain_records" ></b-table>
+                    <b-table hover :fields="fields"  :items="maintain_records" >
+                      <template #cell(actions)="data">
+                        <b-button @click="editItem(data.item)">Edit</b-button>
+                      </template>
+                    </b-table>
                   </b-card>
                   <b-row class="mt-4">
                     <b-colxx xxs="12" xs="12" lg="12"  class="mb-3">
@@ -898,6 +902,23 @@ export default {
             this.register_vehicle();
           } 
         }
+      },
+
+      dateFormat(item) {
+        // Create a Date object from the string
+        const date = new Date(item);
+
+        // Extract day, month, and year components
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
+        const year = date.getFullYear();
+
+        // Format the date as dd-mm-yyyy
+        const formattedDate = `${day}-${month}-${year}`;
+
+        return formattedDate;
+
+        // console.log(formattedDate); // Output: "10-05-2024"
       }
     },
     mounted() {
@@ -959,7 +980,7 @@ export default {
                 'maintenance_id': currentValue.id,
                 'maintenance_type_id': currentValue.service_type_id,
                 'maintenance_mileage': currentValue.mileage,
-                'maintenance_date': currentValue.date,
+                'maintenance_date': this.dateFormat(currentValue.date),
                 'maintenance_cost': currentValue.cost,
                 'maintenance_place': currentValue.place,
                 'mechanic_name': currentValue.mechanic_name,
