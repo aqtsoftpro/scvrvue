@@ -429,6 +429,8 @@
                           class="simple-icon-close"></i></b-button>
                     </div>
 
+                    <button type="reset" ref="outresetButton" class="d-none" >reset</button>
+
                   </b-form>
                   <div v-if="editing_mode">
                       <b-button v-for="swap in swapped_data"
@@ -1300,7 +1302,7 @@ export default ({
           { duration: 3000, permanent: false });
 
         this.$v.form.$reset()
-
+        this.$refs.outresetButton.click();
         this.form = {
           user_id: '',
           vehicle_id: '',

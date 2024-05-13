@@ -99,6 +99,7 @@
         <b-spinner variant="primary" label="Spinning" class="mb-1"></b-spinner>
         <p class="text-primary">{{ processing_text }}</p>
       </div>
+      <button type="reset" ref="resetButton" class="d-none"> reset form</button>
     </b-form>
 
     <!-- <b-table id="tax_table" :items="tax_records" :fields="tax_fields" current-page="currentPage" :per-page="perPage">
@@ -290,6 +291,7 @@ export default {
           //parse json data
           this.tax_records = response.data.data
           this.isProcessing = false
+          // this.reset_form();
         }
       })
     },
@@ -307,7 +309,6 @@ export default {
       })
     },
     save_tax_record() {
-
       this.$v.form.$touch();
       if (this.$v.form.$anyError == true) {
         return false;
@@ -340,9 +341,15 @@ export default {
       ).then(response => {
         //parse json data
         this.get_tax_records()
-        this.reset_form()
         this.$notify(`${response.data.status} filled`, response.data.status, response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
+        this.$refs.resetButton.click();
+
+        
+        // window.setTimeout(() => {
+        //   this.reset_form();
+        // }, 3000);
+        
       }).catch(error => {
         this.$notify('error filled', 'Error', error.response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
@@ -379,7 +386,8 @@ export default {
         //parse json data
         this.get_tax_records()
         this.editing_mode = false
-        this.reset_form()
+        // this.reset_form()
+        this.$refs.resetButton.click();
         this.$notify(`success filled`, 'Success', response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
       }).catch(error => {

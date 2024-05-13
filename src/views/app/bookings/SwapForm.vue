@@ -170,6 +170,7 @@
             <b-button v-if="formData" @click.stop="update_swap_record(formData.id)" variant="primary" class="mt-4 mb-4">Update</b-button>
 
             <b-button v-else @click.stop="save_swap_record" variant="primary" class="mt-4 mb-4">Save</b-button>
+            <button type="reset" class="d-none" ref="swapReset" >reset</button>
         </b-form>
 
     </div>
@@ -334,6 +335,8 @@ export default {
 
                 this.$v.swapForm.$reset()
 
+                this.$refs.swapReset.click();
+
                 this.swapForm = {
                     vehicle_id: '',
                     location_id: '',
@@ -385,6 +388,8 @@ export default {
                 { duration: 3000, permanent: false });
 
                 this.$v.swapForm.$reset()
+
+                this.$refs.swapReset.click();
 
                 this.swapForm = {
                     vehicle_id: '',

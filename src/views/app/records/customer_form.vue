@@ -325,6 +325,7 @@
     <b-button  @click.stop="update_customer_record(customer_id)"  variant="secondary" class="mt-4 mb-4">{{ ' Update' }}</b-button>
     <b-button  @click.stop="cancel_update_customer_record()"  variant="info" class="mt-4 mb-4"><i class="simple-icon-close"></i></b-button>
   </div>
+  <button type="reset" ref="custReset" class="d-none">reset</button>
 </b-form>
 
 <!-- <b-row>
@@ -598,7 +599,8 @@ export default {
         }
       ).then(response => {
         //parse json data
-        this.reset_form()
+        // this.reset_form()
+        this.$refs.custReset.click();
         this.$notify('success filled', 'Success!', response.data.message,{ duration: 3000, permanent: false });
         this.processing = false
         this.cc()

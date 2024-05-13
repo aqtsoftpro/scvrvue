@@ -172,6 +172,7 @@
         <b-button @click.stop="cancel_update_toll_record()" variant="info" class="mt-4 mb-4"><i
             class="simple-icon-close"></i></b-button>
       </div>
+      <button type="reset" ref="tollResetButton" class="d-none">reset</button>
     </b-form>
 
     <b-colxx xxs="12" xs="6" lg="6" xl="6" class="mb-5">
@@ -527,7 +528,8 @@ export default {
         this.$notify('success filled', 'Success!', response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
         this.form.toll_image = ''
-        this.customer_drop_visible = true
+        // this.customer_drop_visible = true
+        this.$refs.tollResetButton.click();
         // this.$refs['booking_search_modal'].show();
         //console.log(response.data.data.date, response.data.data.reg_plate_number);
         //this.search_booking_records(response.data.data.date, response.data.data.reg_plate_number)
@@ -652,7 +654,8 @@ export default {
         //parse json data
         this.get_toll_records()
         this.editing_mode = false
-        this.reset_form()
+        this.$refs.tollResetButton.click();
+        // this.reset_form()
         this.$notify('success filled', 'Success!', response.data.message, { duration: 3000, permanent: false });
         this.toll_image = ''
       }).catch(error => {

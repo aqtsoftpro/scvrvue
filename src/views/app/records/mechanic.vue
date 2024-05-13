@@ -70,6 +70,7 @@
         <b-spinner variant="primary" label="Spinning" class="mb-1"></b-spinner>
         <p class="text-primary">{{ processing_text }}</p>
       </div>
+      <button type="reset" class="d-none" ref="mechanicReset"> reset form</button>
     </b-form>
 
     <!-- <b-table id="mechanic_table" :items="mechanic_records" :fields="tax_fields" current-page="currentPage"
@@ -261,7 +262,8 @@ export default {
       ).then(response => {
         //parse json data
         this.get_mechanic_records()
-        this.reset_form()
+        // this.reset_form()
+        this.$refs.mechanicReset.click();
         this.$notify('success filled', 'Success!', response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
       }).catch(error => {
@@ -302,7 +304,8 @@ export default {
         //parse json data
         this.get_mechanic_records()
         this.editing_mode = false
-        this.reset_form()
+        // this.reset_form()
+        this.$refs.mechanicReset.click();
         this.$notify('success filled', 'Success!', response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
       }).catch(error => {
