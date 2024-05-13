@@ -16,7 +16,8 @@
 
     <b-row>
       <b-colxx xxs="12">
-          <h2 v-if="sum" >Total: <span class="text-primary">${{ sum }}</span></h2>
+          <!-- <h2 v-if="sum" >Total: <span class="text-primary">${{ sum }}</span></h2> -->
+          <h2 v-if="this.filterTotal > 0">Total: <span class="text-primary">${{ filterTotal }}</span></h2>
           <vuetable
             class="table-divided order-with-arrow"
             ref="vuetable"
@@ -90,8 +91,8 @@ export default {
       records: [],
       selectedItems: [],
       sColumn: [],
-      selectedSearchColumn: this.searchColumn[0]
-
+      selectedSearchColumn: this.searchColumn[0],
+      filterTotal: 0,
     };
   },
   methods: {
@@ -180,11 +181,29 @@ export default {
     //   });
     // },
 
+    totalSum() {
+        return this.records.reduce((sum, record) => {
+            if (this.fields.some(item => item.sortField == "amount")) {
+              return sum + parseFloat(record.amount);
+            }
+
+            if (this.fields.some(item => item.sortField == "cost")) {
+              return sum + parseFloat(record.cost);
+            }
+
+            if (this.fields.some(item => item.sortField == "sub_total")) {
+              return sum + parseFloat(record.sub_total);
+            }
+
+        }, 0);
+      // }
+    },
+
 
     filteredList() {
       this.array = this.data
       return this.array.filter((model) => {
-        if(this.search == ''){
+        if(this.search === ''){
           return this.data;
         } else {
           // return this.search.toLowerCase().split(' ').every(v => model[this.selectedSearchColumn].toLowerCase().includes(v));
@@ -213,6 +232,9 @@ export default {
     },
     filteredList(value) {
       this.records = this.filteredList
+    },
+    totalSum(value){
+      this.filterTotal = this.totalSum
     },
     items(newVal, oldVal) {
       this.$refs.vuetable.refresh();
