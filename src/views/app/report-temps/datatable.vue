@@ -182,17 +182,19 @@ export default {
     // },
 
     totalSum() {
+        console.log(this.fields);
         return this.records.reduce((sum, record) => {
+            console.log(record);
             if (this.fields.some(item => item.sortField == "amount")) {
-              return sum + parseFloat(record.amount);
+              return sum + parseFloat(record.amount) ?? sum + 0;
             }
 
             if (this.fields.some(item => item.sortField == "cost")) {
-              return sum + parseFloat(record.cost);
+              return sum + parseFloat(record.cost) ?? sum + 0;
             }
 
             if (this.fields.some(item => item.sortField == "sub_total")) {
-              return sum + parseFloat(record.sub_total);
+              return sum + parseFloat(record.sub_total) ?? sum + 0;
             }
 
         }, 0);
