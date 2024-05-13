@@ -16,8 +16,18 @@
 
     <b-row>
       <b-colxx xxs="12">
+        <!-- {{ fields }}
+        <h2>{{ filterdLoss }}</h2>
+        <h2>{{ subProfit }}</h2> -->
           <!-- <h2 v-if="sum" >Total: <span class="text-primary">${{ sum }}</span></h2> -->
-          <h2 v-if="this.filterTotal > 0">Total: <span class="text-primary">${{ filterTotal }}</span></h2>
+          <div class="d-flex justify-content-between">
+            <h2 v-if="this.subProfit > 0">Profit: <span class="text-primary">${{ subProfit }}</span></h2>
+            <h2 v-if="this.filterdLoss > 0">Loss: <span class="text-primary">${{ filterdLoss }}</span></h2>
+            <h2 v-if="this.filterTotal > 0">Total: <span class="text-primary">${{ filterTotal }}</span></h2>
+            <h2 v-else >Total Profit: <span class="text-primary">${{ subProfit - filterdLoss }}</span></h2>
+          </div>
+
+        
           <vuetable
             class="table-divided order-with-arrow"
             ref="vuetable"
@@ -93,6 +103,8 @@ export default {
       sColumn: [],
       selectedSearchColumn: this.searchColumn[0],
       filterTotal: 0,
+      filterdLoss: 0,
+      subProfit: 0,
     };
   },
   methods: {
@@ -181,27 +193,6 @@ export default {
     //   });
     // },
 
-    totalSum() {
-        console.log(this.fields);
-        return this.records.reduce((sum, record) => {
-            console.log(record);
-            if (this.fields.some(item => item.sortField == "amount")) {
-              return sum + parseFloat(record.amount) ?? sum + 0;
-            }
-
-            if (this.fields.some(item => item.sortField == "cost")) {
-              return sum + parseFloat(record.cost) ?? sum + 0;
-            }
-
-            if (this.fields.some(item => item.sortField == "sub_total")) {
-              return sum + parseFloat(record.sub_total) ?? sum + 0;
-            }
-
-        }, 0);
-      // }
-    },
-
-
     filteredList() {
       this.array = this.data
       return this.array.filter((model) => {
@@ -215,6 +206,56 @@ export default {
           );
         }
       });
+    },
+
+    totalSum() {
+        console.log(this.fields);
+        return this.records.reduce((sum, record) => {
+            console.log(record);
+            if (this.fields.some(item => item.sortField == "amount")) {
+              return sum + parseFloat(record.amount) ?? sum + 0;
+            }
+
+            if (this.fields.some(item => item.sortField == "sub_total")) {
+              return sum + 0;
+            }
+            if (this.fields.some(item => item.sortField == "cost") && !this.fields.some(item => item.sortField == "maintenance")) {
+
+              return sum + parseFloat(record.cost) ?? sum + 0;
+            }
+
+        }, 0);
+      // }
+    },
+
+    lossTotal() {
+      console.log(this.fields);
+        return this.records.reduce((sum, record) => {
+            console.log(record);
+            if (this.fields.some(item => item.sortField == "maintenance") && this.fields.some(item => item.sortField == "tax")) {
+
+              return sum + (parseFloat(record.maintenance) + parseFloat(record.tax)) ?? sum + 0;
+              // console.log(sum + (parseFloat(record.maintenance) + parseFloat(record.tax)) ?? sum + 0);
+            }
+
+        }, 0);
+    },
+
+    totalProfit() {
+        return this.records.reduce((sum, record) => {
+            if (this.fields.some(item => item.sortField === "cost") && 
+                this.fields.some(item => item.sortField === "tax") && 
+                this.fields.some(item => item.sortField === "maintenance")) {
+              
+                if (record.tax === 0 && record.maintenance === 0) {
+                    let costRecord = parseFloat(record.cost);
+                    if (!isNaN(costRecord)) {
+                        return sum + costRecord;
+                    }
+                }
+            }
+            return sum;
+        }, 0);
     }
 
 
@@ -238,6 +279,16 @@ export default {
     totalSum(value){
       this.filterTotal = this.totalSum
     },
+
+    lossTotal(){
+      this.filterdLoss = this.lossTotal
+    },
+
+    totalProfit(){
+      this.subProfit = this.totalProfit
+    },
+
+    
     items(newVal, oldVal) {
       this.$refs.vuetable.refresh();
     },
