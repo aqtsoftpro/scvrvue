@@ -155,8 +155,18 @@
         // return {path: '/app/van_management/vehicle_detail/' + item.id }
       },
 
+      updateSearchRequestFromRoute() {
+        this.searchRequest.keyword = this.$route.query.keyword;
+        this.searchRequest.mode = this.$route.query.mode;
+        this.$store.dispatch('searchVehicle', this.searchRequest);
+      }
+
+
     },
     mounted () {
+      this.updateSearchRequestFromRoute();
+
+
       this.searchRequest.keyword = this.$route.query.keyword
       this.searchRequest.mode = this.$route.query.mode
       this.$store.dispatch('searchVehicle', this.searchRequest)
@@ -167,7 +177,18 @@
       },
       searchMode() {
         this.searchRequest.mode = this.searchMode
+      },
+
+      '$route'(to, from) {
+          this.updateSearchRequestFromRoute();
       }
+
+
+      // searchRequest() {
+      //   this.searchRequest.keyword = this.$route.query.keyword
+      //   this.searchRequest.mode = this.$route.query.mode
+      // }
+
     }
   }
   </script>

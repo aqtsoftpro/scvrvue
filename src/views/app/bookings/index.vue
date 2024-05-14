@@ -616,8 +616,20 @@
                       <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
-                            <b-form-input v-model="vanin_form.bond_return_amount"></b-form-input>
+                            <b-form-input v-model="vanin_form.bond_return_amount" @change="check_bond" ></b-form-input>
                             <span>{{ $t('forms.vanin.bond_return_amount') }}</span>
+                          </label>
+                        </b-form>
+                      </b-colxx>
+
+                      <b-colxx v-if="bondComment" xxs="12" xs="4" lg="4" class="mb-3">
+                        <b-form class="av-tooltip tooltip-label-right">
+                          <label class="form-group has-top-label">
+                            <b-form-textarea v-model="vanin_form.bond_comment"></b-form-textarea>
+                            <span>
+                              <!-- {{ $t('forms.vanin.bond_comment') }} -->
+                              Bond return comment
+                            </span>
                           </label>
                         </b-form>
                       </b-colxx>
@@ -809,6 +821,8 @@ export default ({
       newData: null,
       van_out: '',
       swap_status: false,
+      bondComment: false,
+      return_bond: 0,
       form: {
         booking_id: '',
         customer_id: '',
@@ -855,7 +869,8 @@ export default ({
         bond_return_amount: '',
         km_deriven: 0,
         total_days: '',
-        demage_vid: null
+        demage_vid: null,
+        bond_comment: '',
       },
       checkVehicle: null,
       vanout_fields: [
@@ -1148,6 +1163,7 @@ export default ({
         this.van_out = response.data.van_out_date
         this.vanin_form.rental_amount = response.data.rental_amount
         this.vanin_form.bond_return_amount = response.data.bond_deposit;
+        this.return_bond = response.data.bond_deposit;
         this.$notify('success filled', 'Sucess!', 'The booking data has been autofilled!', { duration: 3000 });
         this.isProcessing = false
       }).catch(error => {
@@ -1261,6 +1277,16 @@ export default ({
       // this.vanout.swapped_name = data.swaped_detail?.reg_plate_number ?? null;
       // this.vanout.swapped_model = data.swaped_detail?.model ?? null;
       // this.$refs.vanoutModal.show()
+    },
+
+    check_bond() {
+      console.log("checked data");
+      if (this.vanin_form.bond_return_amount !== this.return_bond) {
+        this.bondComment = true;
+      }
+      else{
+        this.bondComment = false;
+      }
     },
 
     bring_vanin_fields(data) {
