@@ -170,7 +170,7 @@
                 <b-tab title="Vehicle Out" active title-item-class="w-50 text-center van_out_tab" @click="changeTab(0)">
                   <b-form @click="stopPropagation">
                     <b-row>
-                      <b-colxx xxs="12" xs="4" lg="4">
+                      <b-colxx xxs="12" xs="6" lg="6" xl="4">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text" v-model.trim="$v.form.customer_id.$model"
@@ -188,7 +188,7 @@
                           </label>
                         </b-form>
                       </b-colxx>
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text" v-model.trim="$v.form.vehicle_id.$model"
@@ -203,7 +203,7 @@
                         </b-form>
                       </b-colxx>
 
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text" v-model.trim="$v.form.location_id.$model"
@@ -224,7 +224,7 @@
                     </b-row>
                     <b-row>
 
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text"
@@ -285,7 +285,7 @@
                         </label>
                       </b-colxx>
 
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input v-model="$v.form.mileage.$model"
@@ -309,7 +309,7 @@
                         </b-form>
                       </b-colxx>
 
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <b-form-radio-group id="amount-frequency" v-model="form.amount_frequency"
                             name="amount-frequency">
@@ -319,7 +319,7 @@
                         </b-form>
                       </b-colxx>
 
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <b-form-checkbox
                             id="checkbox-1"
@@ -358,13 +358,13 @@
 
                         <!-- </b-colxx>
 
-                      <b-colxx xxs="12" xs="4" lg="2" class="mb-3"> -->
+                      <b-colxx xxs="12" xs="12" lg="2" class="mb-3"> -->
 
                         <!-- <b-form-input v-model="form.due_return" type="date" :placeholder="$t('forms.vanout.due_return')"></b-form-input> -->
                       </b-colxx>
                     </b-row>
                     <b-row>
-                      <!-- <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <!-- <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <label class="form-group has-top-label">
                           <b-form-input v-model="form.rental_period"></b-form-input>
                           <span>{{ $t('forms.vanout.rental_period') }}</span>
@@ -391,7 +391,7 @@
                           </b-colxx>
                         </b-row>
                       </b-colxx>
-                      <b-colxx v-if="roleName && roleName == 'admin'" xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx v-if="roleName && roleName == 'admin'" xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <button type="button" v-b-modal.addAcessoryModal class="btn btn-xs btn-secondary"> Add
                           Accessory</button>
                       </b-colxx>
@@ -498,7 +498,7 @@
                 <b-tab title="Vehicle In" title-item-class="w-50 text-center" @click="changeTab(1)">
                   <b-form @click="stopPropagation">
                     <b-row>
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text"
@@ -514,7 +514,7 @@
                           </label>
                         </b-form>
                       </b-colxx>
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <!-- <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text"
@@ -559,7 +559,7 @@
                           <b-button @click.prevent="addNewLocation" class="mt-2 btn btn-xs">Add Location</b-button>
                         </div>
                       </b-colxx>
-                      <b-colxx xxs="12" xs="4" lg="3" class="mb-3">
+                      <b-colxx xxs="12" xs="12" lg="3" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input type="number" v-model="$v.vanin_form.mileage.$model" :state="!$v.vanin_form.mileage.$error"
@@ -570,7 +570,7 @@
                           </label>
                         </b-form>
                       </b-colxx>
-                      <b-colxx xxs="12" xs="4" lg="1" class="mb-3">
+                      <b-colxx xxs="12" xs="12" lg="1" class="mb-3">
                         <span>{{ $t('forms.vanin.km_deriven') }}</span>
                         <br>
                         <p>{{ $v.vanin_form.km_deriven.$model }}</p>
@@ -587,7 +587,7 @@
                       </b-colxx>
                     </b-row>
                     <b-row>
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text" v-model.trim="$v.vanin_form.fuel_tank.$model"
@@ -601,7 +601,7 @@
                         </b-form>
                       </b-colxx>
 
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input v-model="$v.vanin_form.condition.$model"
@@ -613,7 +613,7 @@
                           </label>
                         </b-form>
                       </b-colxx>
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input v-model="vanin_form.bond_return_amount" @change="check_bond" ></b-form-input>
@@ -622,7 +622,7 @@
                         </b-form>
                       </b-colxx>
 
-                      <b-colxx v-if="bondComment" xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx v-if="bondComment" xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-textarea v-model="vanin_form.bond_comment"></b-form-textarea>
@@ -634,7 +634,7 @@
                         </b-form>
                       </b-colxx>
 
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <b-form-input style="display:none" type="text"
                             v-model.trim="$v.vanin_form.require_maintenance.$model"
@@ -651,14 +651,14 @@
                             required!</b-form-invalid-feedback>
                         </b-form>
                       </b-colxx>
-                      <b-colxx v-if="vanin_form.require_maintenance == 1" xxs="12" xs="4" lg="4" class="mb-3"
+                      <b-colxx v-if="vanin_form.require_maintenance == 1" xxs="12" xs="6" lg="6" xl="4" class="mb-3"
                         ref="require_maintenance_text_column">
                         <label class="form-group has-top-label">
                           <b-form-textarea v-model="vanin_form.require_maintenance_text"></b-form-textarea>
                           <span>{{ $t('forms.vanin.require_maintenance_text') }}</span>
                         </label>
                       </b-colxx>
-                      <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
+                      <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text"
@@ -674,7 +674,7 @@
                           </label>
                         </b-form>
                       </b-colxx>
-                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="4" lg="4" class="mb-3"
+                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="6" lg="6" xl="4" class="mb-3"
                         ref="demage_picture_column">
                         <!-- <label class="form-group has-top-label"> -->
                         <!-- <b-form-input v-model="vanin_form.demage_picture" ></b-form-input> -->
@@ -684,7 +684,7 @@
                           drop-placeholder="Drop file here..." accept="image/*" multiple></b-form-file>
                       </b-colxx>
 
-                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="4" lg="4" class="mb-3"
+                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="6" lg="6" xl="4" class="mb-3"
                         ref="demage_vid_column">
                         <span>Upload Demaged Video</span>
                         <!-- </label> -->
@@ -693,7 +693,7 @@
                       </b-colxx>
 
 
-                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="4" lg="4" class="mb-3"
+                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="6" lg="6" xl="4" class="mb-3"
                         ref="demage_text_column">
                         <label class="form-group has-top-label">
                           <b-form-textarea v-model="vanin_form.demage_text"></b-form-textarea>
@@ -701,7 +701,7 @@
                         </label>
                       </b-colxx>
 
-                      <b-colxx xxs="12" xs="4" lg="3" class="mb-3">
+                      <b-colxx xxs="12" xs="12" lg="3" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <div>{{ $t('forms.vanin.return_date') }}</div>
                           <datepicker :bootstrap-styling="true" type="datetime" :placeholder="$t('forms.vanin.return_date')"
@@ -713,7 +713,7 @@
                         </b-form>
                         <!-- <b-form-input v-model="form.due_return" type="date" :placeholder="$t('forms.vanout.due_return')"></b-form-input> -->
                       </b-colxx>
-                      <b-colxx xxs="12" xs="4" lg="1" class="mb-3">
+                      <b-colxx xxs="12" xs="12" lg="1" class="mb-3">
                         <span>Total Days</span>
                         <br>
                         <p>{{ vanin_form.total_days }}</p>
@@ -871,6 +871,7 @@ export default ({
         total_days: '',
         demage_vid: null,
         bond_comment: '',
+        bond_diff: 0,
       },
       checkVehicle: null,
       vanout_fields: [
@@ -1283,9 +1284,11 @@ export default ({
       console.log("checked data");
       if (this.vanin_form.bond_return_amount !== this.return_bond) {
         this.bondComment = true;
+        this.vanin_form.bond_diff = this.return_bond - this.vanin_form.bond_return_amount;
       }
       else{
         this.bondComment = false;
+        this.vanin_form.bond_diff = 0;
       }
     },
 
