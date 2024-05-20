@@ -883,6 +883,10 @@ export default {
             this.editingMode = false
             this.$forceUpdate();
 
+            window.setTimeout(() => {
+              location.reload(); // Reloads the current page
+            }, 3000);
+
         }).catch(error => {
         this.$notify(
             'error filled',

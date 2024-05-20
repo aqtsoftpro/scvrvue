@@ -3,7 +3,7 @@
     <b-row>
       <b-colxx xxs="12">
           <b-card class="mb-4" >
-            <datatable :title="$t('menu.reports.list-of-maintenance-done')" :searchColumn="searchColumns" :data="maintenance_list"  :fields="fields" />
+            <datatable :title="$t('menu.reports.list-of-maintenance-done')" :searchColumn="searchColumns" :data="maintenance_list"  :fields="fields" ref="childComponent" @dataFromChild="handleDataFromChild" />
           </b-card>
           <button @click="()=>{$router.push('/app/reports')}" class="btn btn-primary">Back to reports menu</button>
           <button  class="btn btn-outline-success" @click.prevent="exportToExcel">Export to Excel</button>
@@ -23,6 +23,7 @@ export default ({
   data() {
     return {
       maintenance_list: [],
+      exportables: [],
       searchColumns : ['vehicle', 'mileage', 'date', 'service_type', 'cost', 'part_replaced'],
       fields: [
         {
@@ -88,13 +89,19 @@ export default ({
   methods: {
 
     exportToExcel(){
+        this.$refs.childComponent.getData();
         /* generate worksheet from state */
-        const ws = utils.json_to_sheet(this.maintenance_list);
+        const ws = utils.json_to_sheet(this.exportables);
         /* create workbook and append worksheet */
         const wb = utils.book_new();
         utils.book_append_sheet(wb, ws, "Data");
         /* export to XLSX */
         writeFileXLSX(wb, "scvr_list_of_maintenance_done.xlsx");
+    },
+
+    handleDataFromChild(data) {
+      this.exportables = data;
+      console.log('Data from child:', data);
     },
 
     get_maintenance_list(){

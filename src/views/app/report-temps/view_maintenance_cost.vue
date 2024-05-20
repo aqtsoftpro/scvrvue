@@ -23,7 +23,7 @@
             </b-colxx>
           </b-row>
           <!-- :title="$t('menu.reports.view-maintenance_cost')" -->
-          <datatable :sum="sum" :searchColumn="searchColumns" :data="maintenance_cost" :fields="fields" />
+          <datatable :sum="sum" :searchColumn="searchColumns" :data="maintenance_cost" :fields="fields"  ref="childComponent" @dataFromChild="handleDataFromChild" />
           <!-- <table><tr><td><h1>Total:</h1></td><td><h1 class="text-primary">{{total}}</h1></td></tr></table> -->
         </b-card>
 
@@ -47,6 +47,7 @@ export default ({
   data() {
     return {
       maintenance_cost: [],
+      exportables: [],
       today: new Date(),
       searchColumns: ['date', 'vehicle', 'service', 'cost', 'sum'],
       fields: [
@@ -112,14 +113,22 @@ export default ({
     },
 
     exportToExcel() {
+      this.$refs.childComponent.getData();
       /* generate worksheet from state */
-      const ws = utils.json_to_sheet(this.maintenance_cost);
+      const ws = utils.json_to_sheet(this.exportables);
       /* create workbook and append worksheet */
       const wb = utils.book_new();
       utils.book_append_sheet(wb, ws, "Data");
       /* export to XLSX */
       writeFileXLSX(wb, "scvr_maintenance_cost.xlsx");
     },
+
+    handleDataFromChild(data) {
+      this.exportables = data;
+      console.log('Data from child:', data);
+    },
+
+
     get_maintenance_entries() {
       axios.get(apiUrl + '/reports/maintenance_cost', { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } })
         .then(response => {

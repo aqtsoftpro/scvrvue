@@ -604,6 +604,9 @@ export default {
         this.$notify('success filled', 'Success!', response.data.message,{ duration: 3000, permanent: false });
         this.processing = false
         this.cc()
+        window.setTimeout(() => {
+          location.reload();
+        }, 3000);
       }).catch(error => {
         this.$notify('error filled', 'Error!', error.response.data.message,{ duration: 3000, permanent: false });
         this.processing = false
@@ -660,6 +663,9 @@ export default {
         this.reset_form()
         this.$notify('success filled', 'Success!', response.data.message,{ duration: 3000, permanent: false });
         this.processing = false
+        window.setTimeout(() => {
+          location.reload();
+        }, 3000);
       }).catch(error => {
         this.$notify('error filled', 'Error!', error.response.data.message,{ duration: 3000, permanent: false });
         this.processing = false

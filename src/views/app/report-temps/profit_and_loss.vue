@@ -22,7 +22,7 @@
                 </b-form>
               </b-colxx>
             </b-row>
-            <datatable :title="$t('menu.reports.profit-and-loss')" :searchColumn="searchColumns" :data="pnl_records" :fields="fields" />
+            <datatable :title="$t('menu.reports.profit-and-loss')" :searchColumn="searchColumns" :data="pnl_records" :fields="fields" ref="childComponent" @dataFromChild="handleDataFromChild" />
           </b-card>
           <button @click="()=>{$router.push('/app/reports')}" class="btn btn-primary">Back to reports menu</button>
           <button  class="btn btn-outline-success" @click.prevent="exportToExcel">Export to Excel</button>
@@ -46,6 +46,7 @@ export default ({
     return {
       today: new Date(),
       pnl_records: [],
+      exportables: [],
       searchColumns: ['date', 'notes', 'cost', 'maintenance', 'sub_total'],
       fields: [
         {
@@ -107,14 +108,22 @@ export default ({
   methods: {
 
     exportToExcel(){
+        this.$refs.childComponent.getData();
         /* generate worksheet from state */
-        const ws = utils.json_to_sheet(this.pnl_records);
+        const ws = utils.json_to_sheet(this.exportables);
         /* create workbook and append worksheet */
         const wb = utils.book_new();
         utils.book_append_sheet(wb, ws, "Data");
         /* export to XLSX */
         writeFileXLSX(wb, "scvr_profit_and_loss.xlsx");
     },
+
+    handleDataFromChild(data) {
+      this.exportables = data;
+      console.log('Data from child:', data);
+    },
+
+
     get_profilt_and_loss_records(){
       axios.get(apiUrl + '/reports/profit_loss',
       {headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}})

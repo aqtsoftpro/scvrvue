@@ -8,6 +8,7 @@
               :searchColumn="searchColumns"
               :data="customer_list"
               :fields="fields"
+              ref="childComponent" @dataFromChild="handleDataFromChild"
             />
           </b-card>
           <button @click="()=>{$router.push('/app/reports')}" class="btn btn-primary">Back to reports menu</button>
@@ -29,6 +30,7 @@ export default ({
   data() {
     return {
       customer_list: [],
+      exportables: [],
       searchColumns : ['first_name', 'last_name', 'email', 'phone_number', 'address'],
       fields: [
         {
@@ -87,21 +89,19 @@ export default ({
 
     exportToExcel(){
 
-      var filteredList = this.customer_list;
-
-      filteredList.map(function(value, key){
-          delete Object.values(filteredList)[key].id;
-          delete Object.values(filteredList)[key].vanouts;
-          delete Object.values(filteredList)[key].vanout_count;
-          delete Object.values(filteredList)[key].bond_return_amount;
-      });
+      this.$refs.childComponent.getData();
       /* generate worksheet from state */
-        const ws = utils.json_to_sheet(filteredList);
+        const ws = utils.json_to_sheet(this.exportables);
         /* create workbook and append worksheet */
         const wb = utils.book_new();
         utils.book_append_sheet(wb, ws, "Data");
         /* export to XLSX */
         writeFileXLSX(wb, "scvr_customer_list.xlsx");
+    },
+
+    handleDataFromChild(data) {
+      this.exportables = data;
+      console.log('Data from child:', data);
     },
 
     get_customer_list(){

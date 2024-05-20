@@ -3,7 +3,7 @@
     <b-row>
       <b-colxx xxs="12">
           <b-card class="mb-4"  >
-              <datatable :title="$t('menu.reports.vans-list')" :searchColumn="searchColumns" :data="van_list" :fields="fields" />
+              <datatable :title="$t('menu.reports.vans-list')" :searchColumn="searchColumns" :data="van_list" :fields="fields" ref="childComponent" @dataFromChild="handleDataFromChild" />
           </b-card>
           <button @click="()=>{$router.push('/app/reports')}" class="btn btn-primary">Back to reports menu</button>
           <button  class="btn btn-outline-success" @click.prevent="exportToExcel">Export to Excel</button>
@@ -23,6 +23,7 @@ export default ({
   data() {
     return {
       van_list: [],
+      exportables: [],
       searchColumns : ['type', 'reg_plate_number', 'make', 'model', 'purchase_price'],
       fields: [
         {
@@ -74,35 +75,37 @@ export default ({
 
         /* generate workbook and worksheet */
 
-        var filteredList = this.van_list;
-        var ws_cols = [];
-        filteredList.map(function(value, key){
+        this.$refs.childComponent.getData();
 
-           ws_cols.push({'wch': 10});
+        // var filteredList = this.van_list;
+        // var ws_cols = [];
+        // filteredList.map(function(value, key){
 
-            delete Object.values(filteredList)[key].id;
-            delete Object.values(filteredList)[key].type_id;
-            delete Object.values(filteredList)[key].status_id;
+        //    ws_cols.push({'wch': 10});
+
+        //     delete Object.values(filteredList)[key].id;
+        //     delete Object.values(filteredList)[key].type_id;
+        //     delete Object.values(filteredList)[key].status_id;
 
 
-            filteredList[key].company_name = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.company_name;
-            filteredList[key].demange_details = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.demange_details;
-            filteredList[key].policy_start_date = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.policy_start_date;
-            filteredList[key].policy_end_date = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.policy_end_date;
-            filteredList[key].road_side_assistance = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.road_side_assistance;
-            filteredList[key].road_side_assistance_company = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.road_side_assistance_company;
-            filteredList[key].road_side_assistance_start_date = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.road_side_assistance_start_date;
-            filteredList[key].road_side_assistance_end_date = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.road_side_assistance_end_date;
-            filteredList[key].road_side_assistance_company = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.road_side_assistance_company;
+        //     filteredList[key].company_name = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.company_name;
+        //     filteredList[key].demange_details = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.demange_details;
+        //     filteredList[key].policy_start_date = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.policy_start_date;
+        //     filteredList[key].policy_end_date = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.policy_end_date;
+        //     filteredList[key].road_side_assistance = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.road_side_assistance;
+        //     filteredList[key].road_side_assistance_company = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.road_side_assistance_company;
+        //     filteredList[key].road_side_assistance_start_date = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.road_side_assistance_start_date;
+        //     filteredList[key].road_side_assistance_end_date = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.road_side_assistance_end_date;
+        //     filteredList[key].road_side_assistance_company = (filteredList[key].insurance == null) ? '-' : filteredList[key].insurance.road_side_assistance_company;
 
-            delete Object.values(filteredList)[key].insurance;
-            delete Object.values(filteredList)[key].maintenance;
-        });
+        //     delete Object.values(filteredList)[key].insurance;
+        //     delete Object.values(filteredList)[key].maintenance;
+        // });
 
         //console.log(filteredList);
 
         /* generate worksheet from state */
-        const ws = utils.json_to_sheet(filteredList);
+        const ws = utils.json_to_sheet(this.exportables);
         /* create workbook and append worksheet */
         const wb = utils.book_new();
         utils.book_append_sheet(wb, ws, "Data");
@@ -110,6 +113,13 @@ export default ({
         /* export to XLSX */
         writeFileXLSX(wb, "scvr_vehicles_list.xlsx");
     },
+
+    handleDataFromChild(data) {
+      this.exportables = data;
+      console.log('Data from child:', data);
+    },
+
+
     get_van_list(){
       axios.get(apiUrl + '/vehicle', { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }})
       .then(response => {

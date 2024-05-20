@@ -22,9 +22,8 @@
               </b-form>
             </b-colxx>
           </b-row>
-
           <!-- :title="$t('menu.reports.view-earnings')" -->
-          <datatable :sum="sum" :searchColumn="searchColumns" :data="earnings" :fields="fields" />
+          <datatable :sum="sum" :searchColumn="searchColumns" :data="earnings" :fields="fields" ref="childComponent" @dataFromChild="handleDataFromChild" />
         </b-card>
         <button @click="() => { $router.push('/app/reports') }" class="btn btn-primary">Back to reports menu</button>
         <button class="btn btn-outline-success" @click.prevent="exportToExcel">Export to Excel</button>
@@ -48,6 +47,8 @@ export default ({
     return {
       today: new Date(),
       earnings: [],
+      exportables: [],
+
       sum: 0,
       searchColumns: ['vehicle', 'date', 'amount'],
       fields: [
@@ -100,14 +101,31 @@ export default ({
       })
     },
     exportToExcel() {
+      // console.log(data);
+      this.$refs.childComponent.getData();
+
       /* generate worksheet from state */
-      const ws = utils.json_to_sheet(this.earnings);
+      // const ws = utils.json_to_sheet(this.earnings);
+      const ws = utils.json_to_sheet(this.exportables);
       /* create workbook and append worksheet */
+
       const wb = utils.book_new();
       utils.book_append_sheet(wb, ws, "Data");
       /* export to XLSX */
       writeFileXLSX(wb, "scvr_earnings.xlsx");
     },
+
+    getDataFromChild() {
+      // Access the child component via ref and call its method
+      this.$refs.childComponent.getData();
+    },
+
+    handleDataFromChild(data) {
+      this.exportables = data;
+      console.log('Data from child:', data);
+    },
+
+
     get_earnings() {
       axios.get(apiUrl + '/reports/earnings', {
         headers: {

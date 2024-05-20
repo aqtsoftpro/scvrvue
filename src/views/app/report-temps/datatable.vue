@@ -180,6 +180,12 @@ export default {
       this.items = this.filteredList
       this.$refs.vuetable.refresh();
     },
+
+    getData() {
+      // console.log(this.records);
+      // This method emits an event with the data
+      this.$emit('dataFromChild', this.filteredList);
+    }
   },
   computed: {
     // filteredList() {

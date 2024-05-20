@@ -65,6 +65,12 @@
                                             <th>Bond Return Amount</th>
                                             <td>{{ van_return.bond_return_amount }}</td>
                                           </tr>
+
+                                          <tr v-if="van_return">
+                                            <th>Return amount comment</th>
+                                            <td>{{ van_return.bond_comment }}</td>
+                                          </tr>
+
                                           <tr v-if="booking && booking.accessories && booking.accessories.length > 0">
                                             <th>Vehicle Accessories:</th>
                                             <td>

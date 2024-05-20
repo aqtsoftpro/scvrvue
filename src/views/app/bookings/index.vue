@@ -622,7 +622,7 @@
                         </b-form>
                       </b-colxx>
 
-                      <b-colxx v-if="bondComment" xxs="12" xs="6" lg="6" xl="4" class="mb-3">
+                      <b-colxx v-if="bondComment || vanin_form.bond_diff !== 0" xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-textarea v-model="vanin_form.bond_comment"></b-form-textarea>
@@ -1494,6 +1494,7 @@ export default ({
           this.vanin_form.demage_caused_by_customer = parseInt(response.data.demage_caused_by_customer)
           this.vanin_form.location_id = parseInt(response.data.location_id)
           this.vanin_form.van_out_id = parseInt(response.data.van_out_id)
+          this.vanin_form.bond_return_amount = Number(response.data.bond_return_amount) + Number(response.data.bond_diff)
           this.isProcessing = false
         })
     },
