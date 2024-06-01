@@ -243,7 +243,7 @@
                                     format="dd-MM-yyyy"
                                 ></datepicker>
                                 <span>{{ $t('forms.van_management.policy_start_date') }}</span>
-                                <b-form-invalid-feedback> pick start date!</b-form-invalid-feedback>
+                                <b-form-invalid-feedback> Pick start date!</b-form-invalid-feedback>
                               </label>
                             <!-- </b-form-group> -->
                         </b-form>
@@ -260,13 +260,11 @@
                                     format="dd-MM-yyyy"
                                 ></datepicker>
                                 <span>{{ $t('forms.van_management.policy_end_date') }}</span>
-                                <b-form-invalid-feedback> pick start date!</b-form-invalid-feedback>
+                                <b-form-invalid-feedback> Pick start date!</b-form-invalid-feedback>
                               </label>
                             <!-- </b-form-group> -->
                         </b-form>
                     </b-colxx>
-                  </b-row>
-                  <b-row>
                     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
                       <b-form-group label="Road side assistance ?">
                           <b-radio-group>
@@ -276,9 +274,22 @@
                       </b-form-group>
                     </b-colxx>
                     <b-colxx v-if="formStep3.road_side_assistance == 'no'" xxs="12" xs="3" lg="3" class="mb-3">
-                      <b-form>
+                      <!-- <b-form>
                           <b-form-input type="text" v-model="formStep3.road_side_assistance_company" :placeholder="$t('forms.van_management.road_side_assistance_company')" />
-                      </b-form>
+                      </b-form> -->
+
+
+                      <b-form class="av-tooltip tooltip-label-right">
+                            <!-- <b-form-group :label="$t('forms.van_management.policy_number')"> -->
+                              <label class="form-group has-top-label">
+                                <b-form-input type="text" v-model="formStep3.road_side_assistance_company" placeholder="Compmany Name" />
+                                <span>{{ $t('forms.van_management.road_side_assistance_company') }}</span>
+                                <!-- <b-form-invalid-feedback v-if="$v.formStep3.policy_number.$error"> Policy Number is required!</b-form-invalid-feedback> -->
+                              </label>
+                            <!-- </b-form-group> -->
+                        </b-form>
+
+
                     </b-colxx>
                     <b-colxx  xxs="12" xs="3" lg="3" class="mb-3">
                       <label class="form-group has-top-label">
@@ -290,7 +301,7 @@
                           format="dd-MM-yyyy"
                         ></datepicker>
                         <span>{{ $t('forms.van_management.road_side_assistance_start_date') }}</span>
-                        <b-form-invalid-feedback> Road assistance start date!</b-form-invalid-feedback>
+                        <b-form-invalid-feedback> Road assistance start date required</b-form-invalid-feedback>
                       </label>
                     </b-colxx>
                     <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
@@ -303,7 +314,7 @@
                         format="dd-MM-yyyy"
                       ></datepicker>
                       <span>{{ $t('forms.van_management.road_side_assistance_end_date') }}</span>
-                      <b-form-invalid-feedback> Road assistance end date</b-form-invalid-feedback>
+                      <b-form-invalid-feedback> Road assistance end date required</b-form-invalid-feedback>
                       </label>
                     </b-colxx>
                     <!-- <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
@@ -443,12 +454,76 @@
                   </b-card>
                   <b-button type="button" variant="primary" @click="add_maintenance_row">Add Row</b-button>
                   <b-card v-if="maintain_records.length > 0 && maintain_records[0].maintenance_date !== ''" class="my-3">
-                    <b-table hover :fields="fields"  :items="maintain_records" >
+                    <b-table :fields="fields"  :items="maintain_records" >
                       <template #cell(actions)="data">
-                        <b-button @click="editItem(data.item)">Edit</b-button>
+                        <b-button @click="showModal(data.item)" size="sm" variant="grey">
+                          <i class="simple-icon-eye"></i>
+                        </b-button>
+                        <b-button @click="editMaintenceRecord(data.item)" size="sm" variant="grey">
+                          <i class="simple-icon-pencil"></i>
+                        </b-button>
+                        <b-button @click="deleteMaintain(data)" size="sm" variant="grey">
+                          <i class="simple-icon-trash"></i>
+                        </b-button>
+                        <!--<b-button v-if="user.role_id == 1 && props.rowData.status_id == 3" @click="mark_vehicle_active(props.rowData.id)" size="sm" variant="grey">
+                          <i class="simple-icon-check"></i>
+                        </b-button> -->
                       </template>
                     </b-table>
                   </b-card>
+
+                  <b-modal id="modallg" size="lg" ref="infoModal" title="Maintainence Record Detail" hide-footer>
+                    <b-row v-if="maintain_record_detail">
+                      <b-colxx sm="12">
+                        <table class="table">
+                          <tbody>
+                            <tr>
+                              <th class="col-sm-6">Maintainence Date</th>
+                              <td>{{ maintain_record_detail.maintenance_date }}</td>
+                            </tr>
+                            <tr>
+                              <th class="col-sm-6">Vehicle Mileage</th>
+                              <td>{{ maintain_record_detail.maintenance_mileage }}</td>
+                            </tr>
+                            <tr>
+                              <th class="col-sm-6">Maintainence Cost</th>
+                              <td>{{ maintain_record_detail.maintenance_cost }}</td>
+                            </tr>
+                            <tr>
+                              <th class="col-sm-6">Mechanic Name</th>
+                              <td>{{ maintain_record_detail.mechanic_name }}</td>
+                            </tr>
+                            
+                            <tr v-if="maintain_record_detail.part_repaired !== ''">
+                              <th class="col-sm-6">Vehicle Part Repaired</th>
+                              <td>{{ maintain_record_detail.part_repaired }}</td>
+                            </tr>
+                            
+                            <tr v-if="maintain_record_detail.part_replaced !== ''">
+                              <th class="col-sm-6">Vehicle Part Replace</th>
+                              <td>{{ maintain_record_detail.part_replaced }}</td>
+                            </tr>
+                            
+                            <tr v-if="maintain_record_detail.tyre_replaced !== ''">
+                              <th class="col-sm-6">Vehicle Tyre Replace</th>
+                              <td>{{ maintain_record_detail.tyre_replaced }}</td>
+                            </tr>
+                            
+                            <tr v-if="maintain_record_detail.tyre_replaced !== ''">
+                              <th class="col-sm-6">Maintainence Place</th>
+                              <td>{{ maintain_record_detail.place }}</td>
+                            </tr>
+                            
+                            <tr v-if="maintain_record_detail.vehicle !== ''">
+                              <th class="col-sm-6">Vehicle Name </th>
+                              <td>{{ maintain_record_detail.vehicle }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </b-colxx>
+                    </b-row>
+                  </b-modal>
+
                   <b-row class="mt-4">
                     <b-colxx xxs="12" xs="12" lg="12"  class="mb-3">
                         Next Maintenance Due:
@@ -574,7 +649,8 @@ export default {
                 { key: 'maintenance_cost', label: 'Cost' },
                 { key: 'mechanic_name', label: 'Mechanic Name' },
                 { key: 'maintenance_place', label: 'Place' },
-                { key: 'part_replaced', label: 'Part Replaced' },
+                { key: 'actions', label: 'Actions' }
+                // { key: 'part_replaced', label: 'Part Replaced' },
             ],
 
             maintain_records : [
@@ -584,14 +660,16 @@ export default {
                   'maintenance_date' : "",
                   'maintenance_type_id': "",
                   'maintenance_cost': "",
-                  'maintenance_place': "",
                   'mechanic_name': "",
+                  'maintenance_place': "",
                   'part_replaced': "",
                   'part_repaired': "",
                   'tyre_replaced': "",
                   'comments': ""
                 }
             ],
+
+            maintain_record_detail: null,
 
             next_maintenance_service_options: [
               {id: 'Engine Oil', name: 'Engine Oil'},
@@ -658,7 +736,7 @@ export default {
               next_maintenance_service: "Next maintenance service type",
               next_maintenance_comments: null,
             },
-            form: {}
+            form: {},
         }
     },
     mixins: [validationMixin],
@@ -743,6 +821,56 @@ export default {
       }
     },
     methods: {
+
+      showModal(item) {
+        console.log('Button clicked', item);
+        this.maintain_record_detail = item;
+        this.$refs.infoModal.show();
+      },
+
+      editMaintenceRecord(item) {
+        this.formStep4.maintenance_records.unshift({
+            'maintenance_id': item.maintenance_id,
+            'maintenance_type_id': item.maintenance_type_id,
+            'maintenance_mileage': item.maintenance_mileage,
+            'maintenance_date': item.maintenance_date,
+            'maintenance_cost': item.maintenance_cost,
+            'maintenance_place': item.maintenance_place,
+            'mechanic_name': item.mechanic_name,
+            'part_repaired': item.part_repaired,
+            'part_replaced': item.part_replaced,
+            'tyre_replaced': item.tyre_replaced,
+            'comments': item.comments
+          })
+      },
+
+      deleteMaintain(data) {
+          this.processing = true
+          axios.delete(apiUrl + '/maintenance/' + data.item.maintenance_id, {
+            headers: {
+              'Content-Type': 'application/json', // Adjust if necessary
+              'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+          }).then(response => {
+
+            this.$notify(
+              'success filled',
+              'Success!',
+              'Maintainence Record Deleted Successfully!',
+              { duration: 3000, permanent: false });
+              this.processing = false
+              this.maintain_records.splice(data, 1);
+
+          }).catch(error => {
+            this.$notify(
+              'error filled',
+              'Error!',
+              error.response.data.message,
+              { duration: 3000, permanent: false });
+              this.processing = false
+          })
+      },
+
       validateStep1(){
         this.$v.formStep1.$touch();
         return !this.$v.formStep1.$anyError;
@@ -964,6 +1092,7 @@ export default {
             this.formStep3.road_side_assistance_end_date = this.vehicle.insurance.road_side_assistance_end_date
             this.formStep3.demage_details = this.vehicle.insurance.demage_details
             this.formStep3.damage_picture = this.vehicle.insurance.damage_picture
+            this.maintain_records = [];
             this.vehicle.maintenance.forEach((currentValue, index) => {
               // this.formStep4.maintenance_records.unshift({
               //   'maintenance_id': currentValue.id,
@@ -980,6 +1109,8 @@ export default {
 
               // })
 
+
+
               this.maintain_records.unshift({
                 'maintenance_id': currentValue.id,
                 'maintenance_type_id': currentValue.service_type_id,
@@ -994,7 +1125,6 @@ export default {
                 'comments': currentValue.comments
 
               })
-
 
             })
             //Step 4 Values

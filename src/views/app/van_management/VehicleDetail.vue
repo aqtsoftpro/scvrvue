@@ -152,15 +152,97 @@
                       <b-tab v-if="formattedMaintenance && formattedMaintenance.length > 0" title="Maintenance">
                           <b-row>
                               <b-colxx sm="12">
-                                <b-table hover :fields="fields"  :items="formattedMaintenance" ></b-table>
+                                <b-table hover :fields="fields"  :items="formattedMaintenance" >
+                                  <template #cell(actions)="data">
+                                    <b-button @click="showModal(data.item)" size="sm" variant="grey">
+                                      <i class="simple-icon-eye"></i>
+                                    </b-button>
+                                  </template>
+                                </b-table>
                               </b-colxx>
                           </b-row>
+                          <b-modal id="modallg" size="lg" ref="infoModal" title="Maintainence Record Detail" hide-footer>
+                            <b-row v-if="maintain_record_detail">
+                              <b-colxx sm="12">
+                                <table class="table">
+                                  <tbody>
+                                    <tr>
+                                      <th class="col-sm-6">Maintainence Date</th>
+                                      <td>{{ formatDate(maintain_record_detail.date) }}</td>
+                                    </tr>
+                                    <tr>
+                                      <th class="col-sm-6">Vehicle Mileage</th>
+                                      <td>{{ maintain_record_detail.mileage }}</td>
+                                    </tr>
+                                    <tr>
+                                      <th class="col-sm-6">Maintainence Cost</th>
+                                      <td>{{ maintain_record_detail.cost }}</td>
+                                    </tr>
+                                    <tr>
+                                      <th class="col-sm-6">Service Type</th>
+                                      <td>{{ maintain_record_detail.service_type }}</td>
+                                    </tr>
+                                    <tr>
+                                      <th class="col-sm-6">Mechanic Name</th>
+                                      <td>{{ maintain_record_detail.mechanic_name }}</td>
+                                    </tr>
+                                    
+                                    <tr v-if="maintain_record_detail.part_repaired !== ''">
+                                      <th class="col-sm-6">Vehicle Part Repaired</th>
+                                      <td>{{ maintain_record_detail.part_repaired }}</td>
+                                    </tr>
+                                    
+                                    <tr v-if="maintain_record_detail.part_replaced !== ''">
+                                      <th class="col-sm-6">Vehicle Part Replace</th>
+                                      <td>{{ maintain_record_detail.part_replaced }}</td>
+                                    </tr>
+                                    
+                                    <tr v-if="maintain_record_detail.tyre_replaced !== ''">
+                                      <th class="col-sm-6">Vehicle Tyre Replace</th>
+                                      <td>{{ maintain_record_detail.tyre_replaced }}</td>
+                                    </tr>
+                                    
+                                    <tr v-if="maintain_record_detail.tyre_replaced !== ''">
+                                      <th class="col-sm-6">Maintainence Place</th>
+                                      <td>{{ maintain_record_detail.place }}</td>
+                                    </tr>
+                                    
+                                    <tr v-if="maintain_record_detail.vehicle !== ''">
+                                      <th class="col-sm-6">Vehicle Name </th>
+                                      <td>{{ maintain_record_detail.vehicle }}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </b-colxx>
+                            </b-row>
+                          </b-modal>
                           <b-row>
                               <b-colxx sm="12">
-                                <div>Next Maintenance Mileage<span class="badge badge-primary"> {{ (vehicle.next_maintenance_mileage) ? vehicle.next_maintenance_mileage : ' Not Set' }}</span> </div>
-                                <div>Next Maintenance Due: <span class="badge badge-primary"> {{ ( formatDate(vehicle.next_maintenance_due_date) ) ? vehicle.next_maintenance_due_date : ' Not Set' }}</span></div>
+                                <!-- <div>Next Maintenance Mileage<span class="badge badge-primary"> {{ (vehicle.next_maintenance_mileage) ? vehicle.next_maintenance_mileage : ' Not Set' }}</span> </div>
+                                <div>Next Maintenance Due: <span class="badge badge-primary"> {{ formatDate(vehicle.next_maintenance_due_date) }} </span></div>
                                 <div>Next Maintenance Service: <span class="badge badge-primary"> {{ (vehicle.next_maintenance_service) ? vehicle.next_maintenance_service : ' Not Set' }}</span></div>
-                                <div>Next Maintenance Comments: <span class="badge badge-primary" v-if="vehicle.next_maintenance_comments"> {{ (vehicle.next_maintenance_comments) ? vehicle.next_maintenance_comments : '' }}</span></div>
+                                <div>Next Maintenance Comments: <span class="badge badge-primary" v-if="vehicle.next_maintenance_comments"> {{ (vehicle.next_maintenance_comments) ? vehicle.next_maintenance_comments : '' }}</span></div> -->
+                                <h4 class="title">Next Maintainence </h4>
+                                <table class="table">
+                                  <tbody>
+                                    <tr>
+                                      <th class="col-sm-6">Next Maintenance Mileage</th>
+                                      <td>{{ vehicle.next_maintenance_mileage }}</td>
+                                    </tr>
+                                    <tr>
+                                      <th class="col-sm-6">Next Maintenance Due:</th>
+                                      <td>{{ formatDate(vehicle.next_maintenance_due_date) }}</td>
+                                    </tr>
+                                    <tr>
+                                      <th class="col-sm-6">Next Maintenance Service: </th>
+                                      <td>{{ vehicle.next_maintenance_service }}</td>
+                                    </tr>
+                                    <tr>
+                                      <th class="col-sm-6">Next Maintenance Comments</th>
+                                      <td>{{ vehicle.next_maintenance_comments }}</td>
+                                    </tr>                                    
+                                  </tbody>
+                                </table>
                               </b-colxx>
                           </b-row>
                       </b-tab>
@@ -187,14 +269,18 @@
               vehicle: [],
               fields: [
                 { key: 'vehicle', label: 'Vehicle' },
-                { key: 'mileage', label: 'Mileage' },
+                // { key: 'mileage', label: 'Mileage' },
                 { key: 'date', label: 'Date' },
                 { key: 'service_type', label: 'Service Type' },
                 { key: 'cost', label: 'Cost' },
-                { key: 'place', label: 'Place' },
+                // { key: 'place', label: 'Place' },
                 { key: 'mechanic_name', label: 'Mechanic Name' },
-                { key: 'comments', label: 'comments' },
+                // { key: 'comments', label: 'comments' },
+                { key: 'actions', label: 'Actions' },
               ],
+
+              maintain_record_detail: null,
+
           }
       },
       methods: {
@@ -207,6 +293,12 @@
             }).then(response => {
                 this.vehicle = response.data
             })
+        },
+
+        showModal(item) {
+          console.log('Button clicked', item);
+          this.maintain_record_detail = item;
+          this.$refs.infoModal.show();
         },
 
         formatDate(dateString) {

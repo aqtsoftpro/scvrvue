@@ -169,7 +169,7 @@
             <b-form-input v-model="form.driver_licence_number"></b-form-input>
             <span>{{ $t('forms.customer.driver_licence_number') }}</span>
             <b-form-invalid-feedback v-if="$v.form.driver_licence_number.$error">
-              Please enter driving license
+              Please enter driving license number
             </b-form-invalid-feedback>
           </label>
         </b-colxx>
@@ -179,8 +179,9 @@
               :state="!$v.form.driver_licence_front_picture.$error" />
           <b-file v-model="form.driver_licence_front_picture"></b-file>
           <b-form-invalid-feedback v-if="$v.form.occupation.$error">
-              Please add front pic of licence
+              Please add driving licence front picture
             </b-form-invalid-feedback>
+            <span v-if="form.driver_licence_front_picture"> Front picture uploaded</span>
         </b-colxx>
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
 
@@ -189,12 +190,14 @@
               :state="!$v.form.driver_licence_back_picture.$error" />
           <b-file v-model="form.driver_licence_back_picture"></b-file>
           <b-form-invalid-feedback v-if="$v.form.driver_licence_back_picture.$error">
-            Please add back pic of licence
+            Please add driving licence back picture
           </b-form-invalid-feedback>
+          <span v-if="form.driver_licence_back_picture"> Back picture uploaded</span>
         </b-colxx>
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
           <label class="form-group has-top-label">
-            <b-form-input style="display:none" type="text" v-model.trim="form.driver_licence_expiry" />
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.driver_licence_expiry.$model"
+              :state="!$v.form.driver_licence_expiry.$error" />
             <datepicker :bootstrap-styling="true" :disabled-dates="{ to: new Date() }"
               v-model="form.driver_licence_expiry" format="dd-MM-yyyy"></datepicker>
             <span>{{ $t('forms.customer.driver_licence_expiry') }}</span>
@@ -210,10 +213,12 @@
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
           <label>{{ $t('forms.customer.secondary_id_front_picture') }}</label>
           <b-file file v-model="form.secondary_id_front_picture"></b-file>
+          <span v-if="form.secondary_id_front_picture"> Secondary id front picture uploaded</span>
         </b-colxx>
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
           <label>{{ $t('forms.customer.secondary_id_back_picture') }}</label>
           <b-file file v-model="form.secondary_id_back_picture"></b-file>
+          <span v-if="form.secondary_id_back_picture"> Secondary id front picture uploaded</span>
         </b-colxx>
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
           <label class="form-group has-top-label">
@@ -226,8 +231,13 @@
         </b-colxx>
         <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
           <label class="form-group has-top-label">
+            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.nationality.$model"
+              :state="!$v.form.nationality.$error" />
             <b-form-input v-model="form.nationality"></b-form-input>
             <span>{{ $t('forms.customer.nationality') }}</span>
+            <b-form-invalid-feedback v-if="$v.form.nationality.$error">
+              Nationality is required!
+            </b-form-invalid-feedback>
           </label>
         </b-colxx>
       </b-row>
@@ -243,6 +253,7 @@
         <b-button @click.stop="cancel_update_customer_record()" variant="info" class="mt-4 mb-4"><i
             class="simple-icon-close"></i></b-button>
       </div>
+      <button type="reset" ref="resetCustomerForm" class="d-none"> reset form</button>
     </b-form>
     <b-row>
       <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
@@ -440,9 +451,6 @@ export default {
       address: {
         required
       },
-      dob: {
-        required
-      },
       gender: {
         required
       },
@@ -464,18 +472,18 @@ export default {
       nationality: {
         required
       },
-      secondary_id_number: {
-        required
-      },
-      secondary_id_front_picture: {
-        required
-      },
-      secondary_id_back_picture: {
-        required
-      },
-      secondary_id_expiry: {
-        required
-      },
+      // secondary_id_number: {
+      //   required
+      // },
+      // secondary_id_front_picture: {
+      //   required
+      // },
+      // secondary_id_back_picture: {
+      //   required
+      // },
+      // secondary_id_expiry: {
+      //   required
+      // },
     },
   },
 
@@ -584,9 +592,10 @@ export default {
       ).then(response => {
         //parse json data
         this.get_customer_records()
-        this.reset_form()
+        // this.reset_form()
         this.$notify('success filled', 'Success!', response.data.message, { duration: 3000, permanent: false });
         this.processing = false
+        this.$refs.resetCustomerForm.click();
       }).catch(error => {
         this.$notify('error filled', 'Error!', error.response.data.message, { duration: 3000, permanent: false });
         this.processing = false
@@ -640,9 +649,10 @@ export default {
         //parse json data
         this.get_customer_records()
         this.editing_mode = false
-        this.reset_form()
+        // this.reset_form()
         this.$notify('success filled', 'Success!', response.data.message, { duration: 3000, permanent: false });
         this.processing = false
+        this.$refs.resetButton.click();
       }).catch(error => {
         this.$notify('error filled', 'Error!', error.response.data.message, { duration: 3000, permanent: false });
         this.processing = false

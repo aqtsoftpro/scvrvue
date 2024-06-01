@@ -270,12 +270,14 @@
                         <span>{{ $t('forms.vanin.demage_picture') }}</span>
                         <b-form-file v-model="form.demage_pics" :placeholder="$t('forms.vanin.demage_picture')"
                           drop-placeholder="Drop file here..." accept="image/*" multiple @change="handleFileChange"></b-form-file>
+                          <span v-if="form.demage_pics !== null">Condition picture already uploaded</span>
                       </b-colxx>
-
                       <b-colxx xxs="12" xs="6" lg="4" class="mb-3" ref="demage_video_column">
                         <span>Vehicle Condition Video </span>
                         <b-form-file v-model="form.demage_video" placeholder="Upload video"
                           drop-placeholder="Drop file here..." accept="video/*"></b-form-file>
+
+                        <span v-if="form.demage_video !== null">Vidoe already uploaded</span>
                       </b-colxx>
 
                       <b-colxx xxs="12" xs="6" lg="4" class="mb-3" ref="demage_text_column">
@@ -1414,7 +1416,8 @@ export default ({
         }).then(response => {
           console.log(response.data);
           this.form = response.data;
-          this.form.vehicle_id = response.data.old_vehicle_id
+          this.form.vehicle_id = response.data.old_vehicle_id,
+          this.form.demage_pics = response.data.demage_pics,
           this.swapped_data = response.data.swaps;
           this.form.long_term = response.data.long_term
           if (response.data.reason_of_renting == 'Swap') {

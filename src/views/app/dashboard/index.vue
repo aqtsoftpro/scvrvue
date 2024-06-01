@@ -54,8 +54,9 @@
             >
             <div v-for="vehicle in available_vehicles" :key="vehicle.id" class="d-flex flex-row mb-3">
                 <router-link tag="a" :to="{ path: 'van_management/vehicle_detail/' + vehicle.vehicle_id }" class="d-block position-relative">
-                    <img v-if="isValidImage(vehicle.img)" :src="vehicle.img" style="width: 100px!important" :alt="vehicle.img" class="list-thumbnail border-0" />
-                    <img v-else src="/assets/img/van-white.jpg" style="width: 100px!important" alt="image" class="list-thumbnail border-0" />
+                    <img v-if="vehicle.img !== null" :src="vehicle.img" style="width: 100px!important" :alt="vehicle.img" class="list-thumbnail border-0" />
+                    <img v-if="vehicle.img == null && vehicle.vehicle_type == 'Van'" src="/assets/img/van-white.jpg" style="width: 100px!important" alt="image" class="list-thumbnail border-0" />
+                    <img v-if="vehicle.img == null && vehicle.vehicle_type == 'Car'" src="/assets/img/dash-car.png" style="width: 100px!important" alt="image" class="list-thumbnail border-0" />
                     <b-badge variant="info" pill class="position-absolute badge-top-right">{{ vehicle.vehicle_type }}</b-badge>
                 </router-link>
                 <div class="pl-3 pt-2 pr-2 pb-2">
@@ -92,12 +93,12 @@ export default {
   },
   data() {
     return {
-      available_cars: null,
-      cars: null,
-      available_vans: null,
-      vans: null,
-      vanout_count: null,
-      vanreturn_count: null,
+      available_cars: 0,
+      cars: 0,
+      available_vans: 0,
+      vans: 0,
+      vanout_count: 0,
+      vanreturn_count: 0,
       vanouts : [],
       available_vehicles : []
     };

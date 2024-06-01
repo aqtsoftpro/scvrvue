@@ -27,7 +27,7 @@
         </b-colxx>
         <b-colxx xxs="12" xs="4" lg="4" class="mb-3">
           <label class="form-group has-top-label">
-            <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.date.$model"
+            <b-form-input  type="date" style="display: none;" v-model.trim="$v.form.date.$model"
               :state="!$v.form.date.$error" />
             <!-- <b-form-input style="display:none" type="text" v-model.trim="form.date" /> -->
             <datepicker :bootstrap-styling="true" v-model="form.date" format="dd-MM-yyyy"></datepicker>
@@ -340,15 +340,14 @@ export default {
       }
       ).then(response => {
         //parse json data
-        this.get_tax_records()
+        // this.get_tax_records()
         this.$notify(`${response.data.status} filled`, response.data.status, response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
         this.$refs.resetButton.click();
-
-        
-        // window.setTimeout(() => {
-        //   this.reset_form();
-        // }, 3000);
+        this.get_tax_records()
+        window.setTimeout(() => {
+          window.location.reload();
+        }, 1000);
         
       }).catch(error => {
         this.$notify('error filled', 'Error', error.response.data.message, { duration: 3000, permanent: false });
@@ -357,7 +356,6 @@ export default {
       //}
     },
     edit_tax_record(item) {
-      this.editing_mode = true
       axios.get(
         apiUrl + '/tax_record/' + item.id, {
         headers: {
@@ -365,10 +363,18 @@ export default {
         }
       }
       ).then(response => {
+        this.reset_form()
         //parse json data
         this.form = response.data
         this.form.tax_type_id = parseInt(response.data.tax_type_id)
-        //this.reset_form()
+        this.editing_mode = true
+        
+        this.form.amount = response.data.amount
+        this.form.date = response.data.date
+        this.form.filer_name = response.data.filer_name
+        this.form.filer_contact = response.data.filer_contact
+        this.form.accountant_fee = response.data.accountant_fee
+        this.form.comments = response.data.comments
       })
     },
     update_tax_record(id) {
@@ -384,6 +390,7 @@ export default {
       }
       ).then(response => {
         //parse json data
+        this.reset_form()
         this.get_tax_records()
         this.editing_mode = false
         // this.reset_form()

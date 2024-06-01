@@ -349,7 +349,8 @@ export default {
       }
     },
     resetForm() {
-      this.cancel_update_mechanic_record(); // Assuming you have a form ref named 'form'
+      // this.cancel_update_mechanic_record(); // Assuming you have a form ref named 'form'
+      this.$refs.mechanicReset.click();
     }
   },
 

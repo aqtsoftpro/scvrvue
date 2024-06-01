@@ -24,10 +24,8 @@
             <h2 v-if="this.subProfit > 0">Profit: <span class="text-primary">${{ subProfit }}</span></h2>
             <h2 v-if="this.filterdLoss > 0">Loss: <span class="text-primary">${{ filterdLoss }}</span></h2>
             <h2 v-if="this.filterTotal > 0">Total: <span class="text-primary">${{ filterTotal }}</span></h2>
-            <h2 v-else >Total Profit: <span class="text-primary">${{ subProfit - filterdLoss }}</span></h2>
+            <h2 v-if="!isNaN(subProfit - filterdLoss)" >Total {{ (subProfit - filterdLoss) > 0  ? 'Profit' : 'Loss' }}: <span class="text-primary">{{ subProfit - filterdLoss > 0 ? '': '-'}} ${{ subProfit - filterdLoss > 0 ? (subProfit - filterdLoss) : -(subProfit - filterdLoss) }}</span></h2>
           </div>
-
-        
           <vuetable
             class="table-divided order-with-arrow"
             ref="vuetable"

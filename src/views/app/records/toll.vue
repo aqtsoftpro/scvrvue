@@ -104,7 +104,7 @@
               :reduce="vehicle => vehicle.reg_plate_number" :options="vehicle_options" v-on:input="check_customer"></v-select>
             <span>Vehicle Registration Number (LPN)</span>
             <b-form-invalid-feedback v-if="$v.form.reg_plate_number.$error">
-              Please select registration
+              Please select vehicle registration number
             </b-form-invalid-feedback>
           </label>
         </b-colxx>
@@ -116,6 +116,8 @@
                 accept="image/*"></b-form-file>
             </div>
           </b-form>
+          <span v-if="form.toll_image"> Image uploaded</span>
+
         </b-colxx>
       </b-row>
       <b-row v-if="customer_drop_visible == true">

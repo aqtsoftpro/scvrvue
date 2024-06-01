@@ -74,7 +74,10 @@
     </b-modal>
     <b-row>
       <b-colxx xxs="12">
-        <piaf-breadcrumb :heading="`${$t('menu.search')} : ${searchRequest.keyword}`"/>
+        <!-- <piaf-breadcrumb :heading="`${$t('menu.search')} : ${searchRequest.keyword}`"/> -->
+
+        <h3>Search :  {{ searchRequest.keyword }} </h3>
+
         <div class="separator mb-5"></div>
       </b-colxx>
     </b-row>
