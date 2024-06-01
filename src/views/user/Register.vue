@@ -224,13 +224,24 @@
 
               <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
                   <b-form class="av-tooltip tooltip-label-right">
-                    <label class="form-group has-top-label">
+                    <!-- <label class="form-group has-top-label">
                     <datepicker
                       :bootstrap-styling="true"
                       v-model="form.driver_licence_expiry"
                     ></datepicker>
                       <span> {{$t('forms.customer.driver_licence_expiry')}}</span>
+                    </label> -->
+
+                    <label class="form-group has-top-label">
+                      <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.driver_licence_expiry.$model"
+                        :state="!$v.form.driver_licence_expiry.$error" />
+                      <datepicker :bootstrap-styling="true" :disabled-dates="{ to: new Date() }"
+                        v-model="form.driver_licence_expiry" format="dd-MM-yyyy"></datepicker>
+                      <span>{{ $t('forms.customer.driver_licence_expiry') }}</span>
+                      <b-form-invalid-feedback>Select driver licence expiry!</b-form-invalid-feedback>
                     </label>
+
+
                   </b-form>
               </b-colxx>
               <b-colxx xxs="12" xs="3" lg="3" class="mb-3">
@@ -275,8 +286,13 @@
 
                 <b-form class="av-tooltip tooltip-label-right">
                   <label class="form-group has-top-label">
+                    <b-form-input  type="text" style="display: none;" v-model.trim="$v.form.nationality.$model"
+                    :state="!$v.form.nationality.$error" />
                     <b-form-input v-model="form.nationality" ></b-form-input>
                     <span> {{$t('forms.customer.nationality')}}</span>
+                    <b-form-invalid-feedback v-if="$v.form.nationality.$error">
+                    Nationality is required!
+                  </b-form-invalid-feedback>
                   </label>
                 </b-form>
               </b-colxx>
@@ -364,9 +380,7 @@ export default {
         address: {
           required
         },
-        dob: {
-          required
-        },
+
         gender: {
           required
         },
@@ -388,18 +402,18 @@ export default {
         nationality: {
           required
         },
-        secondary_id_number: {
-          required
-        },
+        // secondary_id_number: {
+        //   required
+        // },
         // secondary_id_front_picture: {
         //   required
         // },
         // secondary_id_back_picture: {
         //   required
         // },
-        secondary_id_expiry: {
-          required
-        },
+        // secondary_id_expiry: {
+        //   required
+        // },
     }
   },
 
@@ -412,19 +426,21 @@ export default {
       }
       this.processing_text = 'Saving User Data ...'
       this.isProcessing = true
-      axios.post(
-        apiUrl + '/register-customer',this.form,{
-          headers:{
-            'content-type': 'multipart/form-data',
+      window.setTimeout(() => {
+        axios.post(
+          apiUrl + '/register-customer',this.form,{
+            headers:{
+              'content-type': 'multipart/form-data',
+            }
           }
-        }
-      ).then(response => {
-        this.registration = 1
-        this.$notify('success filled', 'Success!', 'You have successfully completed your registration',{ duration: 3000, permanent: false });
-        this.isProcessing = false;
-      }).catch(error => {
-        this.$notify('error filled', 'Error!', error.response.data.message,{ duration: 3000, permanent: false });
-      })
+        ).then(response => {
+          this.registration = 1
+          this.$notify('success filled', 'Success!', 'You have successfully completed your registration',{ duration: 3000, permanent: false });
+          this.isProcessing = false;
+        }).catch(error => {
+          this.$notify('error filled', 'Error!', error.response.data.message,{ duration: 3000, permanent: false });
+        })
+      }, 5000);
     },
   }
 }

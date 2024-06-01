@@ -260,10 +260,9 @@ export default {
     },
 
     computed: {
-        //   ...mapGetters(['currentUser']),
-        //   rows() {
-        //     return this.customer_records.length
-        //   }
+        vehicle_id(newVal, oldVal) {
+            this.get_available_vehicle_options(newVal)
+        }
     },
     methods: {
         get_available_vehicle_options(id, swap) {
@@ -457,8 +456,8 @@ export default {
             this.user = this.currentUser
         },
 
-        vehicle_id() {
-            this.get_available_vehicle_options(this.vehicle_id, null);
+        vehicle_id(newVal, oldVal) {
+            this.get_available_vehicle_options(newVal, null);
         },
 
         booking(){
