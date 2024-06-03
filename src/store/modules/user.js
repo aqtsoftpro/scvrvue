@@ -68,7 +68,7 @@ export default {
         'device_name': 'scvr_web_app'
       }).then(response => {
 
-        if (response.data.status == 'success') {
+        if (response.data.status == 'Success') {
           //set the token in local storage
           localStorage.setItem('token', response.data.token)
 
