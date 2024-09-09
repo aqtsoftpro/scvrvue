@@ -1,36 +1,25 @@
 <template>
   <div>
-    <datatable-heading
-      :changePageSize="changePageSize"
-      :searchChange="searchChange"
-      :from="from"
-      :to="to"
-      :total="total"
-      :perPage="perPage"
-      :title="title"
-    ></datatable-heading>
-
+    <datatable-heading :changePageSize="changePageSize" :searchChange="searchChange" :from="from" :to="to"
+      :total="total" :perPage="perPage" :title="title"></datatable-heading>
     <b-row>
       <b-colxx xxs="12">
-
-          <vuetable
-            ref="vuetable"
-            :api-mode=false
-            :items="data"
-            :data-manager="dataManager"
-            :query-params="makeQueryParams"
-            :per-page="perPage"
-            :fields="fields"
-            pagination-path="pagination"
-            @vuetable:pagination-data="onPaginationData"
-          >
-          </vuetable>
-
-        <vuetable-pagination-bootstrap
-          class="mt-4"
-          ref="pagination"
-          @vuetable-pagination:change-page="onChangePage"
-        />
+        <vuetable ref="vuetable" :api-mode=false :items="data" :data-manager="dataManager"
+          :query-params="makeQueryParams" :per-page="perPage" :fields="fields" pagination-path="pagination"
+          @vuetable:pagination-data="onPaginationData">
+          <template slot="picture" slot-scope="props">
+            <router-link :to="{ path: '/app/van_management/vehicle_detail/' + props.rowData.id }">
+              <img style="width: 100px !important" alt="Thumbnail" :src="props.rowData.picture"
+                class="list-thumbnail responsive border-0" />
+            </router-link>
+          </template>
+          <template slot="actions" slot-scope="props">
+            <b-button size="sm" variant="grey" @click="view(props.rowData)">
+              <i class="simple-icon-eye"></i>
+            </b-button>
+          </template>
+        </vuetable>
+        <vuetable-pagination-bootstrap class="mt-4" ref="pagination" @vuetable-pagination:change-page="onChangePage" />
       </b-colxx>
     </b-row>
   </div>
@@ -42,7 +31,7 @@ import { apiUrl } from "../../../constants/config";
 import DatatableHeading from "./DatatableHeading";
 
 export default {
-  props: ["title", "fields", "data"],
+  props: ["title", "fields", "data", "view"],
   components: {
     vuetable: Vuetable,
     "vuetable-pagination-bootstrap": VuetablePaginationBootstrap,
@@ -62,8 +51,6 @@ export default {
       // data: [],
       items: [],
       selectedItems: [],
-
-
     };
   },
   methods: {
@@ -99,18 +86,18 @@ export default {
       this.selectedItems = [];
       return sortOrder[0]
         ? {
-            sort: sortOrder[0]
-              ? sortOrder[0].field + "|" + sortOrder[0].direction
-              : "",
-            page: currentPage,
-            per_page: this.perPage,
-            search: this.search
-          }
+          sort: sortOrder[0]
+            ? sortOrder[0].field + "|" + sortOrder[0].direction
+            : "",
+          page: currentPage,
+          per_page: this.perPage,
+          search: this.search
+        }
         : {
-            page: currentPage,
-            per_page: this.perPage,
-            search: this.search
-          };
+          page: currentPage,
+          per_page: this.perPage,
+          search: this.search
+        };
     },
     onPaginationData(paginationData) {
       this.from = paginationData.from;

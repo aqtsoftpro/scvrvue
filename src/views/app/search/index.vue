@@ -1,6 +1,7 @@
 <template>
   <div>
-    <b-modal v-if="customer" id="customer_modal" size="lg" ref="customer_modal" :title="customer.first_name + ' ' + customer.last_name">
+    <b-modal v-if="customer" id="customer_modal" size="lg" ref="customer_modal"
+      :title="customer.first_name + ' ' + customer.last_name">
       <table class="stacked table">
         <tr>
           <td>First Name:</td>
@@ -76,122 +77,235 @@
       <b-colxx xxs="12">
         <!-- <piaf-breadcrumb :heading="`${$t('menu.search')} : ${searchRequest.keyword}`"/> -->
 
-        <h3>Search :  {{ searchRequest.keyword }} </h3>
+        <h3>Search : {{ searchRequest.keyword }} </h3>
 
         <div class="separator mb-5"></div>
       </b-colxx>
     </b-row>
     <b-row>
       <b-colxx xxs="12">
-          <b-card class="mb-4" >
-            <!-- <datatable /> -->
-             <div v-for="(item,index) in results" :key="index" :class="{'mb-3':results.length!=(index+1)}">
-               <div v-if="searchRequest.mode == 'vehicle'"  class="w-100 w-sm-100">
-                  <!-- <route-link class="float-right" :to="{path: '/app/van_management/vehicle_detail/' + item.id }">
-                    View Customer
-                  </route-link> -->
-                  <b-button class="float-right"@click.stop="toDetail(item)" v-b-modal.customer_modal variant="grey" size="sm">
-                    Vehicle Detail
-                  </b-button>
+        <b-card class="mb-4">
+          <datatable v-if="searchRequest.mode == 'vehicle'" :fields="vehicle_fields" :data="results" :view="toDetail" />
+          <datatable v-else :fields="fields" :data="results" :view="bring_fields" />
+          <!-- <div v-for="(item, index) in results" :key="index" :class="{ 'mb-3': results.length != (index + 1) }">
+            <div v-if="searchRequest.mode == 'vehicle'" class="w-100 w-sm-100">
+              <b-button class="float-right" @click.stop="toDetail(item)" v-b-modal.customer_modal variant="grey"
+                size="sm">
+                Vehicle Detail
+              </b-button>
 
-                  <img width="100" :src="item.picture" />
-                  <p class="list-item-heading mb-1 color-theme-1">{{item.reg_plate_number}}</p>
-                  <p class="mb-1 text-muted text-small">{{item.vehicle_type}} | {{ item.make }} - {{ item.model }}</p>
-                  <p class="mb-4 text-muted text-small">Purchase Date: {{ item.purchase_date }}</p>
-               </div>
-               <div v-else tag="a" :to="`#`" class="w-100 w-sm-100">
-                <b-button class="float-right"@click.stop="bring_fields(item)" v-b-modal.customer_modal variant="grey" size="sm">
+              <img width="100" :src="item.picture" />
+              <p class="list-item-heading mb-1 color-theme-1">{{ item.reg_plate_number }}</p>
+              <p class="mb-1 text-muted text-small">{{ item.vehicle_type }} | {{ item.make }} - {{ item.model }}</p>
+              <p class="mb-4 text-muted text-small">Purchase Date: {{ item.purchase_date }}</p>
+            </div>
+            <div v-else tag="a" :to="`#`" class="w-100 w-sm-100">
+              <b-button class="float-right" @click.stop="bring_fields(item)" v-b-modal.customer_modal variant="grey"
+                size="sm">
                 View Customer
-                </b-button>
-                  <!-- <img width="100" :src="item.picture" /> -->
-                  <p class="list-item-heading mb-1 color-theme-1">{{item.first_name}} {{item.last_name}}</p>
-                  <p class="mb-1 text-muted text-small">{{item.phone_number}} | {{ item.email }}</p>
-                  <p class="mb-4 text-muted text-small">Joined: {{ item.address }}</p>
-                  
-               </div>
-               <div class="separator mb-5" v-if="results.length!=(index+1)"></div>
-             </div>
-          </b-card>
+              </b-button>
+              <img width="100" :src="item.picture" />
+              <p class="list-item-heading mb-1 color-theme-1">{{ item.first_name }} {{ item.last_name }}</p>
+              <p class="mb-1 text-muted text-small">{{ item.phone_number }} | {{ item.email }}</p>
+              <p class="mb-4 text-muted text-small">Joined: {{ item.address }}</p>
+
+            </div>
+            <div class="separator mb-5" v-if="results.length != (index + 1)"></div>
+          </div> -->
+        </b-card>
       </b-colxx>
 
 
     </b-row>
-    </div>
-  </template>
-  <script>
-  import {apiUrl} from "../../../constants/config.js"
-  import axios from "axios"
-  import { mapGetters } from "vuex"
-  import datatable from './datatable.vue'
-  export default {
-    components: {
-      'datatable': datatable
-    },
-    data () {
-      return {
-        searchRequest: {
-          keyword: null,
-          mode: null
+  </div>
+</template>
+<script>
+import { apiUrl } from "../../../constants/config.js"
+import axios from "axios"
+import { mapGetters } from "vuex"
+import datatable from './datatable.vue'
+export default {
+  components: {
+    'datatable': datatable
+  },
+  data() {
+    return {
+      searchRequest: {
+        keyword: null,
+        mode: null
+      },
+      results: [],
+      currentPage: 1,
+      totalPage: 5,
+      customer: null,
+      customer_modal: "",
+
+      fields: [
+        {
+          name: "first_name",
+          title: 'First Name',
+          sortField: "first_name",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
         },
-        results: [],
-        currentPage: 1,
-        totalPage: 5,
-        customer: null
-      }
-    },
-    computed: {
-      ...mapGetters(['searchResults', 'searchMode'])
-    },
-    methods: {
-      linkGen (pageNum) {
-        return '#page-' + pageNum
-      },
+        {
+          name: "last_name",
+          title: 'Last Name',
+          sortField: "last_name",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "email",
+          title: 'Email',
+          sortField: "email",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "phone_number",
+          title: 'Phone',
+          sortField: "phone_number",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "10%"
+        },
+        {
+          name: "address",
+          title: 'Address',
+          sortField: "address",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "__slot:actions",
+          title: "Actions",
+          titleClass: "center aligned text-right",
+          dataClass: "center aligned text-right",
+          width: "5%"
+        }
+      ],
 
-      bring_fields(fields) {
+      vehicle_fields: [
 
-        this.customer = fields
-      },
-
-      toDetail(item) {
-        return this.$router.push({ path: '/app/van_management/vehicle_detail/' + item.id });
-
-        // return {path: '/app/van_management/vehicle_detail/' + item.id }
-      },
-
-      updateSearchRequestFromRoute() {
-        this.searchRequest.keyword = this.$route.query.keyword;
-        this.searchRequest.mode = this.$route.query.mode;
-        this.$store.dispatch('searchVehicle', this.searchRequest);
-      }
-
-
-    },
-    mounted () {
-      this.updateSearchRequestFromRoute();
-
-
-      this.searchRequest.keyword = this.$route.query.keyword
-      this.searchRequest.mode = this.$route.query.mode
-      this.$store.dispatch('searchVehicle', this.searchRequest)
-    },
-    watch: {
-      searchResults() {
-        this.results = this.searchResults
-      },
-      searchMode() {
-        this.searchRequest.mode = this.searchMode
-      },
-
-      '$route'(to, from) {
-          this.updateSearchRequestFromRoute();
-      }
+        {
+          name: "__slot:picture",
+          title: "Picture",
+          titleClass: "center aligned text-right",
+          dataClass: "center aligned text-right",
+          width: "5%"
+        },
 
 
-      // searchRequest() {
-      //   this.searchRequest.keyword = this.$route.query.keyword
-      //   this.searchRequest.mode = this.$route.query.mode
-      // }
+        {
+          name: "reg_plate_number",
+          title: 'Reg Plate No.',
+          sortField: "reg_plate_number",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "vehicle_type",
+          title: 'Type',
+          sortField: "vehicle_type",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "make",
+          title: 'Made By',
+          sortField: "make",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "10%"
+        },
+        {
+          name: "model",
+          title: 'Model',
+          sortField: "model",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
 
+        {
+          name: "purchase_date",
+          title: 'Purchase Date',
+          sortField: "purchase_date",
+          titleClass: "center aligned",
+          dataClass: "center aligned",
+          width: "5%"
+        },
+        {
+          name: "__slot:actions",
+          title: "Actions",
+          titleClass: "center aligned text-right",
+          dataClass: "center aligned text-right",
+          width: "5%"
+        }
+      ],
     }
+  },
+  computed: {
+    ...mapGetters(['searchResults', 'searchMode'])
+  },
+  methods: {
+    linkGen(pageNum) {
+      return '#page-' + pageNum
+    },
+
+    bring_fields(fields) {
+      console.log(fields);
+      this.customer = fields;
+      this.$bvModal.show('customer_modal'); // Show modal programmatically
+    },
+
+    toDetail(item) {
+      return this.$router.push({ path: '/app/van_management/vehicle_detail/' + item.id });
+
+      // return {path: '/app/van_management/vehicle_detail/' + item.id }
+    },
+
+    updateSearchRequestFromRoute() {
+      this.searchRequest.keyword = this.$route.query.keyword;
+      this.searchRequest.mode = this.$route.query.mode;
+      this.$store.dispatch('searchVehicle', this.searchRequest);
+    }
+
+
+  },
+  mounted() {
+    this.updateSearchRequestFromRoute();
+
+
+    this.searchRequest.keyword = this.$route.query.keyword
+    this.searchRequest.mode = this.$route.query.mode
+    this.$store.dispatch('searchVehicle', this.searchRequest)
+  },
+  watch: {
+    searchResults() {
+      this.results = this.searchResults
+    },
+    searchMode() {
+      this.searchRequest.mode = this.searchMode
+    },
+
+    '$route'(to, from) {
+      this.updateSearchRequestFromRoute();
+    }
+
+
+    // searchRequest() {
+    //   this.searchRequest.keyword = this.$route.query.keyword
+    //   this.searchRequest.mode = this.$route.query.mode
+    // }
+
   }
-  </script>
+}
+</script>
