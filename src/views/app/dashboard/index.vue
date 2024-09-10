@@ -57,7 +57,8 @@
                     <img v-if="vehicle.img !== null" :src="vehicle.img" style="width: 100px!important" :alt="vehicle.img" class="list-thumbnail border-0" />
                     <img v-if="vehicle.img == null && vehicle.vehicle_type == 'Van'" src="/assets/img/van-white.jpg" style="width: 100px!important" alt="image" class="list-thumbnail border-0" />
                     <img v-if="vehicle.img == null && vehicle.vehicle_type == 'Car'" src="/assets/img/dash-car.png" style="width: 100px!important" alt="image" class="list-thumbnail border-0" />
-                    <b-badge variant="info" pill class="position-absolute badge-top-right">{{ vehicle.vehicle_type }}</b-badge>
+                    <b-badge v-if="vehicle.vehicle_type == 'Car'" variant="info" pill class="position-absolute badge-top-right" style="background-color: #0747E7 !important;" >{{ vehicle.vehicle_type }}</b-badge>
+                    <b-badge v-else variant="info" pill class="position-absolute badge-top-right" style="background-color: #FD6B0C !important;" >{{ vehicle.vehicle_type }}</b-badge>
                 </router-link>
                 <div class="pl-3 pt-2 pr-2 pb-2">
                     <router-link tag="a" :to="{'path': '/app/van_management/vehicle_detail/' + vehicle.vehicle_id}">

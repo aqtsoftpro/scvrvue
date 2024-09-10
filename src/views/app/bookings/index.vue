@@ -6,9 +6,9 @@
       </b-modal>
 
       <b-modal ref="create_swap_modal" id="swapModal" size="lg" :title="swap_modal_title" hide-footer>
-        <swap-form @swap_submit_data="swap_created"
-        :vehicle_id="checkVehicle" :locations="location_options" :payment_options="payment_mode_options"
-        :accessories="accessory_options" :booking="booking" :formData="swap_data" />
+        <swap-form @swap_submit_data="swap_created" :vehicle_id="checkVehicle" :locations="location_options"
+          :payment_options="payment_mode_options" :accessories="accessory_options" :booking="booking"
+          :formData="swap_data" />
       </b-modal>
 
       <b-modal id="vanoutModal" size="lg" ref="vanoutModal">
@@ -176,9 +176,11 @@
                             <b-form-input style="display:none" type="text" v-model.trim="$v.form.customer_id.$model"
                               :state="!$v.form.customer_id.$error" />
                             <v-select v-model="form.customer_id" label="name" :key="form.customer_id"
-                              :reduce="customer => customer.id" :options="customer_options" v-on:input="onCustomerSelect" >
+                              :reduce="customer => customer.id" :options="customer_options"
+                              v-on:input="onCustomerSelect">
                               <template #list-header>
-                                <b-button v-b-modal.modallg variant="outline-primary btn-xs" class="mr-2 mb-2">Add
+                                <b-button v-b-modal.modallg variant="outline-primary btn-xs" class="mr-2 ms-4 mb-2"
+                                  style="margin-left: 7px !important;">Add
                                   Customer</b-button>
                               </template>
                             </v-select>
@@ -193,8 +195,8 @@
                           <label class="form-group has-top-label">
                             <b-form-input style="display:none" type="text" v-model.trim="$v.form.vehicle_id.$model"
                               :state="!$v.form.vehicle_id.$error" />
-                            <v-select v-model="form.vehicle_id" v-on:input="onVehicleSelect" label="name" :disabled="editing_mode"
-                              :key="form.vehicle_id" :reduce="vehicle => vehicle.id"
+                            <v-select v-model="form.vehicle_id" v-on:input="onVehicleSelect" label="name"
+                              :disabled="editing_mode" :key="form.vehicle_id" :reduce="vehicle => vehicle.id"
                               :options="vehicle_options"></v-select>
                             <span>{{ $t('forms.vanout.vehicles') }}</span>
                             <b-form-invalid-feedback v-if="$v.form.customer_id.$error"> Please select the
@@ -236,7 +238,8 @@
                             <b-form-invalid-feedback v-if="$v.form.reason_of_renting.$error"> Please select reason of
                               renting!</b-form-invalid-feedback>
                           </label>
-                          <b-button v-if="form.reason_of_renting == 'Swap'" @click.stop="open_swap_modal" class="btn-sm" >
+                          <b-button v-if="form.reason_of_renting == 'Swap'" @click.stop="open_swap_modal"
+                            class="btn-sm">
                             Add swapped vehicle data
                           </b-button>
                           <!-- <label v-if="form.reason_of_renting == 'Swap'" class="form-group has-top-label">
@@ -256,7 +259,7 @@
                           <span>{{ $t('forms.toll.bond_deposit') }}</span>
                         </label>
                       </b-colxx>
-                      
+
                       <b-colxx xxs="12" xs="6" lg="4" class="mb-3">
                         <label class="form-group has-top-label">
                           <v-select v-model="form.payment_mode" label="name" :reduce="customer => customer.id"
@@ -265,18 +268,18 @@
                         </label>
                       </b-colxx>
 
-                      <b-colxx xxs="12" xs="6" lg="4" class="mb-3"
-                        ref="demage_pics_column">
+                      <b-colxx xxs="12" xs="6" lg="4" class="mb-3" ref="demage_pics_column">
                         <span>{{ $t('forms.vanin.demage_picture') }}</span>
                         <b-form-file v-model="form.demage_pics" :placeholder="$t('forms.vanin.demage_picture')"
-                          drop-placeholder="Drop file here..." accept="image/*" multiple @change="handleFileChange"></b-form-file>
-                          <span v-if="!(form.demage_pics == null || form.demage_pics == '')">Condition picture already uploaded</span>
+                          drop-placeholder="Drop file here... (Max 2MB)" accept="image/*" multiple
+                          @change="handleFileChange"></b-form-file>
+                        <span v-if="editing_mode">Vehicle Condition picture already uploaded</span>
                       </b-colxx>
                       <b-colxx xxs="12" xs="6" lg="4" class="mb-3" ref="demage_video_column">
                         <span>Vehicle Condition Video </span>
-                        <b-form-file v-model="form.demage_video" placeholder="Upload video"
+                        <b-form-file v-model="form.demage_video" placeholder="Upload video (max 5MB)"
                           drop-placeholder="Drop file here..." accept="video/*"></b-form-file>
-                        <span v-if="!(form.demage_video == null || form.demage_video == '')">Vidoe already uploaded</span>
+                        <span v-if="editing_mode">Vehicle Condition Video already uploaded</span>
                       </b-colxx>
 
                       <b-colxx xxs="12" xs="6" lg="4" class="mb-3" ref="demage_text_column">
@@ -322,13 +325,8 @@
 
                       <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
-                          <b-form-checkbox
-                            id="checkbox-1"
-                            v-model="form.long_term"
-                            name="checkbox-1"
-                            :value="1"
-                            :unchecked-value="0"
-                          >
+                          <b-form-checkbox id="checkbox-1" v-model="form.long_term" name="checkbox-1" :value="1"
+                            :unchecked-value="0">
                             <span>Is This Long Term Customer?</span>
                           </b-form-checkbox>
                         </b-form>
@@ -421,8 +419,8 @@
                     </b-row>
 
                     <b-button v-if="!editing_mode" @click.stop="save_vanout_form" variant="primary" class="mt-4 mb-4">{{
-          'Save'
-        }}</b-button>
+                      'Save'
+                      }}</b-button>
                     <div v-else>
                       <b-button @click.stop="update_vanout(form.id)" variant="secondary" class="mt-4 mb-4">{{ ' Update'
                         }}</b-button>
@@ -430,72 +428,68 @@
                           class="simple-icon-close"></i></b-button>
                     </div>
 
-                    <button type="reset" ref="outresetButton" class="d-none" >reset</button>
+                    <button type="reset" ref="outresetButton" class="d-none">reset</button>
 
                   </b-form>
                   <div v-if="editing_mode">
-                      <b-button v-for="swap in swapped_data"
-                        :class="visible ? null : 'collapsed'"
-                        :aria-expanded="visible ? 'true' : 'false'"
-                        aria-controls="collapse-4"
-                        @click="get_swapped(swap)"
-                      >
-                        {{ swap.reg_number }}
-                      </b-button>
-                      <b-collapse v-if="swapped_item" id="collapse-4" v-model="visible" class="mt-2">
-                        <b-card>
-                          <b-row v-if="swapped_item.status == 1" class="justify-content-end">
-                            <b-button size="sm" variant="grey" @click="swapped_modal(swapped_item)" >
-                              <i class="simple-icon-pencil"></i>
-                            </b-button>
-                          </b-row>
-                          <b-row>
-                            <b-colxx xs="12" lg="6">
-                              <table class="stacked table">
-                                <tr>
-                                  <th>Registration:</th>
-                                  <td> {{ swapped_item.reg_number }}</td>
-                                </tr>
-                                <tr>
-                                  <th>Vehicle Model:</th>
-                                  <td> {{ swapped_item.vehicle_model }}</td>
-                                </tr>
-                                <tr>
-                                  <th>Vehicle Make:</th>
-                                  <td> {{ swapped_item.vehicle }}</td>
-                                </tr>
-                              </table> 
-                            </b-colxx>
+                    <b-button v-for="swap in swapped_data" :class="visible ? null : 'collapsed'"
+                      :aria-expanded="visible ? 'true' : 'false'" aria-controls="collapse-4" @click="get_swapped(swap)">
+                      {{ swap.reg_number }}
+                    </b-button>
+                    <b-collapse v-if="swapped_item" id="collapse-4" v-model="visible" class="mt-2">
+                      <b-card>
+                        <b-row v-if="swapped_item.status == 1" class="justify-content-end">
+                          <b-button size="sm" variant="grey" @click="swapped_modal(swapped_item)">
+                            <i class="simple-icon-pencil"></i>
+                          </b-button>
+                        </b-row>
+                        <b-row>
+                          <b-colxx xs="12" lg="6">
+                            <table class="stacked table">
+                              <tr>
+                                <th>Registration:</th>
+                                <td> {{ swapped_item.reg_number }}</td>
+                              </tr>
+                              <tr>
+                                <th>Vehicle Model:</th>
+                                <td> {{ swapped_item.vehicle_model }}</td>
+                              </tr>
+                              <tr>
+                                <th>Vehicle Make:</th>
+                                <td> {{ swapped_item.vehicle }}</td>
+                              </tr>
+                            </table>
+                          </b-colxx>
 
-                            <b-colxx xs="12" lg="6">
-                              <table class="stacked table">
-                                <tr>
-                                  <th>Vehicle Out Date:</th>
-                                  <td> {{ swapped_item.van_out_date }}</td>
-                                </tr>
-                                <tr>
-                                  <th>Vehicle Accessories:</th>
-                                  <td>
-                                    <b-badge pill v-for="accessory in swapped_item.accessories " class="mx-1" >
-                                      {{ accessory.name }}
-                                    </b-badge>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <th>Vehicle Return Date:</th>
-                                  <td> {{ swapped_item.return_date }}</td>
-                                </tr>
-                              </table> 
-                            </b-colxx>
+                          <b-colxx xs="12" lg="6">
+                            <table class="stacked table">
+                              <tr>
+                                <th>Vehicle Out Date:</th>
+                                <td> {{ swapped_item.van_out_date }}</td>
+                              </tr>
+                              <tr>
+                                <th>Vehicle Accessories:</th>
+                                <td>
+                                  <b-badge pill v-for="accessory in swapped_item.accessories " class="mx-1">
+                                    {{ accessory.name }}
+                                  </b-badge>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th>Vehicle Return Date:</th>
+                                <td> {{ swapped_item.return_date }}</td>
+                              </tr>
+                            </table>
+                          </b-colxx>
 
-                          </b-row>
-                        </b-card>
-                      </b-collapse>
+                        </b-row>
+                      </b-card>
+                    </b-collapse>
                   </div>
 
                   <datatable title="" :fields="vanout_fields" :data="vanouts" :edit="edit_vanout" :view="bring_fields"
                     :role="roleName" :del="delete_vanout" :searchColumn="VanoutSearchColumns" />
-                </b-tab> 
+                </b-tab>
                 <b-tab title="Vehicle In" title-item-class="w-50 text-center" @click="changeTab(1)">
                   <b-form @click="stopPropagation">
                     <b-row>
@@ -541,13 +535,9 @@
                             <b-form-invalid-feedback v-if="$v.vanin_form.location_id.$error"> Please select the
                               location!</b-form-invalid-feedback> -->
 
-                              <b-form-select v-model="vanin_form.location_id" 
-                              aria-placeholder="Select Location"
-                              :options="location_options"
-                                value-field="id"
-                                text-field="name"
-                              ></b-form-select>
-                              <span>{{ $t('forms.vanout.location') }}</span>
+                            <b-form-select v-model="vanin_form.location_id" aria-placeholder="Select Location"
+                              :options="location_options" value-field="id" text-field="name"></b-form-select>
+                            <span>{{ $t('forms.vanout.location') }}</span>
 
                           </label>
 
@@ -563,8 +553,9 @@
                       <b-colxx xxs="12" xs="12" lg="3" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
-                            <b-form-input type="number" v-model="$v.vanin_form.mileage.$model" :state="!$v.vanin_form.mileage.$error"
-                              :placeholder="$t('forms.vanin.mileage')" v-on:input="calculateDriven"></b-form-input>
+                            <b-form-input type="number" v-model="$v.vanin_form.mileage.$model"
+                              :state="!$v.vanin_form.mileage.$error" :placeholder="$t('forms.vanin.mileage')"
+                              v-on:input="calculateDriven"></b-form-input>
                             <span>{{ $t('forms.vanin.mileage') }}</span>
                             <b-form-invalid-feedback v-if="$v.vanin_form.mileage.$error"> Please enter vehicle
                               mileage!</b-form-invalid-feedback>
@@ -617,13 +608,14 @@
                       <b-colxx xxs="12" xs="6" lg="6" xl="4" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
-                            <b-form-input v-model="vanin_form.bond_return_amount" @change="check_bond" ></b-form-input>
+                            <b-form-input v-model="vanin_form.bond_return_amount" @change="check_bond"></b-form-input>
                             <span>{{ $t('forms.vanin.bond_return_amount') }}</span>
                           </label>
                         </b-form>
                       </b-colxx>
 
-                      <b-colxx v-if="bondComment || vanin_form.bond_diff !== 0" xxs="12" xs="6" lg="6" xl="4" class="mb-3">
+                      <b-colxx v-if="bondComment || vanin_form.bond_diff !== 0" xxs="12" xs="6" lg="6" xl="4"
+                        class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <label class="form-group has-top-label">
                             <b-form-textarea v-model="vanin_form.bond_comment"></b-form-textarea>
@@ -675,8 +667,8 @@
                           </label>
                         </b-form>
                       </b-colxx>
-                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="6" lg="6" xl="4" class="mb-3"
-                        ref="demage_picture_column">
+                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="6" lg="6" xl="4"
+                        class="mb-3" ref="demage_picture_column">
                         <!-- <label class="form-group has-top-label"> -->
                         <!-- <b-form-input v-model="vanin_form.demage_picture" ></b-form-input> -->
                         <span>{{ $t('forms.vanin.demage_picture') }}</span>
@@ -685,8 +677,8 @@
                           drop-placeholder="Drop file here..." accept="image/*" multiple></b-form-file>
                       </b-colxx>
 
-                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="6" lg="6" xl="4" class="mb-3"
-                        ref="demage_vid_column">
+                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="6" lg="6" xl="4"
+                        class="mb-3" ref="demage_vid_column">
                         <span>Upload Demaged Video</span>
                         <!-- </label> -->
                         <b-form-file v-model="vanin_form.demage_vid" placeholder="Upload Demaged Video"
@@ -694,8 +686,8 @@
                       </b-colxx>
 
 
-                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="6" lg="6" xl="4" class="mb-3"
-                        ref="demage_text_column">
+                      <b-colxx v-if="vanin_form.demage_caused_by_customer == '1'" xxs="12" xs="6" lg="6" xl="4"
+                        class="mb-3" ref="demage_text_column">
                         <label class="form-group has-top-label">
                           <b-form-textarea v-model="vanin_form.demage_text"></b-form-textarea>
                           <span>{{ $t('forms.vanin.demage_text') }}</span>
@@ -705,10 +697,11 @@
                       <b-colxx xxs="12" xs="12" lg="3" class="mb-3">
                         <b-form class="av-tooltip tooltip-label-right">
                           <div>{{ $t('forms.vanin.return_date') }}</div>
-                          <datepicker :bootstrap-styling="true" type="datetime" :placeholder="$t('forms.vanin.return_date')"
-                            v-model="vanin_form.return_date" :state="!$v.vanin_form.return_date.$error"
-                            value-type="format" @change="calculateDays" format="DD-MM-YYYY h:mm"></datepicker>
-                          
+                          <datepicker :bootstrap-styling="true" type="datetime"
+                            :placeholder="$t('forms.vanin.return_date')" v-model="vanin_form.return_date"
+                            :state="!$v.vanin_form.return_date.$error" value-type="format" @change="calculateDays"
+                            format="DD-MM-YYYY h:mm"></datepicker>
+
                           <b-form-invalid-feedback v-if="$v.vanin_form.return_date.$error"> Please select return
                             date!</b-form-invalid-feedback>
                         </b-form>
@@ -728,12 +721,12 @@
                     </b-row>
 
                     <b-button v-if="!editing_mode" @click.stop="save_vanin_form" variant="primary" class="mt-4 mb-4">{{
-          'Save'
-        }}</b-button>
+                      'Save'
+                      }}</b-button>
                     <div v-else>
                       <b-button @click.stop="update_vanreturn(vanin_form.id)" variant="primary" class="mt-4 mb-4">{{
-          'Update'
-        }}</b-button>
+                        'Update'
+                        }}</b-button>
                       <b-button @click.stop="$event => cancel_update_vanreturn()" variant="info" class="mt-4 mb-4"><i
                           class="simple-icon-close"></i></b-button>
                     </div>
@@ -750,17 +743,16 @@
   </div>
 </template>
 <style scoped>
-  .custom-select {
-    word-wrap: normal;
-    width: 100%;
-    height: 4.5em;
-    padding-top: 25px;
-    padding-bottom: 0;
-    color: #524e4e;
-    padding-inline: 10px !important;
-    font-size:unset;
-  }
-
+.custom-select {
+  word-wrap: normal;
+  width: 100%;
+  height: 4.5em;
+  padding-top: 25px;
+  padding-bottom: 0;
+  color: #524e4e;
+  padding-inline: 10px !important;
+  font-size: unset;
+}
 </style>
 <script>
 import {
@@ -788,14 +780,14 @@ import moment from 'moment';
 
 
 export default ({
-  components: { 
-    'v-select': vSelect, 
-    datepicker: DatePicker, 
-    datatable: datatable, 
-    Customer, 
+  components: {
+    'v-select': vSelect,
+    datepicker: DatePicker,
+    datatable: datatable,
+    Customer,
     'accessories-management': AcessoriesManagement,
     'swap-form': SwapForm
-   },
+  },
   data() {
     return {
       today: new Date(),
@@ -1043,6 +1035,12 @@ export default ({
       mileage: {
         required
       },
+
+      demage_video: {
+        max_size: function () {
+          return this.maxSize(this.form.demage_video, 5 * 1024 * 1024); // Limit to 5 MB
+        }
+      },
     },
     vanin_form: {
       van_out_id: {
@@ -1085,6 +1083,11 @@ export default ({
     }
   },
   methods: {
+
+    maxSize(value, size) {
+      if (!value || !value.size) return true; // If no file is selected, validation passes
+      return value.size <= size || `File size should be less than ${(size / (1024 * 1024)).toFixed(2)} MB`;
+    },
 
     changeTab(index) {
       // Custom functionality when a tab is clicked
@@ -1265,13 +1268,13 @@ export default ({
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
-        }).then(response => {
-          console.log(response.data);
-          if (response.data) {
-            const vanOutId = response.data;
-            this.edit_vanout(vanOutId);
-          }
-        })
+      }).then(response => {
+        console.log(response.data);
+        if (response.data) {
+          const vanOutId = response.data;
+          this.edit_vanout(vanOutId);
+        }
+      })
     },
 
     bring_fields(data) {
@@ -1287,7 +1290,7 @@ export default ({
         this.bondComment = true;
         this.vanin_form.bond_diff = this.return_bond - this.vanin_form.bond_return_amount;
       }
-      else{
+      else {
         this.bondComment = false;
         this.vanin_form.bond_diff = 0;
       }
@@ -1307,7 +1310,7 @@ export default ({
         return false;
       }
 
-      this.processing_text = 'Saving Vehicle Data ...'
+      this.processing_text = 'Saving Vehicle out Data ...'
       this.isProcessing = true
 
       if (this.form.swap_with == "Select Vehicle to swap with") {
@@ -1412,54 +1415,54 @@ export default ({
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
-        }).then(response => {
-          console.log(response.data);
-          this.form = response.data;
-          this.form.vehicle_id = response.data.old_vehicle_id,
+      }).then(response => {
+        console.log(response.data);
+        this.form = response.data;
+        this.form.vehicle_id = response.data.old_vehicle_id,
           this.form.demage_pics = response.data.galleries[0].image,
           this.swapped_data = response.data.swaps;
-          this.form.long_term = response.data.long_term
-          if (response.data.reason_of_renting == 'Swap') {
-            this.swap_status = false;
-          }
-          this.booking_create_option = ({ id: item.id, name: item.reg_number })
-          this.isProcessing = false
-          var accessories_to_set = [];
-          response.data.accessories.map((value, key) => {
-            accessories_to_set.push(value.id)
-          })
-          console.log(accessories_to_set)
-          this.form.accessories = accessories_to_set
-          this.get_active_vehicle_options(this.form.vehicle_id)
-
-          // if (item.swap_with != null) {
-          //   axios.get(apiUrl + '/vehicle/' + item.swap_with, {
-          //     headers: {
-          //       'Authorization': 'Bearer ' + localStorage.getItem('token')
-          //     }
-          //   }).then(response => {
-
-          //     // this.newData = {
-          //     //   id: response.data.id,
-          //     //   name: response.data.name
-          //     // }
-          //     // window.setTimeout(() => {
-          //       // this.available_vehicle_options.push(this.newData);
-          //     // }, 3000);
-
-          //     console.log(this.available_vehicle_options);
-          //     if (response.data) {
-          //       this.form.mileage = response.data.mileage
-          //       this.$notify('success filled ', 'Success!', 'The mileage data has been added to field', { duration: 3000, permanent: false });
-          //       this.isProcessing = false
-          //     } else {
-          //       this.form.mileage = ''
-          //       this.$notify('info filled', 'Info!', 'No milage date for this vehicle, please manually fill it', { duration: 3000, permanent: false });
-          //       this.isProcessing = false
-          //     }
-          //   })
-          // }
+        this.form.long_term = response.data.long_term
+        if (response.data.reason_of_renting == 'Swap') {
+          this.swap_status = false;
+        }
+        this.booking_create_option = ({ id: item.id, name: item.reg_number })
+        this.isProcessing = false
+        var accessories_to_set = [];
+        response.data.accessories.map((value, key) => {
+          accessories_to_set.push(value.id)
         })
+        console.log(accessories_to_set)
+        this.form.accessories = accessories_to_set
+        this.get_active_vehicle_options(this.form.vehicle_id)
+
+        // if (item.swap_with != null) {
+        //   axios.get(apiUrl + '/vehicle/' + item.swap_with, {
+        //     headers: {
+        //       'Authorization': 'Bearer ' + localStorage.getItem('token')
+        //     }
+        //   }).then(response => {
+
+        //     // this.newData = {
+        //     //   id: response.data.id,
+        //     //   name: response.data.name
+        //     // }
+        //     // window.setTimeout(() => {
+        //       // this.available_vehicle_options.push(this.newData);
+        //     // }, 3000);
+
+        //     console.log(this.available_vehicle_options);
+        //     if (response.data) {
+        //       this.form.mileage = response.data.mileage
+        //       this.$notify('success filled ', 'Success!', 'The mileage data has been added to field', { duration: 3000, permanent: false });
+        //       this.isProcessing = false
+        //     } else {
+        //       this.form.mileage = ''
+        //       this.$notify('info filled', 'Info!', 'No milage date for this vehicle, please manually fill it', { duration: 3000, permanent: false });
+        //       this.isProcessing = false
+        //     }
+        //   })
+        // }
+      })
 
       this.get_active_vehicle_options(item.old_vehicle_id, item.vehicle_type_id)
       this.get_all_customer_options(item.customer_id)
@@ -1668,23 +1671,23 @@ export default ({
         this.isProcessing = false
       })
     },
-    get_available_vehicle_options(id, swap=null, type=null) {
+    get_available_vehicle_options(id, swap = null, type = null) {
 
       this.processing_text = 'Loading Data..'
       this.isProcessing = true
 
-      axios.get(apiUrl + '/available_vehicles_options/' + id + '/' + swap +'/'+type, {
+      axios.get(apiUrl + '/available_vehicles_options/' + id + '/' + swap + '/' + type, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
-        this.available_vehicle_options = response.data;       
+        this.available_vehicle_options = response.data;
         this.isProcessing = false
       })
     },
-    get_active_vehicle_options(id = null, type=null) {
+    get_active_vehicle_options(id = null, type = null) {
 
-      axios.get(apiUrl + '/vehicle_options?selected=' + id +'&type=' + type,
+      axios.get(apiUrl + '/vehicle_options?selected=' + id + '&type=' + type,
         {
           headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -1720,7 +1723,7 @@ export default ({
       }).then(response => {
         this.location_options = response.data
         // this.custom_locations = this.location_options.map(item => {
-          
+
         // })
       })
     },
