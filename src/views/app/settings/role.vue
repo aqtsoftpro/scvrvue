@@ -10,7 +10,7 @@
           <b-form-input v-model="form.name" ></b-form-input>
           <span>{{ $t('forms.role.name') }}</span>
           <b-form-invalid-feedback v-if="$v.form.name.$error">
-              Please enter role name
+              Role name is required
             </b-form-invalid-feedback>
         </label>
     </b-colxx>

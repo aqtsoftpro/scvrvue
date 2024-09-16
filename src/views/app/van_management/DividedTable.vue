@@ -1,68 +1,44 @@
 <template>
   <div>
-    <last-step-end :editingMode="editing_mode" :vehicle="vehicle"  :getVehicles="get_vehicles" />
+    <last-step-end :editingMode="editing_mode" :vehicle="vehicle" :getVehicles="get_vehicles" />
 
-    <datatable-heading
-      :changePageSize="changePageSize"
-      :searchChange="searchChange"
-      :searchColumn="searchColumn"
-      :from="from"
-      :to="to"
-      :total="total"
-      :perPage="perPage"
-      :title="title"
-    ></datatable-heading>
+    <datatable-heading :changePageSize="changePageSize" :searchChange="searchChange" :searchColumn="searchColumn"
+      :from="from" :to="to" :total="total" :perPage="perPage" :title="title"></datatable-heading>
     <b-row>
       <b-colxx xxs="12">
-        <vuetable
-          :data-manager="dataManager"
-          ref="vuetable"
-          class="table-divided order-with-arrow"
-          :api-mode="false"
-          :query-params="makeQueryParams"
-          :per-page="perPage"
-          :items="records"
-          :fields="fields"
-          pagination-path="pagination"
-          @vuetable:pagination-data="onPaginationData"
-        >
+        <vuetable :data-manager="dataManager" ref="vuetable" class="table-divided order-with-arrow" :api-mode="false"
+          :query-params="makeQueryParams" :per-page="perPage" :items="records" :fields="fields"
+          pagination-path="pagination" @vuetable:pagination-data="onPaginationData">
           <template slot="picture" slot-scope="props">
-            <router-link :to="{path:'/app/van_management/vehicle_detail/'+props.rowData.id}">
-              <img
-                style="width: 100px !important"
-                alt="Thumbnail"
-                :src="props.rowData.picture"
-                class="list-thumbnail responsive border-0"
-              />
+            <router-link :to="{ path: '/app/van_management/vehicle_detail/' + props.rowData.id }">
+              <img style="width: 100px !important" alt="Thumbnail" :src="props.rowData.picture"
+                class="list-thumbnail responsive border-0" />
             </router-link>
           </template>
           <template slot="added" slot-scope="props">
-              <ul>
-                  <li>Added: {{ props.rowData.added }}</li>
-                  <li>Updated: {{ props.rowData.updated }} </li>
-              </ul>
-            </template>
+            <ul>
+              <li>Added: {{ props.rowData.added }}</li>
+              <li>Updated: {{ props.rowData.updated }} </li>
+            </ul>
+          </template>
           <template slot="actions" slot-scope="props">
-                <router-link :to="{path:'/app/van_management/vehicle_detail/'+props.rowData.id}" size="sm" variant="grey">
-                  <i class="simple-icon-eye"></i>
-                </router-link>
-                <b-button @click="edit(props.rowData.id)" size="sm" variant="grey">
-                  <i class="simple-icon-pencil"></i>
-                </b-button>
-                <b-button :v-if="user.role_id == 1" @click="delete_vehicle(props.rowData.id)" size="sm" variant="grey">
-                  <i class="simple-icon-trash"></i>
-                </b-button>
-                <b-button v-if="user.role_id == 1 && props.rowData.status_id == 3" @click="mark_vehicle_active(props.rowData.id)" size="sm" variant="grey">
-                  <i class="simple-icon-check"></i>
-                </b-button>
+            <router-link :to="{ path: '/app/van_management/vehicle_detail/' + props.rowData.id }" size="sm" variant="grey">
+              <i class="simple-icon-eye"></i>
+            </router-link>
+            <b-button @click="edit(props.rowData.id)" size="sm" variant="grey">
+              <i class="simple-icon-pencil"></i>
+            </b-button>
+            <b-button :v-if="user.role_id == 1" @click="delete_vehicle(props.rowData.id)" size="sm" variant="grey">
+              <i class="simple-icon-trash"></i>
+            </b-button>
+            <b-button v-if="user.role_id == 1 && props.rowData.status_id == 3"
+              @click="mark_vehicle_active(props.rowData.id)" size="sm" variant="grey">
+              <i class="simple-icon-check"></i>
+            </b-button>
           </template>
         </vuetable>
-        <vuetable-pagination-bootstrap
-          :per-page="perPage"
-          class="mt-4"
-          ref="pagination"
-          @vuetable-pagination:change-page="onChangePage"
-        />
+        <vuetable-pagination-bootstrap :per-page="perPage" class="mt-4" ref="pagination"
+          @vuetable-pagination:change-page="onChangePage" />
       </b-colxx>
     </b-row>
 
@@ -167,8 +143,8 @@ export default {
     get_vehicles() {
       //Vehicles
       axios.get(
-        apiUrl + '/vehicle',{
-        headers:{
+        apiUrl + '/vehicle', {
+        headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       }
@@ -180,51 +156,69 @@ export default {
       })
     },
 
-    edit(id){
+    edit(id) {
       this.editing_mode = true
 
       axios.get(
-        apiUrl + '/vehicle/' + id,{
-          headers:{
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
+        apiUrl + '/vehicle/' + id, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
+      }
       ).then(response => {
         this.vehicle = response.data
         console.log(this.vehicle);
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
       })
     },
+
+
+    // delete_vehicle(id) {
+    //   axios.delete(
+    //     apiUrl + '/vehicle/' + id,{
+    //       headers:{
+    //         'Authorization': 'Bearer ' + localStorage.getItem('token')
+    //       }
+    //     }
+    //   ).then(response => {
+    //     this.get_vehicles()
+    //     this.$notify('success filled', 'Success!', 'Vehicle has been deleted!',{ duration: 3000, permanent: false })
+    //   }).catch(error => {
+    //     this.$notify('error filled', 'Error!', error.response.data.message,{ duration: 3000, permanent: false });
+    //   })
+    // },
 
 
     delete_vehicle(id) {
-      axios.delete(
-        apiUrl + '/vehicle/' + id,{
-          headers:{
+      if (confirm('Are you sure you want to delete this vehicle?')) {
+        axios.delete(
+          apiUrl + '/vehicle/' + id, {
+          headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
         }
-      ).then(response => {
-        this.get_vehicles()
-        this.$notify('success filled', 'Success!', 'Vehicle has been deleted!',{ duration: 3000, permanent: false })
-      }).catch(error => {
-        this.$notify('error filled', 'Error!', error.response.data.message,{ duration: 3000, permanent: false });
-      })
+        ).then(response => {
+          this.get_vehicles()
+          alert('Vehicle deleted successfully!')
+        }).catch(error => {
+          alert('Error deleting vehicle: ' + error.response.data.message)
+        })
+      }
     },
 
-    mark_vehicle_active(id){
+    mark_vehicle_active(id) {
       axios.post(
-        apiUrl + '/update_vehicle_status/' + id, {status_id: 1, '_method': 'PUT'}, {
-          headers:{
-            'content-type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
+        apiUrl + '/update_vehicle_status/' + id, { status_id: 1, '_method': 'PUT' }, {
+        headers: {
+          'content-type': 'multipart/form-data',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
+      }
       ).then(response => {
         this.get_vehicles()
-        this.$notify('success filled', 'Suceess!', 'vehicle status has been updated!',{ duration: 3000, permanent: false })
+        this.$notify('success filled', 'Suceess!', 'vehicle status has been updated!', { duration: 3000, permanent: false })
       }).catch(error => {
-        this.$notify('error filled', 'Error!', error.response.data.message,{ duration: 3000, permanent: false });
+        this.$notify('error filled', 'Error!', error.response.data.message, { duration: 3000, permanent: false });
       })
     },
 
@@ -260,18 +254,18 @@ export default {
       this.selectedItems = [];
       return sortOrder[0]
         ? {
-            sort: sortOrder[0]
-              ? sortOrder[0].field + "|" + sortOrder[0].direction
-              : "",
-            page: currentPage,
-            per_page: this.perPage,
-            search: this.search
-          }
+          sort: sortOrder[0]
+            ? sortOrder[0].field + "|" + sortOrder[0].direction
+            : "",
+          page: currentPage,
+          per_page: this.perPage,
+          search: this.search
+        }
         : {
-            page: currentPage,
-            per_page: this.perPage,
-            search: this.search
-          };
+          page: currentPage,
+          per_page: this.perPage,
+          search: this.search
+        };
     },
 
     onPaginationData(paginationData) {
@@ -356,7 +350,7 @@ export default {
     filteredList() {
       this.array = this.data
       return this.array.filter((model) => {
-        if(this.search == ''){
+        if (this.search == '') {
           return this.data;
         } else {
           // return this.search.toLowerCase().split(' ').every(v => model[this.selectedSearchColumn].toLowerCase().includes(v));
@@ -367,9 +361,9 @@ export default {
         }
       });
     }
-    
+
   },
-  mounted(){
+  mounted() {
     this.get_vehicles()
   },
   watch: {

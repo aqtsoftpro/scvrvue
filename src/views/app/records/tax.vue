@@ -341,7 +341,7 @@ export default {
       ).then(response => {
         //parse json data
         // this.get_tax_records()
-        this.$notify(`${response.data.status} filled`, response.data.status, response.data.message, { duration: 3000, permanent: false });
+        this.$notify(`success filled`, response.data.status, response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
         this.$refs.resetButton.click();
         this.get_tax_records()

@@ -9,7 +9,7 @@
             <b-form-input v-model="form.name"></b-form-input>
             <span>{{ $t('forms.user.name') }}</span>
             <b-form-invalid-feedback v-if="$v.form.name.$error">
-              Please enter user name
+              Name is required
             </b-form-invalid-feedback>
           </label>
         </b-colxx>
@@ -20,7 +20,7 @@
             <b-form-input v-model="form.email"></b-form-input>
             <span>{{ $t('forms.user.email') }}</span>
             <b-form-invalid-feedback v-if="$v.form.email.$error">
-              Please enter user email
+              Email is required
             </b-form-invalid-feedback>
           </label>
         </b-colxx>
@@ -31,7 +31,7 @@
             <v-select v-model="form.role_id" :reduce="role => role.id" label="name" :options="role_options"></v-select>
             <span>{{ $t('forms.user.role') }}</span>
             <b-form-invalid-feedback v-if="$v.form.role_id.$error">
-              Please enter user role
+              Role is required
             </b-form-invalid-feedback>
           </label>
         </b-colxx>
@@ -43,7 +43,7 @@
               v-model="form.password"></b-form-input>
             <span>{{ $t('forms.user.password') }}</span>
             <b-form-invalid-feedback v-if="$v.form.password.$error">
-              Please enter user password
+              Password is required
             </b-form-invalid-feedback>
           </label>
           <b-button @click.stop="show_hide_password()" variant="light" class="mt-4 mb-4">{{ 'Show/Hide Password'
