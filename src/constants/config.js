@@ -27,8 +27,8 @@ export const firebaseConfig = {
 //Local api
 // export const apiUrl = 'http://127.0.0.1:8000/api'
 //remote api
-// export const apiUrl = 'https://scvr-test.aqtdemos.com/public/api'
-export const apiUrl = 'https://console.mksgroupaustralia.com.au/public/api'
+export const apiUrl = 'https://scvr-test.aqtdemos.com/public/api'
+// export const apiUrl = 'https://console.mksgroupaustralia.com.au/public/api'
 
 export const currentUser = {
   id: 1,

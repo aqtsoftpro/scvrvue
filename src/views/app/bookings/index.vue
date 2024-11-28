@@ -342,7 +342,7 @@
                             <datepicker :default-value="today" type="datetime" v-model="$v.form.van_out_date.$model"
                               :state="!$v.form.van_out_date.$error" :placeholder="$t('forms.vanout.van_out_date_time')"
                               value-type="format" format="DD-MM-YYYY h:mm"></datepicker>
-                            <b-form-invalid-feedback v-if="$v.form.van_out_date.$error"> Please select van out date
+                            <b-form-invalid-feedback v-if="$v.form.van_out_date.$error"> Please select vehicle out date
                             </b-form-invalid-feedback>
                           </div>
                           <div v-if="form.long_term == 0" class="d-flex">
@@ -1036,11 +1036,11 @@ export default ({
         required
       },
 
-      demage_video: {
-        max_size: function () {
-          return this.maxSize(this.form.demage_video, 5 * 1024 * 1024); // Limit to 5 MB
-        }
-      },
+      // demage_video: {
+      //   max_size: function () {
+      //     return this.maxSize(this.form.demage_video, 5 * 1024 * 1024); // Limit to 5 MB
+      //   }
+      // },
     },
     vanin_form: {
       van_out_id: {
@@ -1387,13 +1387,14 @@ export default ({
         this.$notify(
           'success filled',
           'Success!',
-          'Van In record has been saved.',
+          'Vehicle In record has been saved.',
         )
         this.isProcessing = false
         this.all_()
         this.get_active_vehicle_options()
         this.get_vanins()
         this.get_vanouts()
+        this.get_all_customer_options()
       }).catch(error => {
         this.$notify('error filled', 'Error!', error.response.data.message, { duration: 3000, permanent: false });
         this.isProcessing = false
@@ -1419,7 +1420,7 @@ export default ({
         console.log(response.data);
         this.form = response.data;
         this.form.vehicle_id = response.data.old_vehicle_id,
-          this.form.demage_pics = response.data.galleries[0].image,
+          this.form.demage_pics = response.data.galleries,
           this.swapped_data = response.data.swaps;
         this.form.long_term = response.data.long_term
         if (response.data.reason_of_renting == 'Swap') {
@@ -1530,7 +1531,7 @@ export default ({
 
     update_vanreturn(id) {
 
-      this.processing_text = 'Updating Van Return Data ....'
+      this.processing_text = 'Updating Vehicle Return Data ....'
       this.isProcessing = true
 
       axios.post(apiUrl + '/van_return/' + id, { ...this.vanin_form, '_method': 'PUT' }, {
@@ -1620,7 +1621,7 @@ export default ({
 
     delete_vanin(item) {
 
-      this.processint_text = 'Deleting Van In Data...';
+      this.processint_text = 'Deleting Vehicle In Data...';
       this.isProcessing = true
 
       axios.delete(apiUrl + '/van_return/' + item.id, {
@@ -1791,7 +1792,7 @@ export default ({
           // this.$notify(
           //   'info filled',
           //   'Data Loaded!',
-          //   'Van Out data loaded.',
+          //   'Vehicle Out data loaded.',
           //   { duration: 3000, permanent: false });
         }
       })

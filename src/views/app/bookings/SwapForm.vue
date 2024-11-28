@@ -437,9 +437,9 @@ export default {
             this.$router.push('/user/login');
         }
 
-        this.get_available_vehicle_options(this.formData.vehicle_id);
 
         if (this.formData !== null) {
+            this.get_available_vehicle_options(this.formData.vehicle_id);
             this.swapForm = this.formData;
             this.swapForm.out_date = this.formData.van_out_date;
             var accessories_to_set = [];
@@ -448,6 +448,8 @@ export default {
             })
             console.log(accessories_to_set)
             this.swapForm.accessories = accessories_to_set
+        } else {
+            this.get_available_vehicle_options();
         }
 
     },
